@@ -19,7 +19,7 @@ export default function CommentInbox() {
                         <div className='comment border-bottom pb-3 mb-3 '>
                             Ashish sharma,
                             
-                            Thank You elit excepteur qui sit do ullamco nulla consequat sit laboris. Qui sunt excepteur in adipisicing ea tempor laborum. Laboris veniam sint Lorem in incididunt elit. Ea voluptate dolor eu reprehenderit in ad. Commodo Lorem ipsum qui cupidpatat proident labore qui consequat. Ut consequat id duis esse nostrud commodo ea enim officia minim. Culpa consequat tempor nisi officia minim tempor ut.
+                            Thank You eli excepteur qui sit do ullamco nulla consequat sit laboris. Qui sunt excepteur in adipisicing ea tempor laborum. Laboris veniam sint Lorem in incididunt elit. Ea voluptate dolor eu reprehenderit in ad. Commodo Lorem ipsum qui cupidpatat proident labore qui consequat. Ut consequat id duis esse nostrud commodo ea enim officia minim. Culpa consequat tempor nisi officia minim tempor ut.
                         </div>
 
                         <div className='replies-container ps-4'>
