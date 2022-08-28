@@ -1,0 +1,130 @@
+body {
+  padding-top: 4rem;
+  background: lightgrey;
+}
+
+.theme-bg {
+  background: #4338ca;
+  ;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #3012b3, #4338ca);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #3012b3, #4338ca);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.theme-color {
+  color: #4338ca;
+}
+
+.navbar .dropdown button::before {
+  content: none;
+}
+
+.navbar a {
+  color: white;
+}
+
+.tab-pane {
+  height: 80vh;
+  border-radius: 10px;
+  box-shadow: 0 1rem 3rem darkgray !important;
+}
+
+.input-field {
+  position: relative;
+}
+
+.input-field input {
+  display: inline-block;
+  border: thin solid #fafafa;
+  border-bottom: solid medium #999;
+  color: #444;
+  background-color: #fafafa;
+  padding: 10px 10px 10px 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.input-field input:focus,
+.input-field input:hover,
+.input-field input:valid {
+  border: thin solid #4338ca !important;
+  border-bottom: solid medium #4338ca !important;
+  background-color: #fff !important;
+  box-shadow: 0 0 0 0.25rem #4438ca81 !important;
+}
+
+.input-field label {
+  color: #999;
+  position: absolute;
+  pointer-events: none;
+  left: 30px;
+  top: 10px;
+  transition: 0.2s;
+}
+
+.input-field input:hover~label,
+.input-field input:focus~label,
+.input-field input:valid~label {
+  top: -10px;
+  left: 35px;
+  font-size: small;
+  color: #4338ca;
+  background-color: #fff;
+  padding: 0 5px 0 5px;
+}
+
+/* ----prev next buttons in createProject---- */
+button.form:disabled {
+  display: none;
+}
+
+/* dynamic table header */
+header.TUEFO {
+  justify-content: space-around;
+}
+
+.tooltips {
+  position: relative;
+}
+
+.tooltips .tooltiptext {
+  visibility: hidden;
+  max-width: 250px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 15px;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  top: 0px;
+  margin-left: -60px;
+  line-height: 0px;
+}
+
+.tooltips .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+.tooltips:hover .tooltiptext {
+  visibility: visible;
+}
+
+.neomorphism {
+  border-radius: 23px;
+  background: #ffffff;
+  box-shadow: 5px 5px 17px #6e6e6e,
+              -5px -5px 17px #ffffff !important;
+}
