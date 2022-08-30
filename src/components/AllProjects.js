@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import DataTable from 'react-data-table-component'
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function AllProjects() {
     const [search, setSearch] = useState("");
     const [projects, setProjects] = useState([]);
     const [filteredProjects, setFilteredProjects] = useState([]);
+    // const [pending, setPending] = useState(true);
 
 
     //fetching data from endpoint
@@ -23,18 +24,18 @@ export default function AllProjects() {
     //loading all project list once only
     useEffect(() => {
         getProjects();
-    },[]);
+    }, []);
 
     //filtering projects based on search key
-    useEffect(()=>{
+    useEffect(() => {
         const filters = projects.filter(project => {
             return project.projectId?.toLowerCase().match(search.toLowerCase());
         })
-     
-        setFilteredProjects(filters);
-    },[projects,search])
 
-    
+        setFilteredProjects(filters);
+    }, [projects, search])
+
+
     const navigate = useNavigate();
 
     const columns = [
@@ -58,28 +59,35 @@ export default function AllProjects() {
             selector: (row) => row.requester
         },
         {
-            name : "Manager",
-            selector : (row) => row.manager 
+            name: "Manager",
+            selector: (row) => row.manager
         },
         {
-            name : "Request Date",
-            selector : (row) => row.requestDate 
+            name: "Request Date",
+            selector: (row) => row.requestDate
         },
         {
-            name : "Status",
-            selector : (row) => row.status  
-        },
-        {
-            name : "Details",
-            cell : (row) => <button type="button" className='btn btn-outline-primary' onClick={() => navigate(`/project/${row.projectId}`)}>View</button>
+            name: "Status",
+            selector: (row) => row.status
         }
     ]
+
+    const customStyles = {
+        rows: {
+            style: {
+                fontSize: '15px',
+                fontWeight: "bolder",
+                cursor: "pointer"
+            }
+        }
+    }
 
     return (
         <>
             <div className='d-flex flex-column align-items-center'>
                 <DataTable columns={columns} data={filteredProjects} pagination fixedHeader fixedHeaderScrollHeight='470px' selectableRows selectableRowsHighlight highlightOnHover subHeader
-                    subHeaderComponent={<><input type="search" placeholder="Search here..." className="w-25 form-control me-3" value={search} onChange={(e) => setSearch(e.target.value)} /><button className="btn btn-success text-light" type='button'>Bibliography</button> <button className="btn theme-bg text-light" type='button'>Bibliography All</button> </>}
+                    subHeaderComponent={<><input type="search" placeholder="Search here..." className="w-25 form-control me-3" value={search} onChange={(e) => setSearch(e.target.value)} /><button className="btn btn-success text-light" type='button'>Bibliography</button> <button className="btn theme-bg text-light" type='button'>Bibliography All</button> </>} 
+                    onRowClicked={(row) => navigate(`/project/${row.projectId}`)} striped customStyles={customStyles} responsive
                 />
 
             </div>
