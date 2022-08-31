@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import DataTable from 'react-data-table-component'
 import { useNavigate } from 'react-router-dom';
+import TableHeader from './TableHeader';
 
 export default function AllProjects() {
     const [search, setSearch] = useState("");
@@ -13,7 +14,7 @@ export default function AllProjects() {
     //fetching data from endpoint
     const getProjects = async () => {
         try {
-            const response = await axios.get("https://mocki.io/v1/cea1c346-43da-497e-a5fa-cc6695bb93fc");
+            const response = await axios.get("https://mocki.io/v1/c26c9b3a-fe41-4910-b8c6-a1aa8d1f4c2a");
             setProjects(response.data);
             setFilteredProjects(response.data);
         } catch (error) {
@@ -86,7 +87,7 @@ export default function AllProjects() {
         <>
             <div className='d-flex flex-column align-items-center'>
                 <DataTable columns={columns} data={filteredProjects} pagination fixedHeader fixedHeaderScrollHeight='470px' selectableRows selectableRowsHighlight highlightOnHover subHeader
-                    subHeaderComponent={<><input type="search" placeholder="Search here..." className="w-25 form-control me-3" value={search} onChange={(e) => setSearch(e.target.value)} /><button className="btn btn-success text-light" type='button'>Bibliography</button> <button className="btn theme-bg text-light" type='button'>Bibliography All</button> </>} 
+                    subHeaderComponent={<TableHeader setSearch={setSearch} />}
                     onRowClicked={(row) => navigate(`/project/${row.projectId}`)} striped customStyles={customStyles} responsive
                 />
 
