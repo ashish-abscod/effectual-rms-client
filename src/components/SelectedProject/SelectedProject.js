@@ -5,6 +5,7 @@ import CommentInbox from './Comments/CommentInbox';
 import CreateProject from '../Forms/CreateProject';
 import FileManger from './FileManger';
 import Feedback from './Feedback';
+import Evaluation from './Evaluation';
 
 export default function SelectedProject() {
 
@@ -44,7 +45,7 @@ export default function SelectedProject() {
             <FileManger/>
           </div>
           <div className="tab-pane" id="evaluation" role="tabpanel">
-            
+            <Evaluation/>
           </div>
           <div className="tab-pane" id="feedback" role="tabpanel">
             <Feedback/>
