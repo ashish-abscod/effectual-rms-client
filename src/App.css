@@ -35,7 +35,7 @@ body {
   position: relative;
 }
 
-.input-field input {
+.input-field input,.input-field select {
   display: inline-block;
   border: thin solid #fafafa;
   border-bottom: solid medium #999;
@@ -44,12 +44,15 @@ body {
   padding: 10px 10px 10px 10px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .input-field input:focus,
 .input-field input:hover,
-.input-field input:valid {
+.input-field input:valid,
+.input-field select:focus,
+.input-field select:valid,
+.input-field select:hover{
   border: thin solid #4338ca !important;
   border-bottom: solid medium #4338ca !important;
   background-color: #fff !important;
@@ -61,16 +64,23 @@ body {
   position: absolute;
   pointer-events: none;
   left: 30px;
-  top: 10px;
+  top: 30px;
   transition: 0.2s;
+}
+
+.input-field input[type="date"]~label{
+top: 8px;
+left: 35px;
 }
 
 .input-field input:hover~label,
 .input-field input:focus~label,
-.input-field input:valid~label {
-  top: -10px;
+.input-field select:valid~label,
+.input-field input:valid~label{
+  top: 8px;
   left: 35px;
   font-size: small;
+  font-weight: bold;
   color: #4338ca;
   background-color: #fff;
   padding: 0 5px 0 5px;
@@ -83,7 +93,7 @@ button.form:disabled {
 
 /* dynamic table header */
 header.TUEFO {
-  justify-content: space-around;
+  display: unset;
 }
 
 .tooltips {
