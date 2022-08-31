@@ -11,7 +11,7 @@ export default function UploadFiles({formData, setFormData}) {
             </div>
             <div className="col-md-12 mt-3">
                 <label className='w-100'>Useful information for search
-                    <textarea type="text" className="form-control" style={{ minHeight: "14rem" }} id="info" placeholder='Type Something here...' value={formData.UsefulInformationForSearch} onChange={(e) => setFormData({ ...formData, UsefulInformationForSearch: e.target.value })} />
+                    <textarea type="text" className="form-control" style={{ minHeight: "22rem" }} id="info" placeholder='Type Something here...' value={formData.UsefulInformationForSearch} onChange={(e) => setFormData({ ...formData, UsefulInformationForSearch: e.target.value })} />
                 </label>
             </div>
         </>
