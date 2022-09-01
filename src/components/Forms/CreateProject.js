@@ -52,7 +52,7 @@ export default function CreateProject() {
   return (
     <>
       <div className="container p-4 pt-1">
-        <div className='row'>
+        <div className='row pt-2'>
           <div className="col-12 col-md-8 progress p-0" style={{ marginTop: "7px",height:"2rem" }}>
             <div className="progress-bar theme-bg fw-bold fs-6" role="progressbar" style={{ width: page === 0 ? "25%" : page === 1 ? "50%" : page === 2 ? "75%" : "100%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Step {page + 1}/4</div>
           </div>

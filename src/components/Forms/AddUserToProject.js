@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import imgURL from '../../Assets/Effectual.jpg';
 export default function AddUserToProject() {
+
+  const [isAdded] = useState(false);
+
   return (
     <div className='col-md-10 shadow pt-2 rounded'>
 
-      <div className="d-flex justify-content-between mb-5">
-        <h3 className='fs-5 theme-color mb-0'>Add Users to Project</h3>
-          <input type="search" className="form-control w-50" id="inputPassword4" placeholder='Add User by searching...' />
+      <div className="d-flex justify-content-between align-items-center mb-3 p-2 bg-dark">
+        <h3 className='fs-5 theme-color text-light'>Add Users to Project</h3>
+        <input type="search" className="form-control w-50" id="inputPassword4" placeholder='Add User by searching...' />
       </div>
 
       <div className='w-100'>
@@ -25,7 +28,7 @@ export default function AddUserToProject() {
             </div>
 
             <div className='me-4'>
-              <button type="button" className='btn btn-outline-danger'>Remove</button>
+              <button type="button" className="btn btn-outline-danger">{isAdded ? "Remove" : "Add"}</button>
             </div>
           </div>
 
