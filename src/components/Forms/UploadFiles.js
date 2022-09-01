@@ -5,9 +5,9 @@ export default function UploadFiles({formData, setFormData}) {
         <>
             <div className="col-md-12">
                 <label>Upload File:
-                    <input type="file" multiple className="form-control" onChange={(e) => setFormData( {...formData, ChooseFile : e.target.files[0]} )}   />
+                    <input type="file" multiple className="form-control" onChange={(e) => setFormData( {...formData, ChooseFile : e.target.files} )}   />
                 </label>
-                <span className="ms-3">Selected File : {formData.ChooseFile?.name}</span>
+                <span className="ms-3">{formData.ChooseFile[0]?.name ? "File's Selected ! " : "File's not selected! "}</span>
             </div>
             <div className="col-md-12 mt-3">
                 <label className='w-100'>Useful information for search
