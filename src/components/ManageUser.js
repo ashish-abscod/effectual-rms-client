@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import AddNewUser from './AddNewUser'
 import SundarPichari from '../Assets/Sundar Pichai.jpg'
 export default function ManageUser() {

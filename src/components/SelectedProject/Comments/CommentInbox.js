@@ -20,13 +20,7 @@ export default function CommentInbox() {
                         <div className='comment'>
                             <div className='ms-md-3'>
                                 <div className='text'>
-                                    Ashish sharma
-                                    Thank You eli excepteur qui sit do ullamco nulla consequat sit laboris. 
-                                    Qui sunt excepteur in adipisicing ea tempor laborum. Laboris veniam sint 
-                                    Lorem in incididunt elit. Ea voluptate dolor eu reprehenderit in ad.
-                                    Commodo Lorem ipsum qui cupidpatat proident labore qui consequat. Ut consequat 
-                                    id duis esse nostrud commodo ea enim officia minim. Culpa consequat tempor nisi 
-                                    officia minim tempor ut.
+                                   Reprehenderit aute voluptate officia nisi deserunt irure labore id commodo eu id reprehenderit velit. Ea eu sit commodo sit amet duis in nisi. Qui magna quis deserunt eu deserunt proident cillum dolore. Elit sint nisi reprehenderit tempor duis exercitation duis adipisicing nulla sint eiusmod laborum.
                                 </div>
                                 <div className='files mt-3'>
                                     <span className='fw-bold'>Attached Files: </span>
@@ -53,16 +47,16 @@ export default function CommentInbox() {
                                     <span className='name text-primary fw-normal'>Ashish Sharma</span> - <span>replied 3 h ago</span>
                                     <span className='designation d-block text-secondary'>Developer Effectual</span>
                                 </div>
-                                <div className='replie-content ms-md-3' style={{maxWidth:"fit-content"}}>
+                                <div className='replie-content ms-md-3' style={{ maxWidth: "fit-content" }}>
                                     <div className='replie-txt'>
                                         Veniam nulla anim consequat culpa do Lorem id cupidatat incididunt esse esse nostrud.Sit cupidatat exercitation deserunt pariatur occaecat enim enim do proident et incididunt adipisicing. Laboris dolor fugiat consectetur dolor tempor veniam cillum reprehenderit ipsum. Dolore ea nulla incididunt proident occaecat adipisicing officia voluptate nulla. Irure nulla et mollit laboris. Esse anim proident velit eu culpa velit magna eiusmod do anim proident et. Do duis quis minim fugiat nulla ipsum et magna.
                                     </div>
                                     <div className='files mt-3'>
                                         <span className='fw-bold'>Attached Files: </span>
-                                        <a href={myDoc} className="me-3">My Document</a>
-                                        <a href={myDoc} className="me-3">My Document</a>
-                                        <a href={myDoc} className="me-3">My Document</a>
-                                        <a href={myDoc} className="me-3">My Document</a>
+                                        <a href={myPDF} className="me-3">My Document</a>
+                                        <a href={myPDF} className="me-3">My Document</a>
+                                        <a href={myPDF} className="me-3">My Document</a>
+                                        <a href={myPDF} className="me-3">My Document</a>
                                     </div>
                                 </div>
                             </div>
