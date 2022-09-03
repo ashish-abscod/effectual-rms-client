@@ -1,7 +1,9 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import ashish from '../../../Assets/Ashish-Sharma.jpg'
 import myPDF from '../../../Assets/React Componen LifeCycle.pdf'
 export default function CommentInbox() {
+    const navigate = useNavigate();
     return (
         <>
             <section className='container commentInbox py-3 h-100 overflow-auto'>
@@ -31,7 +33,7 @@ export default function CommentInbox() {
                                 </div>
                             </div>
                             <div className='files overflow-auto text-center d-flex justify-content-center align-items-center p-3 ps-0'>
-                                <button type="button" className='btn btn-outline-primary rounded-pill px-3 ms-2'>Reply Me</button>
+                                <button type="button" className='btn btn-outline-primary rounded-pill px-3 ms-2' onClick={()=> navigate('/comment')}>Reply Me</button>
                                 <div className='border-bottom flex-grow-1 border-3'></div>
                                 {/* <div className='border-bottom w-25 border-3 d-none d-md-block'></div> */}
                             </div>

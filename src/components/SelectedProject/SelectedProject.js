@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 import Header from '../Header'
 import { useParams } from 'react-router-dom'
 import CommentInbox from './Comments/CommentInbox';
@@ -8,15 +8,14 @@ import Feedback from './Feedback';
 import Evaluation from './Evaluation';
 
 export default function SelectedProject() {
-
+  const [projectSelected] = useState(true);
   let { id } = useParams();
 
   return (
     <>
-      <Header />
+      <Header projectSelected={projectSelected} />
 
       <div className='container'>
-
         <ul className="nav nav-tabs" id="myTab" role="tablist">
           <li className="nav-item" role="presentation">
             <button className="nav-link active" data-bs-toggle="tab" data-bs-target="#comment" type="button" role="tab" aria-controls="comment" aria-selected="true">Project-{id}</button>
@@ -39,16 +38,16 @@ export default function SelectedProject() {
             <CommentInbox />
           </div>
           <div className="tab-pane" id="projectDetails" role="tabpanel">
-            <CreateProject/>
+            <CreateProject />
           </div>
           <div className="tab-pane" id="fileManager" role="tabpanel">
-            <FileManger/>
+            <FileManger />
           </div>
           <div className="tab-pane" id="evaluation" role="tabpanel">
-            <Evaluation/>
+            <Evaluation />
           </div>
           <div className="tab-pane" id="feedback" role="tabpanel">
-            <Feedback/>
+            <Feedback />
           </div>
         </div>
       </div>
