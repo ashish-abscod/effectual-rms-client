@@ -10,7 +10,7 @@ export default function FileManger() {
                             Client Reports
                         </h5>
                         <div style={{height:"70vh"}} className="table-responsive">
-                        <table class="table table-bordered table-striped">
+                        <table className="table table-bordered table-striped">
                             <thead className='table-dark'>
                                 <tr>
                                     <th>File</th>
@@ -60,7 +60,7 @@ export default function FileManger() {
                             Effectual Reports
                         </h5>
                         <div style={{height:"70vh"}} className="table-responsive">
-                        <table class="table table-bordered table-striped">
+                        <table className="table table-bordered table-striped">
                             <thead className='table-dark'>
                                 <tr>
                                     <th>File</th>

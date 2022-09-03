@@ -20,7 +20,7 @@ export default function Evaluation() {
         </div>
         <div className="col">
           <div className="input-field">
-            <select class="form-select">
+            <select className="form-select">
               <option value="X">X-Cateogry</option>
               <option value="Y">Y-Cateogry</option>
               <option value="A">A-Cateogry</option>

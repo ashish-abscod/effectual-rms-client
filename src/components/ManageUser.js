@@ -19,13 +19,13 @@ export default function ManageUser() {
                     </div>
                     <div className="col-md-6">
                         <AddNewUser />
-                        <button type="button" class="btn btn-outline-secondary rounded-pill w-100" data-bs-toggle="modal" data-bs-target="#addUser">Add New User</button>
+                        <button type="button" className="btn btn-outline-secondary rounded-pill w-100" data-bs-toggle="modal" data-bs-target="#addUser">Add New User</button>
                     </div>
                 </div>
                 <div className='row pt-3'>
                     <div>
                         <div style={{ height: "67vh" }} className="table-responsive">
-                            <table class="table table-bordered table-striped">
+                            <table className="table table-bordered table-striped">
                                 <thead className='table-dark'>
                                     <tr>
                                         <th>#</th>
