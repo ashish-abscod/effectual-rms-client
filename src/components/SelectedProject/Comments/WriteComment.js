@@ -1,18 +1,19 @@
+import { useContext } from "react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { ProjectContext } from "../../contexts/ProjectContext";
 import Header from "../../Header";
 import RichTextEditor from "./RichTextEditor";
 
 export default function WriteComment() {
     const [content, setContent] = useState('');
     console.log(content);
-    let { id } = useParams();
+    let { projectId } = useContext(ProjectContext);
 
     return (
         <>
             <Header />
             <div className="container bg-white p-3">
-                <h5 className="text-center text-primary">Commenting on project - {id}</h5>
+                <h5 className="text-center text-primary">Commenting on project - {projectId}</h5>
                 <RichTextEditor setContent={setContent} />
 
                 <footer className="d-flex justify-content-between mt-3">

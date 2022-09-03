@@ -3,14 +3,16 @@ import axios from 'axios';
 import DataTable from 'react-data-table-component'
 import { useNavigate } from 'react-router-dom';
 import TableHeader from './TableHeader';
+import { useContext } from 'react';
+import { ProjectContext } from './contexts/ProjectContext';
 
 export default function AllProjects() {
     const [search, setSearch] = useState("");
     const [projects, setProjects] = useState([]);
     const [filteredProjects, setFilteredProjects] = useState([]);
-    // const[projectId, setProjectId] = useState();
-    // const [pending, setPending] = useState(true);
+    const [SelectedRows, setSelectedRows] = useState(false);
 
+    const {setProjectId} = useContext(ProjectContext);
 
     //fetching data from endpoint
     const getProjects = async () => {
@@ -70,7 +72,8 @@ export default function AllProjects() {
         },
         {
             name: "Status",
-            selector: (row) => row.status
+            selector: (row) => row.status === "In Progress" ? <span className="badge rounded-pill bg-warning text-dark" style={{fontSize:"14px"}}>Progress</span> : <span className="badge rounded-pill bg-success" style={{fontSize:"14px"}}>Completed</span>
+
         }
     ]
 
@@ -81,7 +84,12 @@ export default function AllProjects() {
                 fontWeight: "bolder",
                 cursor: "pointer"
             }
-        }
+        },
+        headCells: {
+            style: {
+                fontSize: '15px'
+            },
+        },
     }
 
     return (
@@ -89,7 +97,8 @@ export default function AllProjects() {
             <div className='d-flex flex-column align-items-center'>
                 <DataTable columns={columns} data={filteredProjects} pagination fixedHeader fixedHeaderScrollHeight='470px' selectableRows selectableRowsHighlight highlightOnHover subHeader
                     subHeaderComponent={<TableHeader setSearch={setSearch} />}
-                    onRowClicked={(row) => navigate(`/project/${row.projectId}`)} striped customStyles={customStyles} responsive
+                    onRowClicked={(row) => { navigate(`/project`);setProjectId(row.projectId) }} striped customStyles={customStyles} responsive 
+                    onSelectedRowsChange={(selectedRows) => {setSelectedRows(selectedRows)}}
                 />
 
             </div>
