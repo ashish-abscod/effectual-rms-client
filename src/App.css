@@ -138,3 +138,8 @@ header.TUEFO {
   box-shadow: 5px 5px 17px #6e6e6e,
               -5px -5px 17px #ffffff !important;
 }
+
+/* -----------Jodit-react editor----------- */
+div.jodit-wysiwyg{
+  min-height: 55vh!important;
+}

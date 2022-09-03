@@ -8,6 +8,7 @@ export default function AllProjects() {
     const [search, setSearch] = useState("");
     const [projects, setProjects] = useState([]);
     const [filteredProjects, setFilteredProjects] = useState([]);
+    // const[projectId, setProjectId] = useState();
     // const [pending, setPending] = useState(true);
 
 

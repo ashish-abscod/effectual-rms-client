@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Home from './components/Home';
+import WriteComment from './components/SelectedProject/Comments/WriteComment';
 import SelectedProject from './components/SelectedProject/SelectedProject';
-import WriteComment from './components/SelectedProject/WriteComment';
 
 function App() {
 
