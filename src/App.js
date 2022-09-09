@@ -1,10 +1,11 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './components/Home';
+import Home from './components/main/Home';
 import SelectedProject from './components/SelectedProject/SelectedProject';
 import WriteComment from './components/SelectedProject/Comments/WriteComment';
 import { ProjectContext } from './components/contexts/ProjectContext';
 import { useState } from 'react';
+import Landing from './components/landing/Landing';
 
 function App() {
   const [projectId, setProjectId] = useState(null);
@@ -12,9 +13,10 @@ function App() {
   return (
     <BrowserRouter>
 
-
       <Routes>
-        <Route path='/' element={
+        <Route path='/' element={<Landing />} />
+
+        <Route path='/main' element={
           <ProjectContext.Provider value={{ projectId, setProjectId }}>
             <Home setProjectId={setProjectId} />
           </ProjectContext.Provider>
