@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useState } from "react";
 import { ProjectContext } from "../../contexts/ProjectContext";
-import Header from "../../Header";
+import Header from "../../main/Header";
 import RichTextEditor from "./RichTextEditor";
 
 export default function WriteComment() {
@@ -12,7 +12,7 @@ export default function WriteComment() {
     return (
         <>
             <Header />
-            <div className="container bg-white p-3">
+            <div className="container bg-white" style={{paddingTop:"4rem"}}>
                 <h5 className="text-center text-primary">Commenting on project - {projectId}</h5>
                 <RichTextEditor setContent={setContent} />
 

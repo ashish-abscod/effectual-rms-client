@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Header from '../Header'
+import Header from '../main/Header'
 import CommentInbox from './Comments/CommentInbox';
 import CreateProject from '../Forms/CreateProject';
 import FileManger from './FileManger';
@@ -17,7 +17,7 @@ export default function SelectedProject() {
     <>
       <Header projectSelected={projectSelected} />
 
-      <div className='container'>
+      <div className='container' style={{paddingTop:"4rem"}} >
         <ul className="nav nav-tabs" id="myTab" role="tablist">
           <li className="nav-item" role="presentation">
             <button className="nav-link active" data-bs-toggle="tab" data-bs-target="#comment" type="button" role="tab" aria-controls="comment" aria-selected="true">Project-{projectId}</button>
