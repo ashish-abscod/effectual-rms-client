@@ -1,11 +1,11 @@
-body {
-  padding-top: 4rem;
+/* body {
   background: lightgrey;
+} */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Nunito", sans-serif;
 }
-
 .theme-bg {
   background: #4338ca;
-  ;
   /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #3012b3, #4338ca);
   /* Chrome 10-25, Safari 5.1-6 */
