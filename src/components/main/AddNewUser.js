@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import SundarPichari from '../../Assets/Sundar Pichai.jpg'
 export default function AddNewUser() {
 
     const [addUser, setAddUser] = useState({
