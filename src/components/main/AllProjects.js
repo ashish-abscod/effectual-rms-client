@@ -12,12 +12,13 @@ export default function AllProjects() {
     const [filteredProjects, setFilteredProjects] = useState([]);
     const [SelectedRows, setSelectedRows] = useState(false);
 
-    const {setProjectId} = useContext(ProjectContext);
+    const {setRefId} = useContext(ProjectContext);
 
     //fetching data from endpoint
     const getProjects = async () => {
         try {
-            const response = await axios.get("https://mocki.io/v1/c26c9b3a-fe41-4910-b8c6-a1aa8d1f4c2a");
+            const response = await axios.get("http://localhost:8080/projects");
+            console.log(response.data);
             setProjects(response.data);
             setFilteredProjects(response.data);
         } catch (error) {
@@ -33,7 +34,7 @@ export default function AllProjects() {
     //filtering projects based on search key
     useEffect(() => {
         const filters = projects.filter(project => {
-            return project.projectId?.toLowerCase().match(search.toLowerCase());
+            return project.refid?.toLowerCase().match(search.toLowerCase());
         })
 
         setFilteredProjects(filters);
@@ -45,7 +46,7 @@ export default function AllProjects() {
     const columns = [
         {
             name: "Project Id",
-            selector: (row) => row.projectId,
+            selector: (row) => row.refid,
             sortable: true
         },
         {
@@ -55,24 +56,28 @@ export default function AllProjects() {
         },
         {
             name: "Type",
-            selector: (row) => row.type,
+            selector: (row) => row.projectname,
             sortable: true
         },
         {
             name: "Requester",
-            selector: (row) => row.requester
+            selector: (row) => row.requestername,
+            sortable: true
         },
         {
             name: "Manager",
-            selector: (row) => row.manager
+            selector: (row) => row.projectmanager,
+            sortable: true
         },
         {
             name: "Request Date",
-            selector: (row) => row.requestDate
+            selector: (row) => row.requesteddate,
+            sortable: true
         },
         {
             name: "Status",
-            selector: (row) => row.status === "In Progress" ? <span className="badge rounded-pill bg-warning text-dark" style={{fontSize:"14px"}}>Progress</span> : <span className="badge rounded-pill bg-success" style={{fontSize:"14px"}}>Completed</span>
+            selector: (row) => row.status === 0 ? <span>Interim Report</span> : row.status === 1 ?  <span className="badge rounded-pill bg-warning text-dark" style={{fontSize:"14px"}}>Progress</span> : row.status === 2 ? <span className="badge rounded-pill bg-success" style={{fontSize:"14px"}}>Completed</span> : <span>Terminated</span>,
+            sortable: true
 
         }
     ]
@@ -97,7 +102,7 @@ export default function AllProjects() {
             <div className='d-flex flex-column align-items-center'>
                 <DataTable columns={columns} data={filteredProjects} pagination fixedHeader fixedHeaderScrollHeight='470px' selectableRows selectableRowsHighlight highlightOnHover subHeader
                     subHeaderComponent={<TableHeader setSearch={setSearch} />}
-                    onRowClicked={(row) => { navigate(`/project`);setProjectId(row.projectId) }} striped customStyles={customStyles} responsive 
+                    onRowClicked={(row) => { navigate(`/project`);setRefId(row.refid) }} striped customStyles={customStyles} responsive 
                     onSelectedRowsChange={(selectedRows) => {setSelectedRows(selectedRows)}}
                 />
 

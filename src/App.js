@@ -8,7 +8,7 @@ import { useState } from 'react';
 import Landing from './components/landing/Landing';
 
 function App() {
-  const [projectId, setProjectId] = useState(null);
+  const [refId, setRefId] = useState(null);
 
   return (
     <BrowserRouter>
@@ -17,20 +17,20 @@ function App() {
         <Route path='/' element={<Landing />} />
 
         <Route path='/main' element={
-          <ProjectContext.Provider value={{ projectId, setProjectId }}>
-            <Home setProjectId={setProjectId} />
+          <ProjectContext.Provider value={{ refId, setRefId }}>
+            <Home setRefId={setRefId} />
           </ProjectContext.Provider>
         } />
 
         <Route path='/project' element={
-          <ProjectContext.Provider value={{ projectId, setProjectId }}>
-            <SelectedProject projectId={projectId} />
+          <ProjectContext.Provider value={{ refId, setRefId }}>
+            <SelectedProject refId={refId} />
           </ProjectContext.Provider>
         } />
 
         <Route path='/comment' element={
-          <ProjectContext.Provider value={{ projectId, setProjectId }}>
-            <WriteComment projectId={projectId} />
+          <ProjectContext.Provider value={{ refId, setRefId }}>
+            <WriteComment refId={refId} />
           </ProjectContext.Provider>
         } />
 
