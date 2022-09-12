@@ -18,7 +18,6 @@ export default function AllProjects() {
     const getProjects = async () => {
         try {
             const response = await axios.get("http://localhost:8080/projects");
-            console.log(response.data);
             setProjects(response.data);
             setFilteredProjects(response.data);
         } catch (error) {
@@ -34,7 +33,7 @@ export default function AllProjects() {
     //filtering projects based on search key
     useEffect(() => {
         const filters = projects.filter(project => {
-            return project.refid?.toLowerCase().match(search.toLowerCase());
+            return project.refId?.toLowerCase().match(search.toLowerCase());
         })
 
         setFilteredProjects(filters);
@@ -46,7 +45,7 @@ export default function AllProjects() {
     const columns = [
         {
             name: "Project Id",
-            selector: (row) => row.refid,
+            selector: (row) => row.refId,
             sortable: true
         },
         {
@@ -56,22 +55,22 @@ export default function AllProjects() {
         },
         {
             name: "Type",
-            selector: (row) => row.projectname,
+            selector: (row) => row.projectName,
             sortable: true
         },
         {
             name: "Requester",
-            selector: (row) => row.requestername,
+            selector: (row) => row.requesterName,
             sortable: true
         },
         {
             name: "Manager",
-            selector: (row) => row.projectmanager,
+            selector: (row) => row.projectManager,
             sortable: true
         },
         {
             name: "Request Date",
-            selector: (row) => row.requesteddate,
+            selector: (row) => row.requestedDate,
             sortable: true
         },
         {
@@ -102,7 +101,7 @@ export default function AllProjects() {
             <div className='d-flex flex-column align-items-center'>
                 <DataTable columns={columns} data={filteredProjects} pagination fixedHeader fixedHeaderScrollHeight='470px' selectableRows selectableRowsHighlight highlightOnHover subHeader
                     subHeaderComponent={<TableHeader setSearch={setSearch} />}
-                    onRowClicked={(row) => { navigate(`/project`);setRefId(row.refid) }} striped customStyles={customStyles} responsive 
+                    onRowClicked={(row) => { navigate(`/project`);setRefId(row.refId) }} striped customStyles={customStyles} responsive 
                     onSelectedRowsChange={(selectedRows) => {setSelectedRows(selectedRows)}}
                 />
 
