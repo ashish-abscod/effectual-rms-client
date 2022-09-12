@@ -7,7 +7,8 @@ export default function AddNewUser() {
         email: "",
         password: "",
         confirmPassword: "",
-        role: ""
+        role: "",
+        profile : null
     })
 
     return (
@@ -50,9 +51,9 @@ export default function AddNewUser() {
                                         </div>
                                     </div>
                                     <div className='col-md-4 mt-4'>
-                                        <input type="file" className='form-control'></input>
+                                        <input type="file" className='form-control' onChange={(e) => setAddUser({ ...addUser, profile: e.target.files[0] })} />
                                         <div className='mt-3'>
-                                            <img src={SundarPichari} alt="" className='mw-100'/>
+                                            {addUser.profile && <img src={URL.createObjectURL(addUser.profile)} alt="" className='mw-100'/> }
                                         </div>
                                     </div>
                                 </div>
