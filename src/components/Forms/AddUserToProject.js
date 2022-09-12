@@ -9,7 +9,7 @@ export default function AddUserToProject() {
 
       <div className="d-flex justify-content-between align-items-center mb-3 p-2 bg-dark">
         <h3 className='fs-5 theme-color text-light'>Add Users to Project</h3>
-        <input type="search" className="form-control w-50" id="inputPassword4" placeholder='Add User by searching...' />
+        <input type="search" className="form-control w-50" placeholder='Add User by searching...' />
       </div>
 
       <div className='w-100'>
