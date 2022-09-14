@@ -10,8 +10,7 @@ export default function AllProjects() {
     const [search, setSearch] = useState("");
     const [projects, setProjects] = useState([]);
     const [filteredProjects, setFilteredProjects] = useState([]);
-    const [SelectedRows, setSelectedRows] = useState(false);
-
+    const [selectedProjects, setSelectedProjects] = useState([]);
     const {setRefId} = useContext(ProjectContext);
 
     //fetching data from endpoint
@@ -75,7 +74,7 @@ export default function AllProjects() {
         },
         {
             name: "Status",
-            selector: (row) => row.status === 0 ? <span>Interim Report</span> : row.status === 1 ?  <span className="badge rounded-pill bg-warning text-dark" style={{fontSize:"14px"}}>Progress</span> : row.status === 2 ? <span className="badge rounded-pill bg-success" style={{fontSize:"14px"}}>Completed</span> : <span>Terminated</span>,
+            selector: (row) => row.status === "0" ? <span>Interim Report</span> : row.status === "1" ?  <span className="badge rounded-pill bg-warning text-dark" style={{fontSize:"14px"}}>Progress</span> : row.status === "2" ? <span className="badge rounded-pill bg-success" style={{fontSize:"14px"}}>Completed</span> : <span>Terminated</span>,
             sortable: true
 
         }
@@ -100,9 +99,9 @@ export default function AllProjects() {
         <>
             <div className='d-flex flex-column align-items-center'>
                 <DataTable columns={columns} data={filteredProjects} pagination fixedHeader fixedHeaderScrollHeight='470px' selectableRows selectableRowsHighlight highlightOnHover subHeader
-                    subHeaderComponent={<TableHeader setSearch={setSearch} />}
+                    subHeaderComponent={<TableHeader props={{setSearch, projects, selectedProjects}} />}
                     onRowClicked={(row) => { navigate(`/project`);setRefId(row.refId) }} striped customStyles={customStyles} responsive 
-                    onSelectedRowsChange={(selectedRows) => {setSelectedRows(selectedRows)}}
+                    onSelectedRowsChange={(selectedRows) => {setSelectedProjects(selectedRows?.selectedRows)}}
                 />
 
             </div>
