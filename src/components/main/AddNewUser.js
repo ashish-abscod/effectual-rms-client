@@ -6,8 +6,8 @@ export default function AddNewUser() {
         email: "",
         password: "",
         confirmPassword: "",
-        role: "",
-        profile : null
+        role: "Patent Expert",
+        profile: null
     })
 
     return (
@@ -24,35 +24,39 @@ export default function AddNewUser() {
                                 <div className="row">
                                     <div className='col-md-8'>
                                         <div className="input-field mt-0 ">
-                                            <input type="text" className="form-control"  required value={addUser.name} onChange={(e) => setAddUser({ ...addUser, name: e.target.value })} />
+                                            <input type="text" className="form-control" required value={addUser.name} onChange={(e) => setAddUser({ ...addUser, name: e.target.value })} />
                                             <label>Name:</label>
                                             <span className='d-none'>Error : Field Required</span>
                                         </div>
                                         <div className="input-field">
-                                            <input type="email" className="form-control"  required value={addUser.email} onChange={(e) => setAddUser({ ...addUser, email: e.target.value })} />
+                                            <input type="email" className="form-control" required value={addUser.email} onChange={(e) => setAddUser({ ...addUser, email: e.target.value })} />
                                             <label>Email:</label>
                                             <span className='d-none'>Error : Field Required</span>
                                         </div>
                                         <div className="input-field">
-                                            <input type="password" className="form-control"  required value={addUser.password} onChange={(e) => setAddUser({ ...addUser, password: e.target.value })} />
+                                            <input type="password" className="form-control" required value={addUser.password} onChange={(e) => setAddUser({ ...addUser, password: e.target.value })} />
                                             <label>Password:</label>
                                             <span className='d-none'>Error : Field Required</span>
                                         </div>
                                         <div className="input-field">
-                                            <input type="password" className="form-control"  required value={addUser.confirmPassword} onChange={(e) => setAddUser({ ...addUser, confirmPassword: e.target.value })} />
+                                            <input type="password" className="form-control" required value={addUser.confirmPassword} onChange={(e) => setAddUser({ ...addUser, confirmPassword: e.target.value })} />
                                             <label>Confirm Password:</label>
                                             <span className='d-none'>Error : Field Required</span>
                                         </div>
                                         <div className="input-field">
-                                            <input type="text" className="form-control"  required value={addUser.role} onChange={(e) => setAddUser({ ...addUser, role: e.target.value })} />
-                                            <label>Role:</label>
+                                            <select className="form-select" required value={addUser.role} onChange={(e) => setAddUser({ ...addUser, role: e.target.value })}>
+                                                <option value="Patent Expert">Patent Expert</option>
+                                                <option value="Technical Expert">Technical Expert</option>
+                                                <option value="Client Admin">Client Admin</option>
+                                            </select>
+                                            <label>X/Y/A:</label>
                                             <span className='d-none'>Error : Field Required</span>
                                         </div>
                                     </div>
                                     <div className='col-md-4 mt-4'>
                                         <input type="file" className='form-control' onChange={(e) => setAddUser({ ...addUser, profile: e.target.files[0] })} />
                                         <div className='mt-3'>
-                                            {addUser.profile && <img src={URL.createObjectURL(addUser.profile)} alt="" className='mw-100'/> }
+                                            {addUser.profile && <img src={URL.createObjectURL(addUser.profile)} alt="" className='mw-100' />}
                                         </div>
                                     </div>
                                 </div>
