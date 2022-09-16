@@ -42,7 +42,7 @@ export default function Contact() {
                                         <input type="text" name="name" className="form-control p-3 text-secondary fw-bold" id="name" placeholder="Your Name" required="" />
                                     </div>
                                     <div className="col-md-6 form-group mt-3 mt-md-0">
-                                        <input type="email" className="form-control p-3 text-secondary fw-bold" name="email" id="email" placeholder="Your Email" required="" />
+                                        <input type="email" className="form-control p-3 text-secondary fw-bold" name="email" id="yourEmail" placeholder="Your Email" required="" />
                                     </div>
                                 </div>
                                 <div className="form-group mt-3">
