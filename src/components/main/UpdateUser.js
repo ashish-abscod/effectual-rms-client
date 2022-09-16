@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function AddNewUser() {
+export default function UpdateUser() {
   const [addUser, setAddUser] = useState({
     name: "",
     email: "",
@@ -10,36 +10,6 @@ export default function AddNewUser() {
     role: "",
     picture: "",
   });
-  const [file, setFile] = useState();
-
-  const uploadSingleFile = (e) => {
-    if (e.target.files[0]) {
-      // console.log("e.target.files[0]: ", e.target.files[0]);
-      const reader = new FileReader();
-      setFile(URL.createObjectURL(e.target.files[0]));
-      reader.readAsDataURL(e.target.files[0]);
-      reader.onloadend = () => {
-        // console.log("reader.result: ", reader.result);
-        setAddUser({ ...addUser, ["picture"]: reader.result });
-        setFile(reader.result);
-      };
-    }
-  };
-
-  useEffect(() => {
-    // console.log("file: ", file);
-  }, [file]);
-
-  const submitData = async () => {
-    try {
-      const response = await axios.post("http://localhost:8080/users", addUser);
-
-      console.log("addresponse: ", response);
-    } catch (error) {
-      console.log("error: ", error.response);
-      alert(error.response.data.error);
-    }
-  };
 
   return (
     <>
@@ -158,14 +128,8 @@ export default function AddNewUser() {
                         type="file"
                         // disabled={file || loader}
                         className="form-control"
-                        onChange={uploadSingleFile}
                       />
-                      <img
-                        src={file && file}
-                        alt="dummy"
-                        height="200px"
-                        width="200px"
-                      />
+                      <img alt="dummy" height="200px" width="200px" />
                     </div>
                   </div>
                 </div>
@@ -200,7 +164,6 @@ export default function AddNewUser() {
                 <button
                   type="button"
                   className="btn theme-bg text-white rounded-pill"
-                  onClick={submitData}
                 >
                   Add User
                 </button>

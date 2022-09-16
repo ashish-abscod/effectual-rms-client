@@ -9,33 +9,58 @@ export default function ManageUser() {
   }, []);
 
   const getUserData = async () => {
-    // patientData.patientID = patientId;
-    let info = await fetch("http://localhost:8080/users/")
+    let info = await fetch("http://localhost:8080/users")
       .then((res) => res.json())
       .then((data) => setUserData(data));
     info = await info.json();
     setUserData(info);
+  };
 
-    // console.log(info, "info");
-    // console.log(patientData, "patientent data");
+  const searchHandle = async (event) => {
+    let key = event.target.value;
+    if (key) {
+      let result = await fetch(`http://localhost:8080/users/search/${key}`);
+      result = await result.json();
+      if (result) {
+        setUserData(result);
+      }
+    } else {
+      getUserData();
+    }
   };
   return (
     <>
       <div className="container">
         <div className="row pt-3">
-          <div className="col-md-6">
-            <h3 className="text-center theme-color">Users List</h3>
-          </div>
-          <div className="col-md-6">
-            <AddNewUser />
-            <button
-              type="button"
-              className="btn btn-outline-secondary rounded-pill w-100"
-              data-bs-toggle="modal"
-              data-bs-target="#addUser"
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className="col-md-3">
+              <h3 className="text-center theme-color">Users List</h3>
+            </div>
+            <div
+              className="flex items-center   "
+              style={{ width: "31%", marginRight: "-40%" }}
             >
-              Add New User
-            </button>
+              <input
+                id="search"
+                name="search"
+                required
+                className=" bg-transparent text-black-800 dark:text-black-100 focus:outline-none  font-normal py-1 flex items-center text-sm focus:border-indigo-700 "
+                placeholder="Search"
+                style={{ width: "72%" }}
+                onChange={searchHandle}
+              />
+            </div>
+            <div className="">
+              <AddNewUser />
+              <button
+                type="button"
+                className="btn btn-outline-secondary rounded-pill w-40"
+                data-bs-toggle="modal"
+                data-bs-target="#addUser"
+              >
+                Add New User
+              </button>
+            </div>
           </div>
         </div>
         <div className="row pt-3">
@@ -52,7 +77,7 @@ export default function ManageUser() {
                     <th>Action</th>
                   </tr>
                 </thead>
-                {userData?.map?.((item) => {
+                {userData.map((item) => {
                   return (
                     <>
                       <tbody>
@@ -64,15 +89,14 @@ export default function ManageUser() {
                               style={{ width: "50px", height: "50px" }}
                             >
                               <img
-                                src={SundarPichari}
                                 alt=""
                                 className="w-100 h-100 overflow-hidden rounded "
-                              />
+                              ></img>
                             </div>
                           </td>
                           <td>{item.name}</td>
-                          <td>Ot</td>
-                          <td>Otto</td>
+                          <td>{item.email}</td>
+                          <td>{item.role}</td>
                           <td className="text-center">
                             <button
                               type="button"
