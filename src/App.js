@@ -6,7 +6,7 @@ import WriteComment from './components/SelectedProject/Comments/WriteComment';
 import { ProjectContext } from './components/contexts/ProjectContext';
 import { useState, useEffect } from 'react';
 import Landing from './components/landing/Landing';
-import { UserContext } from './components/contexts/userContext'
+import { UserContext } from './components/contexts/UserContext'
 
 function App() {
   const [projectId, setProjectId] = useState(null);
