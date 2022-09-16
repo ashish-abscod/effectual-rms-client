@@ -11,7 +11,7 @@ export default function AllProjects() {
     const [projects, setProjects] = useState([]);
     const [filteredProjects, setFilteredProjects] = useState([]);
     const [selectedProjects, setSelectedProjects] = useState([]);
-    const {setRefId} = useContext(ProjectContext);
+    const {setProjectId} = useContext(ProjectContext);
 
     //fetching data from endpoint
     const getProjects = async () => {
@@ -32,7 +32,7 @@ export default function AllProjects() {
     //filtering projects based on search key
     useEffect(() => {
         const filters = projects.filter(project => {
-            return project.refId?.toLowerCase().match(search.toLowerCase());
+            return project.projectId?.toLowerCase().match(search.toLowerCase());
         })
 
         setFilteredProjects(filters);
@@ -44,7 +44,7 @@ export default function AllProjects() {
     const columns = [
         {
             name: "Project Id",
-            selector: (row) => row.refId,
+            selector: (row) => row.projectId,
             sortable: true
         },
         {
@@ -100,7 +100,7 @@ export default function AllProjects() {
             <div className='d-flex flex-column align-items-center'>
                 <DataTable columns={columns} data={filteredProjects} pagination fixedHeader fixedHeaderScrollHeight='470px' selectableRows selectableRowsHighlight highlightOnHover subHeader
                     subHeaderComponent={<TableHeader props={{setSearch, projects, selectedProjects}} />}
-                    onRowClicked={(row) => { navigate(`/project`);setRefId(row.refId) }} striped customStyles={customStyles} responsive 
+                    onRowClicked={(row) => { navigate(`/project`);setProjectId(row.projectId) }} striped customStyles={customStyles} responsive 
                     onSelectedRowsChange={(selectedRows) => {setSelectedProjects(selectedRows?.selectedRows)}}
                 />
 

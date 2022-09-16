@@ -9,7 +9,7 @@ import Landing from './components/landing/Landing';
 import { UserContext } from './components/contexts/userContext'
 
 function App() {
-  const [refId, setRefId] = useState(null);
+  const [projectId, setProjectId] = useState(null);
 
   const [user, setUser] = useState({ userData: "", auth: false, token: null });
 
@@ -43,20 +43,20 @@ function App() {
           <Route path='/' element={<Landing />} />
 
           <Route path='/main' element={
-            <ProjectContext.Provider value={{ refId, setRefId }}>
-              <Home setRefId={setRefId} />
+            <ProjectContext.Provider value={{ projectId, setProjectId }}>
+              <Home setProjectId={setProjectId} />
             </ProjectContext.Provider>
           } />
 
           <Route path='/project' element={
-            <ProjectContext.Provider value={{ refId, setRefId }}>
-              <SelectedProject refId={refId} />
+            <ProjectContext.Provider value={{ projectId, setProjectId }}>
+              <SelectedProject projectId={projectId} />
             </ProjectContext.Provider>
           } />
 
           <Route path='/comment' element={
-            <ProjectContext.Provider value={{ refId, setRefId }}>
-              <WriteComment refId={refId} />
+            <ProjectContext.Provider value={{ projectId, setProjectId }}>
+              <WriteComment projectId={projectId} />
             </ProjectContext.Provider>
           } />
 
