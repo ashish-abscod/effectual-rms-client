@@ -1,6 +1,13 @@
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
 import profile from '../../Assets/Effectual.jpg';
+import { UserContext } from '../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
+
 export default function Header({projectSelected}) {
+  const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
+  console.log("userData: ", user)
 
   return (
     <>
@@ -38,7 +45,16 @@ export default function Header({projectSelected}) {
               <ul className="dropdown-menu" aria-labelledby="dropdownMenu1" style={{top:"30px",right:"15%"}}>
                 <li><button className="dropdown-item" type="button">Profile</button></li>
                 <li><button className="dropdown-item" type="button">Change Password</button></li>
-                <li><button className="dropdown-item" type="button">Sign Out</button></li>
+                <li><button className="dropdown-item" type="button" onClick={() => {
+                  setUser({
+                    ...user,
+                    ["auth"]: false,
+                    ["userData"]: "",
+                    ["token"]: null,
+                  });
+                  localStorage.clear();
+                  navigate("/");
+                }} >Sign Out</button></li>
               </ul>
             </div>
           </div>
