@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { UserContext } from "../contexts/UserContext";
 
 
 export default function AddNewUser() {
@@ -31,14 +32,17 @@ export default function AddNewUser() {
         // console.log("file: ", file);
     }, [file]);
 
+    const {user} = useContext(UserContext);
     const submitData = async () => {
         try {
-            const response = await axios.post("http://localhost:8080/users", addUser);
-
-            console.log("addresponse: ", response);
+            const token = user.token;
+            await axios.post("http://localhost:8080/users", addUser, {
+                headers: {
+                  'Authorization': `Bearer ${token}` 
+                }
+              });
         } catch (error) {
             console.log("error: ", error.response);
-            alert(error.response.data.error);
         }
     };
 
