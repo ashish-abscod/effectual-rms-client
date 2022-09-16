@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { UserContext } from "../contexts/UserContext";
 
 export default function UpdateUser() {
   const [addUser, setAddUser] = useState({
@@ -10,12 +11,43 @@ export default function UpdateUser() {
     role: "",
     picture: "",
   });
+  const [file, setFile] = useState();
+
+  const uploadSingleFile = (e) => {
+    if (e.target.files[0]) {
+      // console.log("e.target.files[0]: ", e.target.files[0]);
+      const reader = new FileReader();
+      setFile(URL.createObjectURL(e.target.files[0]));
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onloadend = () => {
+        // console.log("reader.result: ", reader.result);
+        setAddUser({ ...addUser, ["picture"]: reader.result });
+        setFile(reader.result);
+      };
+    }
+  };
+
+  useEffect(() => {
+    // console.log("file: ", file);
+  }, [file]);
+
+  const submitData = async () => {
+    try {
+      const response = await axios.post("http://localhost:8080/users", addUser);
+
+      console.log("addresponse: ", response);
+    } catch (error) {
+      console.log("error: ", error.response);
+      alert(error.response.data.error);
+    }
+  };
+  const { user } = useContext(UserContext);
 
   return (
     <>
       <div
         className="modal fade"
-        id="addUser"
+        id="changeProfile"
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         tabIndex="-1"
@@ -26,9 +58,9 @@ export default function UpdateUser() {
             <div className="modal-header">
               <h5
                 className="modal-title text-center theme-color"
-                id="addUserLabel"
+                id="changeProfile"
               >
-                Add New User
+                Profile
               </h5>
               <button
                 type="button"
@@ -128,8 +160,14 @@ export default function UpdateUser() {
                         type="file"
                         // disabled={file || loader}
                         className="form-control"
+                        onChange={uploadSingleFile}
                       />
-                      <img alt="dummy" height="200px" width="200px" />
+                      <img
+                        src={file && file}
+                        alt="dummy"
+                        height="200px"
+                        width="200px"
+                      />
                     </div>
                   </div>
                 </div>
@@ -164,6 +202,7 @@ export default function UpdateUser() {
                 <button
                   type="button"
                   className="btn theme-bg text-white rounded-pill"
+                  onClick={submitData}
                 >
                   Add User
                 </button>

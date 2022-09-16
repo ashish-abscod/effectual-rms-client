@@ -1,7 +1,15 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
 import profile from "../../Assets/Effectual.jpg";
+import { UserContext } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 import UpdateUser from "./UpdateUser";
+
 export default function Header({ projectSelected }) {
+  const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
+  console.log("userData: ", user);
+
   return (
     <>
       <nav className="navbar navbar-expand-lg fixed-top text-white theme-bg">
@@ -90,7 +98,13 @@ export default function Header({ projectSelected }) {
               >
                 <li>
                   <UpdateUser />
-                  <button className="dropdown-item" type="button">
+                  <button
+                    className="dropdown-item btn"
+                    type="button"
+                    // className="btn btn-outline-secondary rounded-pill w-40"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addUser"
+                  >
                     Profile
                   </button>
                 </li>
@@ -100,7 +114,20 @@ export default function Header({ projectSelected }) {
                   </button>
                 </li>
                 <li>
-                  <button className="dropdown-item" type="button">
+                  <button
+                    className="dropdown-item"
+                    type="button"
+                    onClick={() => {
+                      setUser({
+                        ...user,
+                        ["auth"]: false,
+                        ["userData"]: "",
+                        ["token"]: null,
+                      });
+                      localStorage.clear();
+                      navigate("/");
+                    }}
+                  >
                     Sign Out
                   </button>
                 </li>
