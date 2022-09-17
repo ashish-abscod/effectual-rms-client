@@ -53,13 +53,6 @@ export default function Header({ projectSelected }) {
                   <i className="bi bi-activity me-1"></i>Activites
                 </a>
               </li>
-              {projectSelected ? (
-                <li className="nav-item">
-                  <Link to={"/comment"} className="nav-link me-2">
-                    <i className="bi bi-chat-dots me-1" />
-                    Comment
-                  </Link>
-                </li>) : ("")}
               <li className="nav-item d-lg-none">
                 <a className="nav-link" href="/#">
                   <i className="bi bi-key me-1"></i>Password
