@@ -29,12 +29,12 @@ export default function AllProjects() {
         getProjects();
     }, []);
 
-    //filtering projects based on search key
+    //multiple fields search based on search key
     useEffect(() => {
-        const filters = projects.filter(project => {
-            return project.projectId?.toLowerCase().match(search.toLowerCase());
-        })
-
+        const filters = projects.filter(project => JSON.stringify(project)
+        .toLowerCase()
+        .indexOf(search.toLowerCase()) !== -1)
+    
         setFilteredProjects(filters);
     }, [projects, search])
 
