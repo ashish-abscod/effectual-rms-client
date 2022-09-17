@@ -4,13 +4,12 @@ import Home from './components/main/Home';
 import SelectedProject from './components/SelectedProject/SelectedProject';
 import WriteComment from './components/SelectedProject/Comments/WriteComment';
 import { ProjectContext } from './components/contexts/ProjectContext';
-import { useState, useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import Landing from './components/landing/Landing';
 import { UserContext } from './components/contexts/UserContext'
 
 function App() {
-  const [projectId, setProjectId] = useState(null);
-
+  const [refId, setRefId] = useState(null);
   const [user, setUser] = useState({ userData: "", auth: false, token: null });
 
   useEffect(() => {
@@ -37,40 +36,36 @@ function App() {
 
   return (
     <BrowserRouter>
-      <UserContext.Provider value={{ user, setUser }}>
-        <Routes>
-        {!user?.auth && (
-          <Route path='/' element={<Landing />} />
-        )}
+    <UserContext.Provider value={{ user, setUser }}>
+      <Routes>
+      {/* {!user?.auth && ( */}
+        <Route path='/' element={<Landing />} />
+        {/* )} */}
 
+      {user?.auth && user?.userData && (
+        <>
+        <Route path='/main' element={
+          <ProjectContext.Provider value={{ refId, setRefId }}>
+            <Home setRefId={setRefId} />
+          </ProjectContext.Provider>
+        } />
 
-          {user?.auth && user?.userData && (
-            <>
-              <Route path='/' element={<Landing />} />
+        <Route path='/project' element={
+          <ProjectContext.Provider value={{ refId, setRefId }}>
+            <SelectedProject refId={refId} />
+          </ProjectContext.Provider>
+        } />
 
-              <Route path='/main' element={
-                <ProjectContext.Provider value={{ projectId, setProjectId }}>
-                  <Home setProjectId={setProjectId} />
-                </ProjectContext.Provider>
-              } />
+        <Route path='/comment' element={
+          <ProjectContext.Provider value={{ refId, setRefId }}>
+            <WriteComment refId={refId} />
+          </ProjectContext.Provider>
+        } />
 
-              <Route path='/project' element={
-                <ProjectContext.Provider value={{ projectId, setProjectId }}>
-                  <SelectedProject projectId={projectId} />
-                </ProjectContext.Provider>
-              } />
-
-              <Route path='/comment' element={
-                <ProjectContext.Provider value={{ projectId, setProjectId }}>
-                  <WriteComment projectId={projectId} />
-                </ProjectContext.Provider>
-              } />
-            </>
-          )}
-          <Route path='*' element={<><h1 className='bg-danger text-white text-center mt-0'>404 : Page Not Found</h1></>} />
-
-
-        </Routes>
+        <Route path='*' element={<><h1 className='bg-danger text-white text-center mt-0'>404 : Page Not Found</h1></>} />
+        </>
+         )}
+      </Routes>
       </UserContext.Provider>
     </BrowserRouter>
   );
