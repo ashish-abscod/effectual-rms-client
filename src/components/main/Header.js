@@ -99,11 +99,11 @@ export default function Header({ projectSelected }) {
                 <li>
                   <UpdateUser />
                   <button
-                    className="dropdown-item btn"
+                    className="dropdown-item btn   btn btn-outline-secondary rounded-pill w-40"
                     type="button"
                     // className="btn btn-outline-secondary rounded-pill w-40"
                     data-bs-toggle="modal"
-                    data-bs-target="#addUser"
+                    data-bs-target="#changeProfile"
                   >
                     Profile
                   </button>

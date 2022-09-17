@@ -53,15 +53,10 @@ export default function UpdateUser() {
         tabIndex="-1"
         aria-hidden="true"
       >
-        <div className="modal-dialog modal-lg">
+        <div className="modal-dialog modal-lg" id="changeProfile">
           <div className="modal-content">
             <div className="modal-header">
-              <h5
-                className="modal-title text-center theme-color"
-                id="changeProfile"
-              >
-                Profile
-              </h5>
+              <h5 className="modal-title text-center theme-color">Profile</h5>
               <button
                 type="button"
                 className="btn-close"
