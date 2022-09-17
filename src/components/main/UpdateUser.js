@@ -1,7 +1,7 @@
-import React, { useState} from "react";
-import axios from "axios";
+import React, { useState,useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 
-export default function AddNewUser() {
+export default function UpdateUser() {
   const [addUser, setAddUser] = useState({
     name: "",
     email: "",
@@ -10,6 +10,7 @@ export default function AddNewUser() {
     role: "",
     picture: "",
   });
+
   const [file, setFile] = useState();
 
   const uploadSingleFile = (e) => {
@@ -26,20 +27,13 @@ export default function AddNewUser() {
     }
   };
 
-  const submitData = async () => {
-    try {
-      const response = await axios.post("http://localhost:8080/users", addUser);
-
-      console.log("addresponse: ", response);
-    } catch (error) {
-      console.log("error: ", error);
-    }
-  };
+const { user } = useContext(UserContext);
+console.log(user);
   return (
     <>
       <div
         className="modal fade"
-        id="addUser"
+        id="changeProfile"
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         tabIndex="-1"
@@ -48,12 +42,7 @@ export default function AddNewUser() {
         <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="modal-header">
-              <h5
-                className="modal-title text-center theme-color"
-                id="addUserLabel"
-              >
-                Add New User
-              </h5>
+              <h5 className="modal-title text-center theme-color">Update Profile</h5>
               <button
                 type="button"
                 className="btn-close"
@@ -69,9 +58,8 @@ export default function AddNewUser() {
                       <input
                         type="text"
                         className="form-control"
-                        id="inputPassword4"
                         required
-                        value={addUser.name}
+                        value={user.userData.name}
                         onChange={(e) =>
                           setAddUser({ ...addUser, name: e.target.value })
                         }
@@ -83,9 +71,8 @@ export default function AddNewUser() {
                       <input
                         type="text"
                         className="form-control"
-                        id="inputPassword4"
                         required
-                        value={addUser.email}
+                        value={user.userData.email}
                         onChange={(e) =>
                           setAddUser({ ...addUser, email: e.target.value })
                         }
@@ -95,11 +82,8 @@ export default function AddNewUser() {
                     </div>
                     <div className="input-field">
                       <input
-                        type="text"
+                        type="password"
                         className="form-control"
-                        id="inputPassword4"
-                        required
-                        value={addUser.password}
                         onChange={(e) =>
                           setAddUser({ ...addUser, password: e.target.value })
                         }
@@ -109,11 +93,8 @@ export default function AddNewUser() {
                     </div>
                     <div className="input-field">
                       <input
-                        type="text"
+                        type="password"
                         className="form-control"
-                        id="inputPassword4"
-                        required
-                        value={addUser.confirmPassword}
                         onChange={(e) =>
                           setAddUser({
                             ...addUser,
@@ -124,23 +105,9 @@ export default function AddNewUser() {
                       <label>Confirm Password:</label>
                       <span className="d-none">Error : Field Required</span>
                     </div>
-                    <div className="input-field">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="inputPassword4"
-                        required
-                        value={addUser.role}
-                        onChange={(e) =>
-                          setAddUser({ ...addUser, role: e.target.value })
-                        }
-                      />
-                      <label>Role:</label>
-                      <span className="d-none">Error : Field Required</span>
-                    </div>
                   </div>
-                  <div className="col-md-4 mt-4">
-                    <div className="mt-3">
+                  <div className="col-md-4">
+                    <div>
                       <label
                         htmlFor="exampleFormControlInput1"
                         className="form-label"
@@ -148,15 +115,13 @@ export default function AddNewUser() {
                         Choose image
                       </label>
                       <input
-                        // disabled={loader}
                         type="file"
-                        // disabled={file || loader}
                         className="form-control mb-2"
                         onChange={uploadSingleFile}
                       />
                       <img
-                        src={file && file}
-                        alt="dummy"
+                       src={file && file}
+                        alt="profile"
                         height="200px"
                         width="200px"
                       />
@@ -194,7 +159,6 @@ export default function AddNewUser() {
                 <button
                   type="button"
                   className="btn theme-bg text-white rounded-pill"
-                  onClick={submitData}
                 >
                   Add User
                 </button>
