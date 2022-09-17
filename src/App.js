@@ -10,7 +10,6 @@ import { UserContext } from './components/contexts/UserContext'
 
 function App() {
   const [projectId, setProjectId] = useState(null);
-
   const [user, setUser] = useState({ userData: "", auth: false, token: null });
 
   useEffect(() => {
@@ -21,28 +20,25 @@ function App() {
     if (user?.auth) {
       setUser({
         ...user,
-        ["auth"]: true,
-        ["userData"]: JSON.parse(localStorage.getItem("userData")),
-        ["token"]: JSON.parse(localStorage.getItem("token")),
+        auth: true,
+        userData : JSON.parse(localStorage.getItem("userData")),
+        token: JSON.parse(localStorage.getItem("token")),
       });
     } else if (localStorage.getItem("userData")) {
       setUser({
         ...user,
-        ["auth"]: true,
-        ["userData"]: JSON.parse(localStorage.getItem("userData")),
-        ["token"]: JSON.parse(localStorage.getItem("token")),
+        auth: true,
+        userData: JSON.parse(localStorage.getItem("userData")),
+        token: JSON.parse(localStorage.getItem("token")),
       });
     }
-  }, []);
+  },[]);
 
   return (
     <BrowserRouter>
       <UserContext.Provider value={{ user, setUser }}>
         <Routes>
-        {!user?.auth && (
           <Route path='/' element={<Landing />} />
-        )}
-
 
           {user?.auth && user?.userData && (
             <>
