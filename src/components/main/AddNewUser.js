@@ -69,7 +69,6 @@ export default function AddNewUser() {
                       <input
                         type="text"
                         className="form-control"
-                        id="inputPassword4"
                         required
                         value={addUser.name}
                         onChange={(e) =>
@@ -83,7 +82,6 @@ export default function AddNewUser() {
                       <input
                         type="text"
                         className="form-control"
-                        id="inputPassword4"
                         required
                         value={addUser.email}
                         onChange={(e) =>
@@ -97,7 +95,6 @@ export default function AddNewUser() {
                       <input
                         type="text"
                         className="form-control"
-                        id="inputPassword4"
                         required
                         value={addUser.password}
                         onChange={(e) =>
@@ -111,7 +108,6 @@ export default function AddNewUser() {
                       <input
                         type="text"
                         className="form-control"
-                        id="inputPassword4"
                         required
                         value={addUser.confirmPassword}
                         onChange={(e) =>
@@ -128,7 +124,6 @@ export default function AddNewUser() {
                       <input
                         type="text"
                         className="form-control"
-                        id="inputPassword4"
                         required
                         value={addUser.role}
                         onChange={(e) =>
