@@ -47,7 +47,7 @@ export default function UpdateUser() {
     <>
       <div
         className="modal fade"
-        id="changeProfile"
+        id="#changeProfile"
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         tabIndex="-1"
