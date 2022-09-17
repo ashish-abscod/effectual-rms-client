@@ -7,6 +7,7 @@ import Feedback from './Feedback';
 import Evaluation from './Evaluation';
 import { useContext } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
+import { Link } from 'react-router-dom';
 
 
 export default function SelectedProject() {
@@ -33,6 +34,9 @@ export default function SelectedProject() {
           </li>
           <li className="nav-item" role="presentation">
             <button className="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#feedback" type="button" role="tab" aria-controls="feedback" aria-selected="false">Feedback</button>
+          </li>
+          <li className="nav-item ms-5" role="presentation">
+          <Link to={"/comment"} className="btn btn-warning p-1"> <i className="bi bi-chat-dots me-1" /> Comment </Link>
           </li>
         </ul>
         <div className="tab-content bg-white" id="myTabContent">
