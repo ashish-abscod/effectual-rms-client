@@ -18,9 +18,9 @@ export default function Footer() {
                 </p>
                 <div className="social-links mt-3 d-flex justify-content-around">
                   <a href="#about" className="twitter"><i className="bi bi-twitter"></i></a>
-                  <a className="facebook"><i className="bi bi-facebook"></i></a>
-                  <a className="instagram"><i className="bi bi-instagram"></i></a>
-                  <a className="linkedin"><i className="bi bi-linkedin"></i></a>
+                  <a className="facebook"  href="/"><i className="bi bi-facebook"></i></a>
+                  <a className="instagram" href="/"><i className="bi bi-instagram"></i></a>
+                  <a className="linkedin" href="/"><i className="bi bi-linkedin"></i></a>
                 </div>
               </div>
               <div className="col-lg-3 col-6 footer-links">
