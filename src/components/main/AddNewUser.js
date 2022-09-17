@@ -32,20 +32,17 @@ export default function AddNewUser() {
         // console.log("file: ", file);
     }, [file]);
 
-    const {user} = useContext(UserContext);
+    // const {user} = useContext(UserContext);
     const submitData = async () => {
         try {
-            const token = user.token;
-            await axios.post("http://localhost:8080/users", addUser, {
-                headers: {
-                  'Authorization': `Bearer ${token}` 
-                }
-              });
+          const response = await axios.post("http://localhost:8080/users", addUser);
+    
+          console.log("addresponse: ", response);
         } catch (error) {
-            console.log("error: ", error.response);
+          console.log("error: ", error.response);
+          alert(error.response.data.error);
         }
-    };
-
+      };
     return (
         <>
             <div
