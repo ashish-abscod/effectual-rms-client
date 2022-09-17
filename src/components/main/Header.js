@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 export default function Header({projectSelected}) {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
-  console.log("userData: ", user)
 
   return (
     <>
@@ -38,7 +37,7 @@ export default function Header({projectSelected}) {
               </li>
             </ul>
             <div className="dropdown dropstart d-none d-lg-block">
-              <span>Hey Ashish Sharma</span>
+              <span className='fw-bold me-2'>{user.userData.name}</span>
               <button className="btn rounded-circle overflow-hidden p-0 ms-1 dropdown-toggle" style={{width:"2em",height:"2em"}} type="button" id="dropdownMenu1" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src={profile} style={{width:"2em",height:"2em"}} title="Profile" alt="Profile" />
               </button>
