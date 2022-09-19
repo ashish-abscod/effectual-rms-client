@@ -43,9 +43,7 @@ export default function AddUserToProject() {
           className="users-container overflow-auto"
           style={{ height: "55vh" }}
         >
-          {userData.map((item, i) => {
-            return (
-              <>
+          {userData.map((item, i) => 
                 <div className="d-flex justify-content-between align-items-center" key={i}>
                   <div className="d-flex align-items-center">
                     <div
@@ -70,9 +68,7 @@ export default function AddUserToProject() {
                     </button>
                   </div>
                 </div>
-              </>
-            );
-          })}
+              )}
 
           <hr className="my-3 border-secondary border" />
         </div>
