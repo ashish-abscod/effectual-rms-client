@@ -10,6 +10,15 @@ export default function CreateProject() {
   const [page, setPage] = useState(0);
   const { projectId } = useContext(ProjectContext);
 
+  if (projectId !== null) {
+    try {
+      const response = axios.get(`http://localhost:8080/projects/updates/${projectId}`);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const [formData, setFormData] = useState({
     SearchObject: "",
     TechnicalField: "",
@@ -107,10 +116,10 @@ export default function CreateProject() {
                   page === 0
                     ? "25%"
                     : page === 1
-                    ? "50%"
-                    : page === 2
-                    ? "75%"
-                    : "100%",
+                      ? "50%"
+                      : page === 2
+                        ? "75%"
+                        : "100%",
               }}
               aria-valuenow="25"
               aria-valuemin="0"
