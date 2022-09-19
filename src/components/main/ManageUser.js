@@ -55,37 +55,33 @@ export default function ManageUser() {
                   </tr>
                 </thead>
                 <tbody className="fw-bold">
-                  {userData.map((item, i) => {
-                    return (
-                      <>
-                        <tr key={i}>
-                          <th>{i + 1}</th>
-                          <td>
-                            <div
-                              className="rounded shadow me-3"
-                              style={{ width: "50px", height: "50px" }}
-                            >
-                              <img
-                                alt=""
-                                className="w-100 h-100 overflow-hidden rounded "
-                              ></img>
-                            </div>
-                          </td>
-                          <td>{item.name}</td>
-                          <td>{item.email}</td>
-                          <td>{item.role}</td>
-                          <td className="text-center">
-                            <button
-                              type="button"
-                              className="btn btn-outline-danger rounded-pill"
-                            >
-                              Remove
-                            </button>
-                          </td>
-                        </tr>
-                      </>
-                    );
-                  })}
+                  {userData.map((item, i) =>
+                    <tr key={i}>
+                      <th>{i + 1}</th>
+                      <td>
+                        <div
+                          className="rounded shadow me-3"
+                          style={{ width: "50px", height: "50px" }}
+                        >
+                          <img
+                            alt=""
+                            className="w-100 h-100 overflow-hidden rounded "
+                          ></img>
+                        </div>
+                      </td>
+                      <td>{item.name}</td>
+                      <td>{item.email}</td>
+                      <td>{item.role}</td>
+                      <td className="text-center">
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger rounded-pill"
+                        >
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
