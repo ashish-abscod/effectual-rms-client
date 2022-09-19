@@ -32,16 +32,8 @@ export default function ManageUser() {
 
   const handleUsersDelete = async (id) => {
     try{
-      let res =  await axios.put(`http://localhost:8080/users/${id}`, {
-        body: JSON.stringify({
-          status,
-        }),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        }
-      });
-      console.log(res)
+      let res =  await axios.put(`http://localhost:8080/users/${id}`,status);
+      // console.log(res)
       // res = await res.json();
       if (res) {
         getUserData();
@@ -95,6 +87,7 @@ export default function ManageUser() {
                               style={{ width: "50px", height: "50px" }}
                             >
                               <img
+                              src = {item.picture}
                                 alt=""
                                 className="w-100 h-100 overflow-hidden rounded "
                               ></img>

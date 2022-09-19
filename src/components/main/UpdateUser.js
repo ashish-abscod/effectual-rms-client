@@ -1,5 +1,7 @@
-import React, { useState,useContext } from "react";
+import React, { useState,useContext,useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
+
 
 export default function UpdateUser() {
   const [addUser, setAddUser] = useState({
@@ -11,6 +13,7 @@ export default function UpdateUser() {
     picture: "",
   });
 
+  const { id } = useParams();
   const [file, setFile] = useState();
 
   const uploadSingleFile = (e) => {
@@ -25,6 +28,39 @@ export default function UpdateUser() {
         setFile(reader.result);
       };
     }
+  };
+
+
+  // useEffect(() => {
+  //   getUsersData();
+  // }, []);
+
+  // const getUsersData = async () => {
+    
+  //   let info = await fetch(`http://localhost:8080/users/${id}`);
+   
+
+  //   info = await info.json();
+
+  //   setAddUser(addUser)
+  // };
+
+
+
+  const handleUsersEdit = async () => {
+    const res = await fetch(`http://localhost:8080/users/${id}`, {
+      method: "put",
+
+      body: JSON.stringify({
+       addUser
+      }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    
   };
 
 const { user } = useContext(UserContext);
@@ -59,9 +95,9 @@ console.log(user);
                         type="text"
                         className="form-control"
                         required
-                        value={user.userData.name}
+                        value={addUser.name}
                         onChange={(e) =>
-                          setAddUser({ ...addUser, name: e.target.value })
+                           setAddUser(e.target.value)
                         }
                       />
                       <label>Name:</label>
@@ -72,9 +108,9 @@ console.log(user);
                         type="text"
                         className="form-control"
                         required
-                        value={user.userData.email}
+                        value={addUser.email}
                         onChange={(e) =>
-                          setAddUser({ ...addUser, email: e.target.value })
+                           setAddUser(e.target.value)
                         }
                       />
                       <label>Email:</label>
@@ -85,7 +121,7 @@ console.log(user);
                         type="password"
                         className="form-control"
                         onChange={(e) =>
-                          setAddUser({ ...addUser, password: e.target.value })
+                          setAddUser(e.target.value)
                         }
                       />
                       <label>Password:</label>
@@ -96,10 +132,7 @@ console.log(user);
                         type="password"
                         className="form-control"
                         onChange={(e) =>
-                          setAddUser({
-                            ...addUser,
-                            confirmPassword: e.target.value,
-                          })
+                          setAddUser(e.target.value)
                         }
                       />
                       <label>Confirm Password:</label>
@@ -159,6 +192,7 @@ console.log(user);
                 <button
                   type="button"
                   className="btn theme-bg text-white rounded-pill"
+                  onClick={handleUsersEdit}
                 >
                   Add User
                 </button>

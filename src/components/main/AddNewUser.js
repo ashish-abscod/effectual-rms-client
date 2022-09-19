@@ -114,7 +114,7 @@ export default function AddNewUser() {
                         onChange={(e) =>
                           setAddUser({
                             ...addUser,
-                            confirmPassword: e.target.value,
+                            confirmPassword:  setAddUser({ ...addUser, password: e.target.value }),
                           })
                         }
                       />
