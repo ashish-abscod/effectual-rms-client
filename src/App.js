@@ -9,7 +9,7 @@ import Landing from "./components/landing/Landing";
 import { UserContext } from "./components/contexts/UserContext";
 
 function App() {
-  const [refId, setRefId] = useState(null);
+  const [projectId, setProjectId] = useState(null);
   const [user, setUser] = useState({ userData: "", auth: false, token: null });
 
   useEffect(() => {
@@ -20,35 +20,33 @@ function App() {
     if (user?.auth) {
       setUser({
         ...user,
-        ["auth"]: true,
-        ["userData"]: JSON.parse(localStorage.getItem("userData")),
-        ["token"]: JSON.parse(localStorage.getItem("token")),
+        auth: true,
+        userData : JSON.parse(localStorage.getItem("userData")),
+        token: JSON.parse(localStorage.getItem("token")),
       });
     } else if (localStorage.getItem("userData")) {
       setUser({
         ...user,
-        ["auth"]: true,
-        ["userData"]: JSON.parse(localStorage.getItem("userData")),
-        ["token"]: JSON.parse(localStorage.getItem("token")),
+        auth: true,
+        userData: JSON.parse(localStorage.getItem("userData")),
+        token: JSON.parse(localStorage.getItem("token")),
       });
     }
-  }, []);
+  },[]);
 
   return (
     <BrowserRouter>
       <UserContext.Provider value={{ user, setUser }}>
         <Routes>
-          {/* {!user?.auth && ( */}
-          <Route path="/" element={<Landing />} />
-          {/* )} */}
+          <Route path='/' element={<Landing />} />
 
           {user?.auth && user?.userData && (
             <>
               <Route
                 path="/main"
                 element={
-                  <ProjectContext.Provider value={{ refId, setRefId }}>
-                    <Home setRefId={setRefId} />
+                  <ProjectContext.Provider value={{ projectId, setProjectId }}>
+                    <Home setProjectId={setProjectId} />
                   </ProjectContext.Provider>
                 }
               />
@@ -56,8 +54,8 @@ function App() {
               <Route
                 path="/project"
                 element={
-                  <ProjectContext.Provider value={{ refId, setRefId }}>
-                    <SelectedProject refId={refId} />
+                  <ProjectContext.Provider value={{ projectId, setProjectId }}>
+                    <SelectedProject projectId={projectId} />
                   </ProjectContext.Provider>
                 }
               />
@@ -65,8 +63,8 @@ function App() {
               <Route
                 path="/comment"
                 element={
-                  <ProjectContext.Provider value={{ refId, setRefId }}>
-                    <WriteComment refId={refId} />
+                  <ProjectContext.Provider value={{ projectId, setProjectId }}>
+                    <WriteComment projectId={projectId} />
                   </ProjectContext.Provider>
                 }
               />

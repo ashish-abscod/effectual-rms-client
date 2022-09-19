@@ -26,7 +26,7 @@ export default function ProjectInfo({formData, setFormData}) {
                 <span className='d-none text-danger'>Error : Field Required</span>
             </div>
             <div className="input-field">
-                <input type="text" className="form-control" id="inputEmail4" required value={formData.RequirementForDelivery} onChange={(e)=> setFormData({...formData , RequirementForDelivery : e.target.value})}/>
+                <input type="text" className="form-control" required value={formData.RequirementForDelivery} onChange={(e)=> setFormData({...formData , RequirementForDelivery : e.target.value})}/>
                 <label>Requirement for delivery:</label>
                 <span className='d-none text-danger'>Error : Field Required</span>
             </div>

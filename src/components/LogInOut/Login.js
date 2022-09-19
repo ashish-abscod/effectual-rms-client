@@ -6,9 +6,8 @@ import { useNavigate } from 'react-router-dom';
 export default function Login() {
     const navigate = useNavigate(); 
     const { setUser, user } = useContext(UserContext);
-    // use to route bw diff components
 
-    //   user initial state
+    //   user initial state before login
     const [userDetails, setDetails] = useState({
         email: "",
         password: "",
@@ -28,9 +27,9 @@ export default function Login() {
            
             setUser({
                 ...user,
-                ["auth"]: true,
-                ["userData"]: response.data.user,
-                ["token"]: response.data,
+                auth: true,
+                userData: response.data.user,
+                token: response.data,
             });
 
            
@@ -43,8 +42,7 @@ export default function Login() {
            
         } catch (error) {
            
-            console.log("error: ", error.response);
-            // alert(error.response.data.error);
+            console.log("error: ", error);
         }
     };
 
@@ -65,8 +63,8 @@ export default function Login() {
                                 <label className="text-secondary fs-5 mb-2" htmlFor="password" >Your password</label>
                                 <input type="password" id="password" className="form-control fs-5 text-secondary" name="password" autoComplete="off" onChange={(e) => setDetails({...userDetails, password:e.target.value})} />
                                 <div className="mt-5 mb-4">
-                                    <a className="btn btn-outline-primary me-5" data-bs-target="#forgotPassModal" data-bs-toggle="modal" type="submit" data-bs-dismiss="modal">Forgot password?</a>
-                                    <button className="btn theme2-bg text-white" type="button" value="LOGIN" onClick = {loginApi}>Login</button>
+                                    <a  href="/" className="me-5" data-bs-target="#forgotPassModal" data-bs-toggle="modal" type="submit" data-bs-dismiss="modal">Forgot password?</a>
+                                    <button className="btn bg-success text-white" type="button" value="LOGIN" onClick = {loginApi}>Login</button>
                                 </div>
                             </form>
                         </div>

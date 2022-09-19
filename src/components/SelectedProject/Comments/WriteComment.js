@@ -20,7 +20,7 @@ export default function WriteComment() {
                     <div>
                         <input type="file" name="files" multiple />
                     </div>
-                    <button type="button" className="btn theme-bg rounded-pill text-white px-2"><i class="bi bi-plus-circle me-1"></i>Upload</button>
+                    <button type="button" className="btn theme-bg rounded-pill text-white px-2"><i className="bi bi-plus-circle me-1"></i>Upload</button>
                 </footer>
             </div>
         </>
