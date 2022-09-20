@@ -5,19 +5,43 @@ import ReviewInformation from "./ReviewInformation";
 import UploadFiles from "./UploadFiles";
 import { ProjectContext } from "../contexts/ProjectContext";
 import axios from "axios";
+import { useEffect } from "react";
 
 export default function CreateProject() {
   const [page, setPage] = useState(0);
   const { projectId } = useContext(ProjectContext);
 
-  if (projectId !== null) {
-    try {
-      const response = axios.get(`http://localhost:8080/projects/updates/${projectId}`);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
+
+  const getProjects = async () => {
+    if (projectId !== null) {
+      try {
+        const res = await axios.get(`http://localhost:8080/projects/${projectId}`);
+        console.log(res.data);
+        setFormData({...formData,
+          SearchObject : res.data.searchObject,
+          TechnicalField : res.data.technicalField,
+          ClaimsToBeSearched : res.data.claims,
+          RequirementForDelivery : res.data.reqDelivery,
+          RequirementDeliveryDate : res.data.deliveryDate,
+          PriorArtCuttOffDate : res.data.priorArtdate,
+          StandardRelated : res.data.standard,
+          SSONeeded : res.data.sso,
+          USIPRSpecial : res.data.usipr,
+          ImportantClaims: res.data.impclaim,
+          UnimportantClaims: res.data.nonImpClaim,
+          UsefulInformationForSearch: res.data.info
+
+
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
+  //getting project based on id 
+  useEffect(() => {
+    getProjects();
+  }, []);
 
   const [formData, setFormData] = useState({
     SearchObject: "",
@@ -75,25 +99,22 @@ export default function CreateProject() {
 
   //----------------Handler for Project Creation and Updation---------------
   const projectHandler = async () => {
-    console.log(projectId);
     if (projectId === null) {
       try {
-        console.log(formData);
-        const response = await axios.post(
+        await axios.post(
           "http://localhost:8080/projects/create",
           formData
         );
-        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
     } else if (projectId !== null) {
       try {
-        const response = await axios.put(
+        const res = await axios.put(
           `http://localhost:8080/projects/update/${projectId}`,
           formData
         );
-        console.log(response.data);
+        console.log(res)
       } catch (error) {
         console.log(error);
       }
