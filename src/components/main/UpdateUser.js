@@ -28,7 +28,6 @@ export default function UpdateUser() {
   };
 
 const { user } = useContext(UserContext);
-console.log(user);
   return (
     <>
       <div
