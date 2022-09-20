@@ -152,7 +152,7 @@ export default function AddNewUser() {
                         <option value="Searcher">Searcher</option>
                         <option value="Client Admin">Client Admin</option>
                         <option value="Effectual Admin">Effectual Admin</option>
-                        <option value="Technical Expert">Searcher</option>
+                        <option value="Technical Expert">Technical Expert</option>
                       </select>
                       <label>Role:</label>
                       <span className="d-none">Error : Field Required</span>

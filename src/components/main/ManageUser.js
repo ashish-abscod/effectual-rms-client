@@ -32,9 +32,7 @@ export default function ManageUser() {
 
   const handleUsersDelete = async (id) => {
     try{
-      let res =  await axios.put(`http://localhost:8080/users/${id}`,status);
-      // console.log(res)
-      // res = await res.json();
+      let res =  await axios.put(`http://localhost:8080/users/delete/${id}`,status);
       if (res) {
         getUserData();
       }
@@ -75,7 +73,7 @@ export default function ManageUser() {
                   </tr>
                 </thead>
                 <tbody className="fw-bold">
-                  {userData?.map?.((item, i) => {
+                  {userData.map((item, i) => {
                     if (item.status === true) {
                     return (
                       <>
