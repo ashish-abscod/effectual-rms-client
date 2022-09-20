@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import imgURL from "../../Assets/Effectual.jpg";
-export default function AddUserToProject() {
-  const [isAdded] = useState(false);
-  const [userData, setUserData] = useState([]);
+import DataTable from "react-data-table-component";
 
+export default function AddUserToProject() {
+  const [userData, setUserData] = useState([]);
+  const [search, setSearch] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [assignedUsers, setAssignedUsers] = useState([]);
+  console.log(assignedUsers);
   useEffect(() => {
     getUserData();
   }, []);
@@ -11,112 +14,111 @@ export default function AddUserToProject() {
   const getUserData = async () => {
     await fetch("http://localhost:8080/users")
       .then((res) => res.json())
-      .then((data) => setUserData(data));
+      .then((data) => (setUserData(data), setFilteredUsers()));
   };
 
-  const searchHandle = async (event) => {
-    let key = event.target.value;
-    if (key) {
-      let result = await fetch(`http://localhost:8080/users/search/${key}`);
-      result = await result.json();
-      if (result) {
-        setUserData(result);
-      }
-    } else {
-      getUserData();
-    }
+  //multiple fields search based on search key
+  useEffect(() => {
+    const filters = userData.filter(
+      (user) =>
+        JSON.stringify(user).toLowerCase().indexOf(search.toLowerCase()) !== -1
+    );
+
+    setFilteredUsers(filters);
+  }, [userData, search]);
+
+  const columns = [
+    {
+      name: "Name",
+      selector: (row) => row.name,
+      sortable: true,
+    },
+    {
+      name: "Email",
+      selector: (row) => row.email,
+      sortable: true,
+    },
+    {
+      name: "Role",
+      selector: (row) => row.role,
+      sortable: true,
+    },
+  ];
+
+  const customStyles = {
+    rows: {
+      style: {
+        fontSize: "15px",
+        fontWeight: "bolder",
+        cursor: "pointer",
+      },
+    },
+    headCells: {
+      style: {
+        fontSize: "15px",
+      },
+    },
   };
+
   return (
     <div
       style={{
-        display: "contents",
+        display: "flex",
+        justifyContent: "space-evenly",
+        width: -"webkit-fill-available",
+        gap: "30px",
       }}
     >
       <div
-        className="col-md-10 shadow pt-2 rounded w-48"
-        style={{ width: "60%", height: "65vh" }}
+        className="d-flex flex-column align-items-center"
+        style={{ width: "174%", height: "85%", marginLeft: "-14px" }}
       >
-        <div className="d-flex justify-content-between align-items-center mb-3 p-2 bg-dark">
-          <h3 className="fs-5 theme-color text-light">Add Users to Project</h3>
-          <input
-            type="search"
-            className="form-control w-50"
-            placeholder="Add User by searching..."
-            onChange={searchHandle}
-          />
-        </div>
-
-        <div className="w-100">
-          <div
-            className="users-container overflow-auto"
-            style={{ height: "54vh" }}
-          >
-            {userData.map((item) => {
-              return (
-                <>
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="d-flex align-items-center">
-                      <div
-                        className="rounded shadow me-3"
-                        style={{ width: "50px", height: "50px" }}
-                      >
-                        <img
-                          src={imgURL}
-                          alt=""
-                          className="w-100 h-100 overflow-hidden rounded "
-                        />
-                      </div>
-                      <div>
-                        <h3 className="fs-6 m-0">{item.name}</h3>
-                        <p className="fs-6 mailto:m-0">{item.email}</p>
-                      </div>
-                      <br></br>
-                    </div>
-                    <div>{item.role}</div>
-                    <div className="me-4">
-                      <button type="button" className="btn btn-outline-danger">
-                        {isAdded ? "Remove" : "Add"}
-                      </button>
-                    </div>
-                  </div>
-                </>
-              );
-            })}
-
-            <hr className="my-3 border-secondary border" />
-          </div>
-        </div>
+        <DataTable
+          columns={columns}
+          data={filteredUsers}
+          pagination
+          fixedHeader
+          fixedHeaderScrollHeight="470px"
+          selectableRows
+          selectableRowsHighlight
+          highlightOnHover
+          subHeader
+          striped
+          customStyles={customStyles}
+          responsive
+          onSelectedRowsChange={(selectedRows) => {
+            setAssignedUsers(selectedRows?.selectedRows);
+          }}
+        />
       </div>
 
-      <div
-        className="col-md-10 shadow pt-2 rounded w-48"
-        style={{ width: "26%", height: "65vh" }}
-      >
-        <div className="d-flex justify-content-between align-items-center mb-3 p-2 bg-dark">
-          <h3 className="fs-5 theme-color text-light">Add Users </h3>
-        </div>
-
-        <div className="w-100">
-          <div
-            className="users-container overflow-auto"
-            style={{ height: "54vh" }}
-          >
-            <div className="d-flex justify-content-between align-items-center">
-              <div className="d-flex align-items-center">
-                <div
-                  className="rounded shadow me-3"
-                  style={{ width: "50px", height: "50px" }}
-                ></div>
-                <div>
-                  <h3 className="fs-6 m-0">tamanna</h3>
-                  <p className="fs-6 mailto:m-0">tamanna@123</p>
-                </div>
-              </div>
-            </div>
-
-            <hr className="my-3 border-secondary border" />
-          </div>
-        </div>
+      <div>
+        <table
+          style={{
+            width: "300px",
+            height: "100px",
+            fontFamily: "arial",
+            sans: "serif",
+            borderCollapse: "collapse",
+          }}
+        >
+          <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+          </tr>
+          {assignedUsers.map((item) => {
+            return (
+              <>
+                <tr>
+                  <td>{item.name}</td>
+                  <td>{item.email}</td>
+                  <td>{item.role}</td>
+                </tr>
+              </>
+            );
+          })}
+        </table>
       </div>
     </div>
   );
