@@ -21,7 +21,7 @@ export default function SelectedProject() {
       <div className='container' style={{paddingTop:"4rem"}} >
         <ul className="nav nav-tabs" id="myTab" role="tablist">
           <li className="nav-item" role="presentation">
-            <button className="nav-link active" data-bs-toggle="tab" data-bs-target="#comment" type="button" role="tab" aria-controls="comment" aria-selected="true">Project-{projectId}</button>
+            <button className="nav-link active" data-bs-toggle="tab" data-bs-target="#comment" type="button" role="tab" aria-controls="comment" aria-selected="true">{projectId}</button>
           </li>
           <li className="nav-item" role="presentation">
             <button className="nav-link" data-bs-toggle="tab" data-bs-target="#projectDetails" type="button" role="tab" aria-controls="projectDetails" aria-selected="false">Project Details</button>
