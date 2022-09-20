@@ -17,6 +17,20 @@ export default function AddUserToProject() {
       .then((data) => (setUserData(data), setFilteredUsers()));
   };
 
+  const submitData = async () => {
+    let info = await fetch("http://localhost:8080/assigned/", {
+      method: "post",
+      body: JSON.stringify(assignedUsers._id),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    info = await info.json();
+
+    console.log(info);
+  };
+
   //multiple fields search based on search key
   useEffect(() => {
     const filters = userData.filter(
