@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import TableHeader from './TableHeader';
 import { useContext } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
+import Moment from 'react-moment';
 
 export default function AllProjects() {
     const [search, setSearch] = useState("");
@@ -68,15 +69,15 @@ export default function AllProjects() {
             sortable: true
         },
         {
+            selector: (row) => <Moment format="DD/MM/YYYY">{row.requestedDate}</Moment>,
             name: "Request Date",
-            selector: (row) => row.requestedDate,
             sortable: true
         },
         {
             name: "Status",
             selector: (row) => row.status === "0" ? <span>Interim Report</span> : row.status === "1" ?  <span className="badge rounded-pill bg-warning text-dark" style={{fontSize:"14px"}}>Progress</span> : row.status === "2" ? <span className="badge rounded-pill bg-success" style={{fontSize:"14px"}}>Completed</span> : <span>Terminated</span>,
             sortable: true
-
+            
         }
     ]
 
