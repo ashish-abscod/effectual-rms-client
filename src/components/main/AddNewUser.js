@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 export default function AddNewUser() {
@@ -9,6 +9,7 @@ export default function AddNewUser() {
     confirmPassword: "",
     role: "",
     picture: "",
+    status:true
   });
   const [file, setFile] = useState();
 
@@ -113,14 +114,14 @@ export default function AddNewUser() {
                         onChange={(e) =>
                           setAddUser({
                             ...addUser,
-                            confirmPassword: e.target.value,
+                            confirmPassword:  setAddUser({ ...addUser, password: e.target.value }),
                           })
                         }
                       />
                       <label>Confirm Password:</label>
                       <span className="d-none">Error : Field Required</span>
                     </div>
-                    <div className="input-field">
+                    {/* <div className="input-field">
                       <input
                         type="text"
                         className="form-control"
@@ -130,6 +131,29 @@ export default function AddNewUser() {
                           setAddUser({ ...addUser, role: e.target.value })
                         }
                       />
+                      <label>Role:</label>
+                      <span className="d-none">Error : Field Required</span>
+                    </div> */}
+                    <div className="input-field">
+                      <select className="form-select"
+                      type="text"
+                      name=" role"
+                      required
+                      id="role"
+                      onChange={(e) => {
+                        setAddUser({
+                          ...addUser,
+                          role: e.target.value,
+                        });
+                      }}
+                      >
+                        <option value="Manager">Manager</option>
+                        <option value="Patent Expert">Patent Expert</option>
+                        <option value="Searcher">Searcher</option>
+                        <option value="Client Admin">Client Admin</option>
+                        <option value="Effectual Admin">Effectual Admin</option>
+                        <option value="Technical Expert">Technical Expert</option>
+                      </select>
                       <label>Role:</label>
                       <span className="d-none">Error : Field Required</span>
                     </div>

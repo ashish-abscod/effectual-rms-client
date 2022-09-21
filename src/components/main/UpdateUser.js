@@ -1,5 +1,9 @@
 import React, { useState,useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
+import axios from 'axios'
+import { useParams } from "react-router-dom";
+
+
 
 export default function UpdateUser() {
   const [addUser, setAddUser] = useState({
@@ -9,7 +13,10 @@ export default function UpdateUser() {
     confirmPassword: "",
     role: "",
     picture: "",
+
   });
+
+  let {_id}= useParams
 
   const [file, setFile] = useState();
 
@@ -26,8 +33,21 @@ export default function UpdateUser() {
       };
     }
   };
+ 
 
-const { user } = useContext(UserContext);
+
+  const { user,setUser } = useContext(UserContext);
+  const handleUsersEdit = async () => {
+    try{
+      let res =  await axios.put(`http://localhost:8080/users/update/${user.userData._id}`,addUser);
+       console.log(res);
+       setUser()
+    }catch(error){
+      console.log(error)
+    }
+  }
+  
+
   return (
     <>
       <div
@@ -58,7 +78,7 @@ const { user } = useContext(UserContext);
                         type="text"
                         className="form-control"
                         required
-                        value={user.userData.name}
+                        //  value={user.userData.name}
                         onChange={(e) =>
                           setAddUser({ ...addUser, name: e.target.value })
                         }
@@ -71,7 +91,7 @@ const { user } = useContext(UserContext);
                         type="text"
                         className="form-control"
                         required
-                        value={user.userData.email}
+                        // value={user.userData.email}
                         onChange={(e) =>
                           setAddUser({ ...addUser, email: e.target.value })
                         }
@@ -158,6 +178,7 @@ const { user } = useContext(UserContext);
                 <button
                   type="button"
                   className="btn theme-bg text-white rounded-pill"
+                  onClick = {handleUsersEdit}
                 >
                   Add User
                 </button>
