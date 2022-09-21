@@ -3,11 +3,32 @@ import { useState } from "react";
 import { ProjectContext } from "../../contexts/ProjectContext";
 import Header from "../../main/Header";
 import RichTextEditor from "./RichTextEditor";
+import axios from "axios"
+import { UserContext } from "../../contexts/UserContext";
 
 export default function WriteComment() {
-    const [content, setContent] = useState('');
+    const { user, setUser } = useContext(UserContext);
+    const [content, setContent] = useState({
+        
+        comment:"",
+        time:  Date.now(),
+        userName:user.userData.name,
+        userRole:user.userData.role
+    });
     console.log(content);
+
     let { projectId } = useContext(ProjectContext);
+
+    const uploadData = async () => {
+        try {
+          const response = await axios.post("http://localhost:8080/comment", content);
+    
+          console.log("addresponse: ", response);
+        } catch (error) {
+          console.log("error: ", error);
+        }
+      };
+
 
     return (
         <>
@@ -20,7 +41,7 @@ export default function WriteComment() {
                     <div>
                         <input type="file" name="files" multiple />
                     </div>
-                    <button type="button" className="btn theme-bg rounded-pill text-white px-2"><i className="bi bi-plus-circle me-1"></i>Upload</button>
+                    <button type="button" className="btn theme-bg rounded-pill text-white px-2" onClick={uploadData}><i className="bi bi-plus-circle me-1"></i>Upload</button>
                 </footer>
             </div>
         </>
