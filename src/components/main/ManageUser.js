@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import AddNewUser from "./AddNewUser";
+import axios from "axios";
 export default function ManageUser() {
   const [userData, setUserData] = useState([]);
+  const [status, setStatus] = useState(true);
+
+  const target = useRef(null);
 
   useEffect(() => {
     getUserData();
@@ -25,6 +29,20 @@ export default function ManageUser() {
       getUserData();
     }
   };
+
+  const handleUsersDelete = async (id) => {
+    try{
+      let res =  await axios.put(`http://localhost:8080/users/delete/${id}`,status);
+      if (res) {
+        getUserData();
+      }
+    }catch(error){
+      console.log(error)
+    }
+    
+  };
+
+  
   return (
     <>
       <div className="container">
@@ -55,33 +73,43 @@ export default function ManageUser() {
                   </tr>
                 </thead>
                 <tbody className="fw-bold">
-                  {userData.map((item, i) =>
-                    <tr key={i}>
-                      <th>{i + 1}</th>
-                      <td>
-                        <div
-                          className="rounded shadow me-3"
-                          style={{ width: "50px", height: "50px" }}
-                        >
-                          <img
-                            alt=""
-                            className="w-100 h-100 overflow-hidden rounded "
-                          ></img>
-                        </div>
-                      </td>
-                      <td>{item.name}</td>
-                      <td>{item.email}</td>
-                      <td>{item.role}</td>
-                      <td className="text-center">
-                        <button
-                          type="button"
-                          className="btn btn-outline-danger rounded-pill"
-                        >
-                          Remove
-                        </button>
-                      </td>
-                    </tr>
-                  )}
+                  {userData.map((item, i) => {
+                    if (item.status === true) {
+                    return (
+                      <>
+                        <tr key={i}>
+                          <th>{i + 1}</th>
+                          <td>
+                            <div
+                              className="rounded shadow me-3"
+                              style={{ width: "50px", height: "50px" }}
+                            >
+                              <img
+                              src = {item.picture}
+                                alt=""
+                                className="w-100 h-100 overflow-hidden rounded "
+                              ></img>
+                            </div>
+                          </td>
+                          <td>{item.name}</td>
+                          <td>{item.email}</td>
+                          <td>{item.role}</td>
+                          <td className="text-center">
+                            <button
+                            ref={target}
+                              type="button"
+                              className="btn btn-outline-danger rounded-pill"
+                              onClick={() =>
+                                handleUsersDelete(item._id)
+                              }
+                            >
+                              Remove
+                            </button>
+                          </td>
+                        </tr>
+                      </>
+                    )};
+                  })}
                 </tbody>
               </table>
             </div>
