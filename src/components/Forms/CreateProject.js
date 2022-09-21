@@ -175,7 +175,7 @@ export default function CreateProject() {
           </div>
         </div>
 
-        <div className="row gy-3 gy-md-3 gx-4 mt-3 row-cols-lg-3 row-cols-md-2 justify-content-evenly">
+        <div>
           {PageDisplay()}
         </div>
       </div>
