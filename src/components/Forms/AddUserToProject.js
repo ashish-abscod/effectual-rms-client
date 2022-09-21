@@ -30,6 +30,7 @@ export default function AddUserToProject() {
     // });
     // console.log(info);
     console.log(assignedUsers._id);
+<<<<<<< HEAD
   };
 
   //multiple fields search based on search key
@@ -89,6 +90,62 @@ export default function AddUserToProject() {
           className="d-flex flex-column align-items-center"
           style={{ width: "174%", height: "85%", marginLeft: "-14px" }}
         >
+=======
+  };
+
+  //multiple fields search based on search key
+  useEffect(() => {
+    const filters = userData.filter(
+      (user) =>
+        JSON.stringify(user).toLowerCase().indexOf(search.toLowerCase()) !== -1
+    );
+
+    setFilteredUsers(filters);
+  }, [userData, search]);
+
+  const columns = [
+    {
+      name: "Name",
+      selector: (row) => row.name,
+      sortable: true,
+    },
+    {
+      name: "Email",
+      selector: (row) => row.email,
+      sortable: true,
+    },
+    {
+      name: "Role",
+      selector: (row) => row.role,
+      sortable: true,
+    },
+  ];
+
+  const customStyles = {
+    rows: {
+      style: {
+        fontSize: "15px",
+        fontWeight: "bolder",
+        cursor: "pointer",
+      },
+    },
+    headCells: {
+      style: {
+        fontSize: "15px",
+      },
+    },
+    table: {
+      style: {
+        maxHeight: "49vh!important"
+      }
+    }
+  };
+
+  return (
+    <>
+      <div className="row">
+        <div className="col-lg-7">
+>>>>>>> 13d454396bd977d6a83c878ce6a83f0a8117e9c1
           <DataTable
             columns={columns}
             data={filteredUsers}
@@ -99,11 +156,16 @@ export default function AddUserToProject() {
             selectableRowsHighlight
             highlightOnHover
             subHeader
+<<<<<<< HEAD
+=======
+            subHeaderComponent={<input type="search" className="form-control"></input>}
+>>>>>>> 13d454396bd977d6a83c878ce6a83f0a8117e9c1
             striped
             customStyles={customStyles}
             responsive
             onSelectedRowsChange={(selectedRows) => {
               setAssignedUsers(selectedRows?.selectedRows);
+<<<<<<< HEAD
             }}
           />
         </div>
@@ -141,6 +203,29 @@ export default function AddUserToProject() {
                 </>
               );
             })}
+=======
+            }
+            }
+          />
+        </div>
+
+        <div className="col-lg-5">
+          <table className="table mt-4 table-striped">
+            <thead className="thead-dark">
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+              </tr>
+            </thead>
+            {assignedUsers.map((item) =>
+              <tr className="mb-2">
+                <td>{item.name}</td>
+                <td>{item.email}</td>
+                <td>{item.role}</td>
+              </tr>
+            )}
+>>>>>>> 13d454396bd977d6a83c878ce6a83f0a8117e9c1
           </table>
         </div>
       </div>

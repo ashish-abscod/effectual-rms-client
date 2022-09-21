@@ -175,10 +175,14 @@ export default function CreateProject() {
           </div>
         </div>
 
+<<<<<<< HEAD
         <div
           className="row gy-3 gy-md-3 gx-4 mt-2 row-cols-lg-3 row-cols-md-2 justify-content-evenly w-full"
           style={{ height: "70vh" }}
         >
+=======
+        <div>
+>>>>>>> 13d454396bd977d6a83c878ce6a83f0a8117e9c1
           {PageDisplay()}
         </div>
       </div>
