@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import AddNewUser from "./AddNewUser";
 import axios from "axios";
 export default function ManageUser() {
@@ -30,19 +30,22 @@ export default function ManageUser() {
     }
   };
 
-  const handleUsersDelete = async (id) => {
-    try{
-      let res =  await axios.put(`http://localhost:8080/users/delete/${id}`,status);
-      if (res) {
-        getUserData();
+  const handleUsersDelete = async (id, name) => {
+    const confirmation = window.confirm(`Are you sure to delete:  ${name} ?`);
+    if (confirmation){
+      try {
+        let res = await axios.put(`http://localhost:8080/users/delete/${id}`, status);
+        if (res) {
+          getUserData();
+        }
+      } catch (error) {
+        console.log(error)
       }
-    }catch(error){
-      console.log(error)
     }
-    
+    return
   };
 
-  
+
   return (
     <>
       <div className="container">
@@ -74,39 +77,39 @@ export default function ManageUser() {
                 </thead>
                 <tbody className="fw-bold">
                   {userData.map((item, i) =>
-                    item.status === true ? 
-                        <tr key={i}>
-                          <th>{i + 1}</th>
-                          <td>
-                            <div
-                              className="rounded shadow me-3"
-                              style={{ width: "50px", height: "50px" }}
-                            >
-                              <img
-                              src = {item.picture}
-                                alt=""
-                                className="w-100 h-100 overflow-hidden rounded "
-                              ></img>
-                            </div>
-                          </td>
-                          <td>{item.name}</td>
-                          <td>{item.email}</td>
-                          <td>{item.role}</td>
-                          <td className="text-center">
-                            <button
+                    item.status === true ?
+                      <tr key={i}>
+                        <th>{i + 1}</th>
+                        <td>
+                          <div
+                            className="rounded shadow me-3"
+                            style={{ width: "50px", height: "50px" }}
+                          >
+                            <img
+                              src={item.picture}
+                              alt=""
+                              className="w-100 h-100 overflow-hidden rounded "
+                            ></img>
+                          </div>
+                        </td>
+                        <td>{item.name}</td>
+                        <td>{item.email}</td>
+                        <td>{item.role}</td>
+                        <td className="text-center">
+                          <button
                             ref={target}
-                              type="button"
-                              className="btn btn-outline-danger rounded-pill"
-                              onClick={() =>
-                                handleUsersDelete(item._id)
-                              }
-                            >
-                              Remove
-                            </button>
-                          </td>
-                        </tr>
-                        : ""
-                )}
+                            type="button"
+                            className="btn btn-outline-danger rounded-pill"
+                            onClick={() =>
+                              handleUsersDelete(item._id, item.name)
+                            }
+                          >
+                            Remove
+                          </button>
+                        </td>
+                      </tr>
+                      : ""
+                  )}
                 </tbody>
               </table>
             </div>
