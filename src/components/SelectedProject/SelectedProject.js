@@ -11,7 +11,9 @@ import { ProjectContext } from '../contexts/ProjectContext';
 export default function SelectedProject() {
   const [projectSelected] = useState(true);
   const {projectId} = useContext(ProjectContext);
-
+  window.onbeforeunload = function (e) {
+    return window.confirm("If you refresh this page project might be unselected!");
+};
   return (
     <>
       <Header projectSelected={projectSelected} />
