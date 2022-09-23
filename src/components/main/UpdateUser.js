@@ -1,19 +1,19 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
-import axios from 'axios'
-
+import axios from 'axios';
+import { FaEyeSlash, FaEye } from 'react-icons/fa';
 
 export default function UpdateUser() {
 
-  const { user,setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [addUser, setAddUser] = useState({
     name: user?.userData?.name ? user?.userData?.name : "",
     email: user?.userData?.email ? user?.userData?.email : "",
     password: "",
     confirmPassword: "",
-    
   });
-  
+  const [passType, setPassType] = useState({first : "Password", second : "Password" });
+
 
   // const [file, setFile] = useState();
 
@@ -30,20 +30,20 @@ export default function UpdateUser() {
   //     };
   //   }
   // };
- 
 
 
-  
+
+
   const handleUsersEdit = async () => {
-    try{
-      let res =  await axios.put(`http://localhost:8080/users/update/${user.userData._id}`,addUser);
-       console.log(res);
-       setUser()
-    }catch(error){
+    try {
+      let res = await axios.put(`http://localhost:8080/users/update/${user.userData._id}`, addUser);
+      console.log(res);
+      setUser()
+    } catch (error) {
       console.log(error)
     }
   }
-  
+
 
   return (
     <>
@@ -55,7 +55,7 @@ export default function UpdateUser() {
         tabIndex="-1"
         aria-hidden="true"
       >
-        <div className="modal-dialog modal-lg">
+        <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title text-center theme-color">Update Profile</h5>
@@ -69,12 +69,12 @@ export default function UpdateUser() {
             <div className="modal-body">
               <div className="container">
                 <div className="row">
-                  <div className="col-md-8">
+                  <div className="col-md-12">
                     <div className="input-field mt-0 ">
                       <input
                         type="text"
                         className="form-control"
-                         value={addUser.name}
+                        value={addUser.name}
                         onChange={(e) =>
                           setAddUser({ ...addUser, [addUser.name]: e.target.value })
                         }
@@ -88,7 +88,7 @@ export default function UpdateUser() {
                         className="form-control"
                         value={addUser.email}
                         onChange={(e) =>
-                          setAddUser({ ...addUser,[addUser.email]: e.target.value })
+                          setAddUser({ ...addUser, [addUser.email]: e.target.value })
                         }
                       />
                       <label>Email:</label>
@@ -96,26 +96,36 @@ export default function UpdateUser() {
                     </div>
                     <div className="input-field">
                       <input
-                        type="password"
+                        type={passType?.first}
                         className="form-control"
+                        value={addUser.password}
                         onChange={(e) =>
                           setAddUser({ ...addUser, password: e.target.value })
                         }
+                        style={{ width: "90%" }}
                       />
+                      {passType.first === "Password" ? <FaEyeSlash className="fs-2 text-secondary ms-2" onClick={()=>setPassType({...passType, first : "text"})} /> :
+                        <FaEye className="fs-2 text-secondary ms-2" onClick={()=>setPassType({...passType, first : "Password"})}/>
+                      }
                       <label>Password:</label>
                       <span className="d-none">Error : Field Required</span>
                     </div>
                     <div className="input-field">
                       <input
-                        type="password"
+                        type={passType.second}
                         className="form-control"
+                        value={addUser.confirmPassword}
                         onChange={(e) =>
                           setAddUser({
                             ...addUser,
                             confirmPassword: e.target.value,
                           })
                         }
+                        style={{ width: "90%" }}
                       />
+                      {passType.second === "Password" ? <FaEyeSlash className="fs-2 text-secondary ms-2" onClick={()=>setPassType({...passType, second : "text"})} /> :
+                        <FaEye className="fs-2 text-secondary ms-2" onClick={()=>setPassType({...passType, second : "Password"})}/>
+                      }
                       <label>Confirm Password:</label>
                       <span className="d-none">Error : Field Required</span>
                     </div>
@@ -163,7 +173,7 @@ export default function UpdateUser() {
                       email: "",
                       password: "",
                       confirmPassword: "",
-                     
+
                     })
                   }
                 >
@@ -172,7 +182,7 @@ export default function UpdateUser() {
                 <button
                   type="button"
                   className="btn theme-bg text-white rounded-pill"
-                  onClick = {handleUsersEdit}
+                  onClick={handleUsersEdit}
                 >
                   Update Profile
                 </button>
