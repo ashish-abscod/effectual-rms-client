@@ -11,10 +11,7 @@ import { UserContext } from "./components/contexts/UserContext";
 function App() {
   const [projectId, setProjectId] = useState(null);
   const [user, setUser] = useState({ userData: "", auth: false, token: null });
-
-  useEffect(() => {
-    console.log("user: ", user);
-  }, [user]);
+  const [replyTo, setReplyTo] = useState({});
 
   useEffect(() => {
     if (user?.auth) {
@@ -54,8 +51,8 @@ function App() {
               <Route
                 path="/project"
                 element={
-                  <ProjectContext.Provider value={{ projectId, setProjectId }}>
-                    <SelectedProject projectId={projectId} />
+                  <ProjectContext.Provider value={{ projectId, setProjectId, setReplyTo}}>
+                    <SelectedProject projectId={projectId} setReplyTo={setReplyTo}/>
                   </ProjectContext.Provider>
                 }
               />
@@ -63,8 +60,8 @@ function App() {
               <Route
                 path="/comment"
                 element={
-                  <ProjectContext.Provider value={{ projectId, setProjectId }}>
-                    <WriteComment projectId={projectId} />
+                  <ProjectContext.Provider value={{ projectId, setProjectId, replyTo}}>
+                    <WriteComment projectId={projectId} replyTo={replyTo} />
                   </ProjectContext.Provider>
                 }
               />
