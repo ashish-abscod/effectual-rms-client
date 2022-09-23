@@ -11,34 +11,34 @@ export default function CreateProject() {
   const [page, setPage] = useState(0);
   const { projectId } = useContext(ProjectContext);
 
-
   const getProjects = async () => {
     if (projectId !== null) {
       try {
-        const res = await axios.get(`http://localhost:8080/projects/${projectId}`);
+        const res = await axios.get(
+          `http://localhost:8080/projects/${projectId}`
+        );
         console.log(res.data);
-        setFormData({...formData,
-          SearchObject : res.data.searchObject,
-          TechnicalField : res.data.technicalField,
-          ClaimsToBeSearched : res.data.claims,
-          RequirementForDelivery : res.data.reqDelivery,
-          RequirementDeliveryDate : res.data.deliveryDate,
-          PriorArtCuttOffDate : res.data.priorArtdate,
-          StandardRelated : res.data.standard,
-          SSONeeded : res.data.sso,
-          USIPRSpecial : res.data.usipr,
+        setFormData({
+          ...formData,
+          SearchObject: res.data.searchObject,
+          TechnicalField: res.data.technicalField,
+          ClaimsToBeSearched: res.data.claims,
+          RequirementForDelivery: res.data.reqDelivery,
+          RequirementDeliveryDate: res.data.deliveryDate,
+          PriorArtCuttOffDate: res.data.priorArtdate,
+          StandardRelated: res.data.standard,
+          SSONeeded: res.data.sso,
+          USIPRSpecial: res.data.usipr,
           ImportantClaims: res.data.impclaim,
           UnimportantClaims: res.data.nonImpClaim,
-          UsefulInformationForSearch: res.data.info
-
-
+          UsefulInformationForSearch: res.data.info,
         });
       } catch (error) {
         console.log(error);
       }
     }
-  }
-  //getting project based on id 
+  };
+  //getting project based on id
   useEffect(() => {
     getProjects();
   }, []);
@@ -101,10 +101,7 @@ export default function CreateProject() {
   const projectHandler = async () => {
     if (projectId === null) {
       try {
-        await axios.post(
-          "http://localhost:8080/projects/create",
-          formData
-        );
+        await axios.post("http://localhost:8080/projects/create", formData);
       } catch (error) {
         console.log(error);
       }
@@ -114,7 +111,7 @@ export default function CreateProject() {
           `http://localhost:8080/projects/update/${projectId}`,
           formData
         );
-        console.log(res)
+        console.log(res);
       } catch (error) {
         console.log(error);
       }
@@ -137,10 +134,10 @@ export default function CreateProject() {
                   page === 0
                     ? "25%"
                     : page === 1
-                      ? "50%"
-                      : page === 2
-                        ? "75%"
-                        : "100%",
+                    ? "50%"
+                    : page === 2
+                    ? "75%"
+                    : "100%",
               }}
               aria-valuenow="25"
               aria-valuemin="0"
@@ -175,16 +172,7 @@ export default function CreateProject() {
           </div>
         </div>
 
-<<<<<<< HEAD
-        <div
-          className="row gy-3 gy-md-3 gx-4 mt-2 row-cols-lg-3 row-cols-md-2 justify-content-evenly w-full"
-          style={{ height: "70vh" }}
-        >
-=======
-        <div>
->>>>>>> 13d454396bd977d6a83c878ce6a83f0a8117e9c1
-          {PageDisplay()}
-        </div>
+        <div>{PageDisplay()}</div>
       </div>
     </>
   );
