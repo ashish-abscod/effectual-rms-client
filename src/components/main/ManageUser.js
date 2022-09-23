@@ -3,7 +3,7 @@ import AddNewUser from "./AddNewUser";
 import axios from "axios";
 export default function ManageUser() {
   const [userData, setUserData] = useState([]);
-  const [status, setStatus] = useState(true);
+  const [status] = useState(true);
 
   const target = useRef(null);
 
@@ -73,10 +73,8 @@ export default function ManageUser() {
                   </tr>
                 </thead>
                 <tbody className="fw-bold">
-                  {userData.map((item, i) => {
-                    if (item.status === true) {
-                    return (
-                      <>
+                  {userData.map((item, i) =>
+                    item.status === true ? 
                         <tr key={i}>
                           <th>{i + 1}</th>
                           <td>
@@ -107,9 +105,8 @@ export default function ManageUser() {
                             </button>
                           </td>
                         </tr>
-                      </>
-                    )};
-                  })}
+                        : ""
+                )}
                 </tbody>
               </table>
             </div>
