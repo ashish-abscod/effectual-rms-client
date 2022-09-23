@@ -8,7 +8,7 @@ export default function UploadFiles({ formData, setFormData }) {
 
   const uploadSingleFile = (e) => {
     if (e.target.files[0]) {
-    //   console.log("e.target.files[0]: ", e.target.files[0]);
+      //   console.log("e.target.files[0]: ", e.target.files[0]);
       const reader = new FileReader();
       setFile(URL.createObjectURL(e.target.files[0]));
       reader.readAsDataURL(e.target.files[0]);
@@ -30,16 +30,14 @@ export default function UploadFiles({ formData, setFormData }) {
             Upload File:
             <input
               type="file"
-              className="form-control" 
+              className="form-control"
               // disabled={loader}
               // disabled={file || loader}
               onChange={uploadSingleFile}
             />
           </label>
           <span className="ms-3"  >
-            {formData.file[0]?.name
-              ? "File's Selected ! "
-              : "File's not selected! "}
+            {formData.file ? "File(s) Selected" : "File(s) Not Selected"}
           </span>
         </div>
       )}
