@@ -10,17 +10,20 @@ import { BiCommentDetail } from 'react-icons/bi'
 import Moment from 'react-moment';
 import { useRef } from 'react';
 import DOMPurify from "dompurify";
+
+
+
 export default function CommentInbox() {
     const navigate = useNavigate();
-    const { projectId } = useContext(ProjectContext)
+    const { projectId, setReplyTo } = useContext(ProjectContext);
     const [data, setData] = useState();
     const elementRef = useRef();
+
 
     const getDiscussions = async (req, res) => {
         try {
             const response = await axios.get(`http://localhost:8080/discussion/${projectId}`);
             setData(response.data);
-            console.log(response.data);
         } catch (error) {
             console.log(error);
         }
@@ -33,7 +36,7 @@ export default function CommentInbox() {
 
     return (
         <>
-            <Link to={"/comment"} className="btn btn-sm btn-warning py-1 px-4 float-end me-3 fw-bold"> <BiCommentDetail className="fs-5 fw-bold"/> Comment </Link>
+            <Link to={"/comment"} className="btn btn-sm btn-warning py-1 px-4 float-end me-3 fw-bold" onClick={()=> setReplyTo({})}> <BiCommentDetail className="fs-5 fw-bold"/> Comment </Link>
             <section className='container commentInbox py-3 pt-0 h-100 overflow-auto'>
 
 
@@ -44,7 +47,7 @@ export default function CommentInbox() {
                             <span className='name text-primary fw-bold'>{item?.userName} </span> 
                             <span className='designation text-secondary fw-bold'>({item?.userRole})</span>
                             <span className='fw-normal'>: <Moment format='DD-MMM-YYYY hh:mm a' className='fw-bold'>{item?.time}</Moment> </span>
-                            <button type="button" className='btn btn-outline-primary rounded-pill ps-1 pe-2 py-1 float-end' onClick={() => navigate('/comment')}><BsReplyAllFill className='fs-4 pb-1' /> Reply</button>
+                            <button type="button" className='btn btn-outline-primary rounded-pill ps-1 pe-2 py-1 float-end' onClick={() => {setReplyTo({userName : item.userName, time : item.time}); navigate('/comment')}}><BsReplyAllFill className='fs-4 pb-1' /> Reply</button>
                         </div>
 
                         <div className='child-wrapper ps-md-2'>
