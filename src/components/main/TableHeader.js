@@ -4,7 +4,7 @@ import { CSVLink } from 'react-csv';
 export default function TableHeader({props}) {
     return (
         <>
-            <div className='d-flex justify-content-between mt-2'>
+            <div className='d-flex justify-content-between mt-2 px-3 py-1'>
                 <div>
                     <input type="search" placeholder="Quick Search Here..." className="form-control me-3" onChange={(e) => props.setSearch(e.target.value)} />
                 </div>
