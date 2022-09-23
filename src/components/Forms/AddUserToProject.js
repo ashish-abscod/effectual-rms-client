@@ -9,6 +9,7 @@ export default function AddUserToProject() {
   const [search, setSearch] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [assignedUsers, setAssignedUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { user } = useContext(UserContext);
   const { projectId } = useContext(ProjectContext);
 
@@ -17,9 +18,16 @@ export default function AddUserToProject() {
   }, []);
 
   const getUserData = async () => {
-    await fetch("http://localhost:8080/users")
+    try{
+      setLoading(true);
+      await fetch("http://localhost:8080/users")
       .then((res) => res.json())
       .then((data) => (setUserData(data), setFilteredUsers()));
+    }catch(error){
+      console.log(error);
+    }finally{
+      setLoading(false);
+    }
   };
 
   const submitData = async () => {
@@ -94,14 +102,14 @@ export default function AddUserToProject() {
             selectableRowsHighlight
             highlightOnHover
             subHeader
-            subHeaderComponent={<input type="search" className="form-control"></input>}
+            subHeaderComponent={<div className="d-flex justify-content-around bg-light py-2"><h5 className="d-inline text-primary">Assign Users</h5><input type="search" className="form-control d-inline w-50" placeholder="Search User..."></input></div>}
             striped
             customStyles={customStyles}
             responsive
             onSelectedRowsChange={(selectedRows) => {
               setAssignedUsers(selectedRows?.selectedRows);
-            }
-            }
+            }}
+            progressPending={loading}
           />
         </div>
 
