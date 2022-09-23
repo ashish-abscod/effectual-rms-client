@@ -104,8 +104,8 @@ export default function UpdateUser() {
                         }
                         style={{ width: "90%" }}
                       />
-                      {passType.first === "Password" ? <FaEyeSlash className="fs-2 text-secondary ms-2" onClick={()=>setPassType({...passType, first : "text"})} /> :
-                        <FaEye className="fs-2 text-secondary ms-2" onClick={()=>setPassType({...passType, first : "Password"})}/>
+                      {passType.first === "Password" ? <FaEyeSlash className="fs-4 text-secondary ms-3" onClick={()=>setPassType({...passType, first : "text"})} /> :
+                        <FaEye className="fs-4 text-secondary ms-3" onClick={()=>setPassType({...passType, first : "Password"})}/>
                       }
                       <label>Password:</label>
                       <span className="d-none">Error : Field Required</span>
@@ -123,8 +123,8 @@ export default function UpdateUser() {
                         }
                         style={{ width: "90%" }}
                       />
-                      {passType.second === "Password" ? <FaEyeSlash className="fs-2 text-secondary ms-2" onClick={()=>setPassType({...passType, second : "text"})} /> :
-                        <FaEye className="fs-2 text-secondary ms-2" onClick={()=>setPassType({...passType, second : "Password"})}/>
+                      {passType.second === "Password" ? <FaEyeSlash className="fs-4 text-secondary ms-3" onClick={()=>setPassType({...passType, second : "text"})} /> :
+                        <FaEye className="fs-4 text-secondary ms-3" onClick={()=>setPassType({...passType, second : "Password"})}/>
                       }
                       <label>Confirm Password:</label>
                       <span className="d-none">Error : Field Required</span>
