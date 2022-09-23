@@ -2,10 +2,11 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useContext } from 'react';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import myPDF from '../../../Assets/React Componen LifeCycle.pdf'
 import { ProjectContext } from '../../contexts/ProjectContext';
 import { BsReplyAllFill } from 'react-icons/bs'
+import { BiCommentDetail } from 'react-icons/bi'
 import Moment from 'react-moment';
 import { useRef } from 'react';
 import DOMPurify from "dompurify";
@@ -32,7 +33,9 @@ export default function CommentInbox() {
 
     return (
         <>
-            <section className='container commentInbox py-3 h-100 overflow-auto'>
+            <Link to={"/comment"} className="btn btn-sm btn-warning py-1 px-4 float-end me-3 fw-bold"> <BiCommentDetail className="fs-5 fw-bold"/> Comment </Link>
+            <section className='container commentInbox py-3 pt-0 h-100 overflow-auto'>
+
 
                 {data?.map((item, i) =>
                     <div className='row parent-wrapper bg-light py-2 border-top border-bottom mb-3' key={i}>
