@@ -11,6 +11,7 @@ export default function AddNewUser() {
     picture: "",
     status:true
   });
+ 
   const [file, setFile] = useState();
 
   const uploadSingleFile = (e) => {
@@ -121,19 +122,7 @@ export default function AddNewUser() {
                       <label>Confirm Password:</label>
                       <span className="d-none">Error : Field Required</span>
                     </div>
-                    {/* <div className="input-field">
-                      <input
-                        type="text"
-                        className="form-control"
-                        required
-                        value={addUser.role}
-                        onChange={(e) =>
-                          setAddUser({ ...addUser, role: e.target.value })
-                        }
-                      />
-                      <label>Role:</label>
-                      <span className="d-none">Error : Field Required</span>
-                    </div> */}
+                    
                     <div className="input-field">
                       <select className="form-select"
                       type="text"

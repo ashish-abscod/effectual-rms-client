@@ -1,42 +1,39 @@
 import React, { useState,useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import axios from 'axios'
-import { useParams } from "react-router-dom";
-
 
 
 export default function UpdateUser() {
+
+  const { user,setUser } = useContext(UserContext);
   const [addUser, setAddUser] = useState({
-    name: "",
-    email: "",
+    name: user?.userData?.name ? user?.userData?.name : "",
+    email: user?.userData?.email ? user?.userData?.email : "",
     password: "",
     confirmPassword: "",
-    role: "",
-    picture: "",
-
+    
   });
+  
 
-  let {_id}= useParams
+  // const [file, setFile] = useState();
 
-  const [file, setFile] = useState();
-
-  const uploadSingleFile = (e) => {
-    if (e.target.files[0]) {
-      // console.log("e.target.files[0]: ", e.target.files[0]);
-      const reader = new FileReader();
-      setFile(URL.createObjectURL(e.target.files[0]));
-      reader.readAsDataURL(e.target.files[0]);
-      reader.onloadend = () => {
-        // console.log("reader.result: ", reader.result);
-        setAddUser({ ...addUser, picture: reader.result });
-        setFile(reader.result);
-      };
-    }
-  };
+  // const uploadSingleFile = (e) => {
+  //   if (e.target.files[0]) {
+  //     // console.log("e.target.files[0]: ", e.target.files[0]);
+  //     const reader = new FileReader();
+  //     setFile(URL.createObjectURL(e.target.files[0]));
+  //     reader.readAsDataURL(e.target.files[0]);
+  //     reader.onloadend = () => {
+  //       // console.log("reader.result: ", reader.result);
+  //       setAddUser({ ...addUser, picture: reader.result });
+  //       setFile(reader.result);
+  //     };
+  //   }
+  // };
  
 
 
-  const { user,setUser } = useContext(UserContext);
+  
   const handleUsersEdit = async () => {
     try{
       let res =  await axios.put(`http://localhost:8080/users/update/${user.userData._id}`,addUser);
@@ -77,10 +74,9 @@ export default function UpdateUser() {
                       <input
                         type="text"
                         className="form-control"
-                        required
-                        //  value={user.userData.name}
+                         value={addUser.name}
                         onChange={(e) =>
-                          setAddUser({ ...addUser, name: e.target.value })
+                          setAddUser({ ...addUser, [addUser.name]: e.target.value })
                         }
                       />
                       <label>Name:</label>
@@ -90,10 +86,9 @@ export default function UpdateUser() {
                       <input
                         type="text"
                         className="form-control"
-                        required
-                        // value={user.userData.email}
+                        value={addUser.email}
                         onChange={(e) =>
-                          setAddUser({ ...addUser, email: e.target.value })
+                          setAddUser({ ...addUser,[addUser.email]: e.target.value })
                         }
                       />
                       <label>Email:</label>
@@ -125,7 +120,7 @@ export default function UpdateUser() {
                       <span className="d-none">Error : Field Required</span>
                     </div>
                   </div>
-                  <div className="col-md-4">
+                  {/* <div className="col-md-4">
                     <div>
                       <label
                         htmlFor="exampleFormControlInput1"
@@ -145,7 +140,7 @@ export default function UpdateUser() {
                         width="200px"
                       />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -168,8 +163,7 @@ export default function UpdateUser() {
                       email: "",
                       password: "",
                       confirmPassword: "",
-                      role: "",
-                      picture: "",
+                     
                     })
                   }
                 >
@@ -180,7 +174,7 @@ export default function UpdateUser() {
                   className="btn theme-bg text-white rounded-pill"
                   onClick = {handleUsersEdit}
                 >
-                  Add User
+                  Update Profile
                 </button>
               </div>
             </div>
