@@ -1,71 +1,95 @@
-import React from 'react'
+import axios from 'axios';
+import { useState } from 'react';
+import { useContext } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
-import ashish from '../../../Assets/Ashish-Sharma.jpg'
 import myPDF from '../../../Assets/React Componen LifeCycle.pdf'
+import { ProjectContext } from '../../contexts/ProjectContext';
+import { BsReplyAllFill } from 'react-icons/bs'
+import Moment from 'react-moment';
+import { useRef } from 'react';
+import DOMPurify from "dompurify";
 export default function CommentInbox() {
     const navigate = useNavigate();
+    const { projectId } = useContext(ProjectContext)
+    const [data, setData] = useState();
+    const elementRef = useRef();
+
+    const getDiscussions = async (req, res) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/discussion/${projectId}`);
+            setData(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+        getDiscussions()
+    }, [])
+
+
+
     return (
         <>
             <section className='container commentInbox py-3 h-100 overflow-auto'>
 
-                <div className='row parent-wrapper position-relative bg-light py-2 border-top border-bottom mb-3'>
+                {data?.map((item, i) =>
+                    <div className='row parent-wrapper bg-light py-2 border-top border-bottom mb-3' key={i}>
 
-                    <div className='parent-profile col-2 col-md-1'>
-                        <img src={ashish} alt="Ashish" width={45} height={45} className='border rounded-circle' />
-                    </div>
-                    <div className='parent-profile-info col-10 col-md-11 position-absolute' style={{ fontSize: "14px", left: "4em" }}>
-                        <span className='name text-primary fw-normal'>Ashish Sharma</span> - <span>posted 1 d ago</span>
-                        <span className='designation d-block text-secondary'>Developer Effectual</span>
-                    </div>
-
-                    <div className='child-wrapper col-md-12 ps-md-5'>
-                        <div className='comment'>
-                            <div className='ms-md-3'>
-                                <div className='text'>
-                                   Reprehenderit aute voluptate officia nisi deserunt irure labore id commodo eu id reprehenderit velit. Ea eu sit commodo sit amet duis in nisi. Qui magna quis deserunt eu deserunt proident cillum dolore. Elit sint nisi reprehenderit tempor duis exercitation duis adipisicing nulla sint eiusmod laborum.
-                                </div>
-                                <div className='files mt-3'>
-                                    <span className='fw-bold'>Attached Files: </span>
-                                    <a href={myPDF} className="me-3"> My PDF</a>
-                                    <a href={myPDF} className="me-3">My Document</a>
-                                    <a href={myPDF} className="me-3">My Document</a>
-                                    <a href={myPDF} className="me-3">My Document</a>
-                                </div>
-                            </div>
-                            <div className='files overflow-auto text-center d-flex justify-content-center align-items-center p-3 ps-0'>
-                                <button type="button" className='btn btn-outline-primary rounded-pill px-3 ms-2' onClick={()=> navigate('/comment')}>Reply Me</button>
-                                <div className='border-bottom flex-grow-1 border-3'></div>
-                                {/* <div className='border-bottom w-25 border-3 d-none d-md-block'></div> */}
-                            </div>
+                        <div className='parent-profile-info' style={{ fontSize: "14px", left: "4em" }}>
+                            <span className='name text-primary fw-bold'>{item?.userName} </span> 
+                            <span className='designation text-secondary fw-bold'>({item?.userRole})</span>
+                            <span className='fw-normal'>: <Moment format='DD-MMM-YYYY hh:mm a' className='fw-bold'>{item?.time}</Moment> </span>
+                            <button type="button" className='btn btn-outline-primary rounded-pill ps-1 pe-2 py-1 float-end' onClick={() => navigate('/comment')}><BsReplyAllFill className='fs-4 pb-1' /> Reply</button>
                         </div>
 
-                        <div className='replies-container ps-4 ps-md-0'>
-                            <div className='row replie pb-4 position-relative'>
-
-                                <div className='replie-profile col-2 col-md-1'>
-                                    <img src={ashish} alt="Ashish" width={45} height={45} className='border rounded-circle' />
-                                </div>
-                                <div className='replie-profile-info col-10 col-md-11 position-absolute' style={{ fontSize: "14px", left: "4em" }}>
-                                    <span className='name text-primary fw-normal'>Ashish Sharma</span> - <span>replied 3 h ago</span>
-                                    <span className='designation d-block text-secondary'>Developer Effectual</span>
-                                </div>
-                                <div className='replie-content ms-md-3' style={{ maxWidth: "fit-content" }}>
-                                    <div className='replie-txt'>
-                                        Veniam nulla anim consequat culpa do Lorem id cupidatat incididunt esse esse nostrud.Sit cupidatat exercitation deserunt pariatur occaecat enim enim do proident et incididunt adipisicing. Laboris dolor fugiat consectetur dolor tempor veniam cillum reprehenderit ipsum. Dolore ea nulla incididunt proident occaecat adipisicing officia voluptate nulla. Irure nulla et mollit laboris. Esse anim proident velit eu culpa velit magna eiusmod do anim proident et. Do duis quis minim fugiat nulla ipsum et magna.
+                        <div className='child-wrapper ps-md-2'>
+                            <div className='comment'>
+                                <div className='ms-md-3 mt-2'>
+                                    <div className='text' ref={elementRef} dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(item?.comment)}}>
                                     </div>
-                                    <div className='files mt-3'>
-                                        <span className='fw-bold'>Attached Files: </span>
-                                        <a href={myPDF} className="me-3">My Document</a>
-                                        <a href={myPDF} className="me-3">My Document</a>
-                                        <a href={myPDF} className="me-3">My Document</a>
-                                        <a href={myPDF} className="me-3">My Document</a>
+                                    <div className='comment-footer row justify-content-between align-items-center mb-2'>
+                                        <div className='files mt-3 col-lg-10'>
+                                            <span className='fw-bold'>Attached Files: </span>
+                                            <a href={myPDF} className="me-3"> My PDF</a>
+                                            <a href={myPDF} className="me-3">My Document</a>
+                                            <a href={myPDF} className="me-3">My Document</a>
+                                            <a href={myPDF} className="me-3">My Document</a>
+                                        </div>
+                                        <div className='col-lg-2 ps-lg-5'>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div className='replies-container ps-4 ps-md-0'>
+                                {item?.myReplies.map((item, i) =>
+                                    <div className='row replie py-2 ps-3 ps-md-5' key={i}>
+                                        <div className="light-grey border-top border-3 border-primary py-2" >
+                                            <div className='replie-profile-info' style={{ fontSize: "14px", left: "4em" }}>
+                                                <span className='name text-primary fw-bold'>{item?.userName} </span>
+                                                <span className='designation text-secondary fw-bold'> ({item?.userRole}) </span>
+                                                <span>: replied on <Moment format='DD-MMM-YYYY hh:mm a' className='fw-bold'>{item?.time}</Moment></span>
+                                            </div>
+                                            <div className='replie-content' style={{ maxWidth: "fit-content" }}>
+                                                <div className='replie-txt mt-2' dangerouslySetInnerHTML={{__html:item?.replie}}>
+                                                </div>
+                                                <div className='files mt-3'>
+                                                    <span className='fw-bold'>Attached Files: </span>
+                                                    <a href={myPDF} className="me-3">My Document</a>
+                                                    <a href={myPDF} className="me-3">My Document</a>
+                                                    <a href={myPDF} className="me-3">My Document</a>
+                                                    <a href={myPDF} className="me-3">My Document</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                )}
 
 
             </section>
