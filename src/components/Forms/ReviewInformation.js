@@ -2,6 +2,8 @@ import React from 'react'
 
 export default function ReviewInformation({ formData }) {
 
+  // console.log(formData)
+
   return (
     <>
       <div className='row gy-3 gy-md-3 gx-4 pt-3 row-cols-lg-3 row-cols-md-2 justify-content-evenly'>
@@ -51,7 +53,7 @@ export default function ReviewInformation({ formData }) {
             <li className="list-group-item d-flex justify-content-between align-items-start">
               <div className="ms-2 me-auto">
                 <div>Prior Art CuttOff Date</div>
-                <span className='fw-bold theme-color'>{formData?.PriorArtCuttOffDate  ? formData?.PriorArtCuttOffDate : "..."}</span>
+                <span className='fw-bold theme-color'>{formData?.PriorArtCuttOffDate ? formData?.PriorArtCuttOffDate : "..."}</span>
               </div>
             </li>
             <li className="list-group-item d-flex justify-content-between align-items-start">
@@ -89,10 +91,10 @@ export default function ReviewInformation({ formData }) {
 
         <div className='col-md-6 col-lg-4' style={{ cursor: "pointer" }}>
           <ol className="list-group">
-          <li className="list-group-item d-flex justify-content-between align-items-start">
+            <li className="list-group-item d-flex justify-content-between align-items-start">
               <div className="ms-2 me-auto">
                 <div>Uploaded Files</div>
-                <span className='fw-bold theme-color'>{formData?.ChooseFile[0]?.name ? "File(s) Selected" : "File(s) Not Selected"}</span>
+                <span className='fw-bold theme-color'>{formData.file ? "File(s) Selected" : "File(s) Not Selected"}</span>
               </div>
             </li>
             <li className="list-group-item d-flex justify-content-between align-items-start">

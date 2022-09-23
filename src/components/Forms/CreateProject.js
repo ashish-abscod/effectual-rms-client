@@ -51,13 +51,13 @@ export default function CreateProject() {
     RequirementForDelivery: "",
     RequirementDeliveryDate: "",
     PriorArtCuttOffDate: "",
-    ChooseFile: {},
     StandardRelated: "",
     SSONeeded: "",
     USIPRSpecial: "",
     ImportantClaims: "",
     UnimportantClaims: "",
-    UsefulInformationForSearch: "", 
+    UsefulInformationForSearch: "",
+    file:""
   });
 
   const FormTitles = [
@@ -101,10 +101,12 @@ export default function CreateProject() {
   const projectHandler = async () => {
     if (projectId === null) {
       try {
-        await axios.post(
+      const res =  await axios.post(
           "http://localhost:8080/projects/create",
           formData
+          
         );
+        console.log(res)
       } catch (error) {
         console.log(error);
       }

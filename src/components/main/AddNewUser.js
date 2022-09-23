@@ -11,21 +11,22 @@ export default function AddNewUser() {
     picture: "",
     status:true
   });
-  const [file, setFile] = useState();
+ 
+  // const [file, setFile] = useState();
 
-  const uploadSingleFile = (e) => {
-    if (e.target.files[0]) {
-      // console.log("e.target.files[0]: ", e.target.files[0]);
-      const reader = new FileReader();
-      setFile(URL.createObjectURL(e.target.files[0]));
-      reader.readAsDataURL(e.target.files[0]);
-      reader.onloadend = () => {
-        // console.log("reader.result: ", reader.result);
-        setAddUser({ ...addUser, picture: reader.result });
-        setFile(reader.result);
-      };
-    }
-  };
+  // const uploadSingleFile = (e) => {
+  //   if (e.target.files[0]) {
+  //     // console.log("e.target.files[0]: ", e.target.files[0]);
+  //     const reader = new FileReader();
+  //     setFile(URL.createObjectURL(e.target.files[0]));
+  //     reader.readAsDataURL(e.target.files[0]);
+  //     reader.onloadend = () => {
+  //       // console.log("reader.result: ", reader.result);
+  //       setAddUser({ ...addUser, picture: reader.result });
+  //       setFile(reader.result);
+  //     };
+  //   }
+  // };
 
   const submitData = async () => {
     try {
@@ -121,19 +122,7 @@ export default function AddNewUser() {
                       <label>Confirm Password:</label>
                       <span className="d-none">Error : Field Required</span>
                     </div>
-                    {/* <div className="input-field">
-                      <input
-                        type="text"
-                        className="form-control"
-                        required
-                        value={addUser.role}
-                        onChange={(e) =>
-                          setAddUser({ ...addUser, role: e.target.value })
-                        }
-                      />
-                      <label>Role:</label>
-                      <span className="d-none">Error : Field Required</span>
-                    </div> */}
+                    
                     <div className="input-field">
                       <select className="form-select"
                       type="text"
@@ -158,7 +147,7 @@ export default function AddNewUser() {
                       <span className="d-none">Error : Field Required</span>
                     </div>
                   </div>
-                  <div className="col-md-4 mt-4">
+                  {/* <div className="col-md-4 mt-4">
                     <div className="mt-3">
                       <label
                         htmlFor="exampleFormControlInput1"
@@ -180,7 +169,7 @@ export default function AddNewUser() {
                         width="200px"
                       />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
