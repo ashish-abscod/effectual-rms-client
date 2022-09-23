@@ -102,9 +102,14 @@ export default function CreateProject() {
       try {
       const res =  await axios.post(
           "http://localhost:8080/projects/create",
-          formData
+          formData,
           
         );
+        const info =  await axios.post(
+          "http://localhost:8080/files",
+          formData
+        );
+        console.log(info)
         console.log(res)
       } catch (error) {
         console.log(error);
