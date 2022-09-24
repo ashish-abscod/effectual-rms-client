@@ -58,7 +58,9 @@ export default function UpdateUser() {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title text-center theme-color">Update Profile</h5>
+              <h5 className="modal-title text-center theme-color">
+                Update Profile
+              </h5>
               <button
                 type="button"
                 className="btn-close"
@@ -144,7 +146,7 @@ export default function UpdateUser() {
                         onChange={uploadSingleFile}
                       />
                       <img
-                       src={file && file}
+                        src={file && file}
                         alt="profile"
                         height="200px"
                         width="200px"

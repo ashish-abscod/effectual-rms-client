@@ -51,14 +51,28 @@ export default function ManageUser() {
       <div className="container">
         <div className="row pt-3 justify-content-between">
           <div className="col-md-3">
-            <h3 className='text-center theme-color'>Users List</h3>
+            <h3 className="text-center theme-color">Users List</h3>
           </div>
           <div className="col-md-4">
-            <input id="search" name="search" className="form-control me-2 border border-primary" type="search" placeholder="Search" onChange={searchHandle} />
+            <input
+              id="search"
+              name="search"
+              className="form-control me-2 border border-primary"
+              type="search"
+              placeholder="Search"
+              onChange={searchHandle}
+            />
           </div>
           <div className="col-md-3">
             <AddNewUser />
-            <button type="button" className="btn btn-outline-secondary rounded-pill w-100" data-bs-toggle="modal" data-bs-target="#addUser">Add New User</button>
+            <button
+              type="button"
+              className="btn btn-outline-secondary rounded-pill w-100"
+              data-bs-toggle="modal"
+              data-bs-target="#addUser"
+            >
+              Add New User
+            </button>
           </div>
         </div>
         <div className="row pt-3">

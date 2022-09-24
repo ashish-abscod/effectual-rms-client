@@ -17,6 +17,25 @@ export default function AddUserToProject() {
     getUserData();
   }, []);
 
+  // const updateProject = () => {
+  //   if (projectId === null) {
+  //     try{
+
+  //     }catch(error){
+
+  //     }
+  //   }
+  // };
+
+  const submitData = async () => {
+    let info = await axios.post("http://localhost:8080/assigned/", {
+      userId: [assignedUsers],
+      projectId: "",
+      assignedBy: user.userData._id,
+    });
+    console.log(info);
+  };
+
   const getUserData = async () => {
     try{
       setLoading(true);
@@ -30,16 +49,7 @@ export default function AddUserToProject() {
     }
   };
 
-  const submitData = async () => {
-    // let info = await axios.post("http://localhost:8080/assigned/", {
-    //   userId: assignedUsers._id,
-    //   projectId: "",
-    //   assignedBy: user.userData._id,
-    // });
-    // console.log(info);
-    console.log(assignedUsers._id);
-  };
-
+  console.log(assignedUsers);
   //multiple fields search based on search key
   useEffect(() => {
     const filters = userData.filter(
@@ -83,9 +93,9 @@ export default function AddUserToProject() {
     },
     table: {
       style: {
-        maxHeight: "49vh!important"
-      }
-    }
+        maxHeight: "49vh!important",
+      },
+    },
   };
 
   return (
@@ -114,6 +124,7 @@ export default function AddUserToProject() {
         </div>
 
         <div className="col-lg-5">
+          <button onClick={submitData}>submit</button>
           <table className="table mt-4 table-striped">
             <thead className="thead-dark">
               <tr>
@@ -122,13 +133,13 @@ export default function AddUserToProject() {
                 <th scope="col">Role</th>
               </tr>
             </thead>
-            {assignedUsers.map((item) =>
+            {assignedUsers.map((item) => (
               <tr className="mb-2">
                 <td>{item.name}</td>
                 <td>{item.email}</td>
                 <td>{item.role}</td>
               </tr>
-            )}
+            ))}
           </table>
         </div>
       </div>

@@ -11,11 +11,12 @@ export default function CreateProject() {
   const [page, setPage] = useState(0);
   const { projectId } = useContext(ProjectContext);
 
-
   const getProjects = async () => {
     if (projectId !== null) {
       try {
-        const res = await axios.get(`http://localhost:8080/projects/${projectId}`);
+        const res = await axios.get(
+          `http://localhost:8080/projects/${projectId}`
+        );
         console.log(res.data);
         setFormData({...formData,
           SearchObject : res.data.searchObject ? res.data.searchObject : "",
@@ -30,15 +31,13 @@ export default function CreateProject() {
           ImportantClaims: res.data.impclaim ? res.data.impclaim : "",
           UnimportantClaims: res.data.nonImpClaim ? res.data.nonImpClaim : "",
           UsefulInformationForSearch: res.data.info ? res.data.info : ""
-
-
         });
       } catch (error) {
         console.log(error);
       }
     }
-  }
-  //getting project based on id 
+  };
+  //getting project based on id
   useEffect(() => {
     getProjects();
   }, []);
@@ -116,7 +115,7 @@ export default function CreateProject() {
           `http://localhost:8080/projects/update/${projectId}`,
           formData
         );
-        console.log(res)
+        console.log(res);
       } catch (error) {
         console.log(error);
       }
@@ -139,10 +138,10 @@ export default function CreateProject() {
                   page === 0
                     ? "25%"
                     : page === 1
-                      ? "50%"
-                      : page === 2
-                        ? "75%"
-                        : "100%",
+                    ? "50%"
+                    : page === 2
+                    ? "75%"
+                    : "100%",
               }}
               aria-valuenow="25"
               aria-valuemin="0"
@@ -177,9 +176,7 @@ export default function CreateProject() {
           </div>
         </div>
 
-        <div>
-          {PageDisplay()}
-        </div>
+        <div>{PageDisplay()}</div>
       </div>
     </>
   );
