@@ -133,8 +133,8 @@ export default function AddUserToProject() {
                 <th scope="col">Role</th>
               </tr>
             </thead>
-            {assignedUsers.map((item) => (
-              <tr className="mb-2">
+            {assignedUsers.map((item,i) => (
+              <tr className="mb-2" key={i}>
                 <td>{item.name}</td>
                 <td>{item.email}</td>
                 <td>{item.role}</td>
