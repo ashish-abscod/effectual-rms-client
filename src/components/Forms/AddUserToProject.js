@@ -28,8 +28,8 @@ export default function AddUserToProject() {
   // };
 
   const submitData = async () => {
-    let info = await axios.post("http://localhost:8080/assigned/", {
-      userId: [assignedUsers],
+    let info = await axios.post("http://localhost:8080/assigned/createUser", {
+      userId: assignedUsers,
       projectId: "",
       assignedBy: user.userData._id,
     });

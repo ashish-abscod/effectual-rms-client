@@ -4,6 +4,8 @@ import axios from "axios";
 export default function ManageUser() {
   const [userData, setUserData] = useState([]);
   const [status] = useState(true);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [search, setSearch] = useState("");
 
   const target = useRef(null);
 
@@ -14,55 +16,49 @@ export default function ManageUser() {
   const getUserData = async () => {
     await fetch("http://localhost:8080/users")
       .then((res) => res.json())
-      .then((data) => setUserData(data));
+      .then((data) => (setUserData(data), setFilteredUsers()));
   };
 
-  const searchHandle = async (event) => {
-    let key = event.target.value;
-    if (key) {
-      let result = await fetch(`http://localhost:8080/users/search/${key}`);
-      result = await result.json();
-      if (result) {
-        setUserData(result);
-      }
-    } else {
-      getUserData();
-    }
-  };
+  // const searchHandle = async (event) => {
+  //   let key = event.target.value;
+  //   if (key) {
+  //     let result = await fetch(`http://localhost:8080/users/search/${key}`);
+  //     result = await result.json();
+  //     if (result) {
+  //       setUserData(result);
+  //     }
+  //   } else {
+  //     getUserData();
+  //   }
+  // };
+  //multiple fields search based on search key
+  useEffect(() => {
+    const filters = userData.filter(
+      (user) =>
+        JSON.stringify(user).toLowerCase().indexOf(search.toLowerCase()) !== -1
+    );
 
-<<<<<<< HEAD
-  const handleUsersDelete = async (id) => {
-    try {
-      let res = await axios.put(
-        `http://localhost:8080/users/delete/${id}`,
-        status
-      );
-      if (res) {
-        getUserData();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    setFilteredUsers(filters);
+  }, [userData, search]);
 
-=======
   const handleUsersDelete = async (id, name) => {
     const confirmation = window.confirm(`Are you sure to delete:  ${name} ?`);
-    if (confirmation){
+    if (confirmation) {
       try {
-        let res = await axios.put(`http://localhost:8080/users/delete/${id}`, status);
+        let res = await axios.put(
+          `http://localhost:8080/users/delete/${id}`,
+          status
+        );
         if (res) {
           getUserData();
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
-    return
+    return;
   };
 
-
->>>>>>> b99b16f78e45390860a828e62378448662e7c353
   return (
     <>
       <div className="container">
@@ -77,7 +73,7 @@ export default function ManageUser() {
               className="form-control me-2 border border-primary"
               type="search"
               placeholder="Search"
-              onChange={searchHandle}
+              onChange={setFilteredUsers}
             />
           </div>
           <div className="col-md-3">
@@ -107,46 +103,8 @@ export default function ManageUser() {
                   </tr>
                 </thead>
                 <tbody className="fw-bold">
-<<<<<<< HEAD
-                  {userData.map((item, i) => {
-                    if (item.status === true) {
-                      return (
-                        <>
-                          <tr key={i}>
-                            <th>{i + 1}</th>
-                            <td>
-                              <div
-                                className="rounded shadow me-3"
-                                style={{ width: "50px", height: "50px" }}
-                              >
-                                <img
-                                  src={item.picture}
-                                  alt=""
-                                  className="w-100 h-100 overflow-hidden rounded "
-                                ></img>
-                              </div>
-                            </td>
-                            <td>{item.name}</td>
-                            <td>{item.email}</td>
-                            <td>{item.role}</td>
-                            <td className="text-center">
-                              <button
-                                ref={target}
-                                type="button"
-                                className="btn btn-outline-danger rounded-pill"
-                                onClick={() => handleUsersDelete(item._id)}
-                              >
-                                Remove
-                              </button>
-                            </td>
-                          </tr>
-                        </>
-                      );
-                    }
-                  })}
-=======
                   {userData.map((item, i) =>
-                    item.status === true ?
+                    item.status === true ? (
                       <tr key={i}>
                         <th>{i + 1}</th>
                         {/* <td>
@@ -177,9 +135,10 @@ export default function ManageUser() {
                           </button>
                         </td>
                       </tr>
-                      : ""
+                    ) : (
+                      ""
+                    )
                   )}
->>>>>>> b99b16f78e45390860a828e62378448662e7c353
                 </tbody>
               </table>
             </div>
