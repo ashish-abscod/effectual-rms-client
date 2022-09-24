@@ -3,7 +3,7 @@ import profile from "../../Assets/Effectual.jpg";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import UpdateUser from "./UpdateUser";
-import {BiUserCircle, BiLogOut} from 'react-icons/bi';
+import { BiUserCircle, BiLogOut } from 'react-icons/bi';
 
 export default function Header({ projectSelected }) {
   const { user, setUser } = useContext(UserContext);
@@ -38,19 +38,13 @@ export default function Header({ projectSelected }) {
             id="navbarSupportedContent"
           >
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <a
-                  className="nav-link active me-2"
+              <li className="nav-item" onClick={()=>{navigate("/main")}}>
+                <button
+                  className="nav-link active me-2 p-0 bg-transparent border-0 text-white "
                   aria-current="page"
-                  href="/main"
                 >
                   <i className="bi bi-house-door me-1"></i>Home
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link me-2" href="/main">
-                  <i className="bi bi-activity me-1"></i>Activites
-                </a>
+                </button>
               </li>
               <li className="nav-item d-lg-none">
                 <a className="nav-link" href="/#">
@@ -91,7 +85,7 @@ export default function Header({ projectSelected }) {
                     data-bs-toggle="modal"
                     data-bs-target="#changeProfile"
                   >
-                    <BiUserCircle className="fs-5 me-2"/>  Profile
+                    <BiUserCircle className="fs-5 me-2" />  Profile
                   </button>
                 </li>
                 <li>
@@ -111,7 +105,7 @@ export default function Header({ projectSelected }) {
                       navigate("/");
                     }}
                   >
-                   <BiLogOut className="fs-5 me-2"/> Sign Out
+                    <BiLogOut className="fs-5 me-2" /> Sign Out
                   </button>
                 </li>
               </ul>
