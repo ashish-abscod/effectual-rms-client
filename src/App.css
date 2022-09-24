@@ -105,7 +105,9 @@ header.TUEFO {
   width: 18px;
   height: 18px;
 }
-
+.bMgaAx div:first-child{
+  white-space: unset!important;
+}
 #myTabContent .gyOPpE{
   max-height: 63vh!important;
 }
