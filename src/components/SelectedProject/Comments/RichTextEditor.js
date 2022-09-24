@@ -4,7 +4,7 @@ import JoditEditor from "jodit-react";
 import React from 'react'
 import { useMemo } from 'react';
 
-export default function RichTextEditor({content, setContent }) {
+export default function RichTextEditor({body, setBody }) {
     const editor = useRef(null);
     const config = useMemo(
         () => ({
@@ -18,8 +18,8 @@ export default function RichTextEditor({content, setContent }) {
         <JoditEditor
             ref={editor}
             tabIndex={1} // tabIndex of textarea
-            onChange={newContent => setContent({...content, comment : newContent})}
-            onBlur={newContent => setContent({...content, comment : newContent})}
+            onChange={newContent => setBody({...body, content : newContent})}
+            onBlur={newContent => setBody({...body, content : newContent})}
             config={config}
         />
     )
