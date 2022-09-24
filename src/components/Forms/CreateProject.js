@@ -18,6 +18,7 @@ export default function CreateProject() {
           `http://localhost:8080/projects/${projectId}`
         );
         console.log(res.data);
+<<<<<<< HEAD
         setFormData({
           ...formData,
           SearchObject: res.data.searchObject,
@@ -32,6 +33,21 @@ export default function CreateProject() {
           ImportantClaims: res.data.impclaim,
           UnimportantClaims: res.data.nonImpClaim,
           UsefulInformationForSearch: res.data.info,
+=======
+        setFormData({...formData,
+          SearchObject : res.data.searchObject ? res.data.searchObject : "",
+          TechnicalField : res.data.technicalField ?  res.data.technicalField : "",
+          ClaimsToBeSearched : res.data.claims ? res.data.claims : "",
+          RequirementForDelivery : res.data.reqDelivery ? res.data.reqDelivery : "",
+          RequirementDeliveryDate : res.data.deliveryDate ? res.data.deliveryDate : "",
+          PriorArtCuttOffDate : res.data.priorArtdate ? res.data.priorArtdate : "",
+          StandardRelated : res.data.standard ? res.data.standard : "",
+          SSONeeded : res.data.sso ? res.data.sso : "",
+          USIPRSpecial : res.data.usipr ? res.data.usipr : "",
+          ImportantClaims: res.data.impclaim ? res.data.impclaim : "",
+          UnimportantClaims: res.data.nonImpClaim ? res.data.nonImpClaim : "",
+          UsefulInformationForSearch: res.data.info ? res.data.info : ""
+>>>>>>> b99b16f78e45390860a828e62378448662e7c353
         });
       } catch (error) {
         console.log(error);
@@ -51,13 +67,13 @@ export default function CreateProject() {
     RequirementForDelivery: "",
     RequirementDeliveryDate: "",
     PriorArtCuttOffDate: "",
-    ChooseFile: {},
     StandardRelated: "",
     SSONeeded: "",
     USIPRSpecial: "",
     ImportantClaims: "",
     UnimportantClaims: "",
     UsefulInformationForSearch: "",
+    file:""
   });
 
   const FormTitles = [
@@ -101,7 +117,21 @@ export default function CreateProject() {
   const projectHandler = async () => {
     if (projectId === null) {
       try {
+<<<<<<< HEAD
         await axios.post("http://localhost:8080/projects/create", formData);
+=======
+      const res =  await axios.post(
+          "http://localhost:8080/projects/create",
+          formData,
+          
+        );
+        const info =  await axios.post(
+          "http://localhost:8080/files",
+          formData
+        );
+        console.log(info)
+        console.log(res)
+>>>>>>> b99b16f78e45390860a828e62378448662e7c353
       } catch (error) {
         console.log(error);
       }

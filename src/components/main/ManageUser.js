@@ -3,7 +3,7 @@ import AddNewUser from "./AddNewUser";
 import axios from "axios";
 export default function ManageUser() {
   const [userData, setUserData] = useState([]);
-  const [status, setStatus] = useState(true);
+  const [status] = useState(true);
 
   const target = useRef(null);
 
@@ -30,6 +30,7 @@ export default function ManageUser() {
     }
   };
 
+<<<<<<< HEAD
   const handleUsersDelete = async (id) => {
     try {
       let res = await axios.put(
@@ -44,6 +45,24 @@ export default function ManageUser() {
     }
   };
 
+=======
+  const handleUsersDelete = async (id, name) => {
+    const confirmation = window.confirm(`Are you sure to delete:  ${name} ?`);
+    if (confirmation){
+      try {
+        let res = await axios.put(`http://localhost:8080/users/delete/${id}`, status);
+        if (res) {
+          getUserData();
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    return
+  };
+
+
+>>>>>>> b99b16f78e45390860a828e62378448662e7c353
   return (
     <>
       <div className="container">
@@ -80,7 +99,7 @@ export default function ManageUser() {
                 <thead className="table-dark" data-sticky-header={true}>
                   <tr>
                     <th>#</th>
-                    <th>Photo</th>
+                    {/* <th>Photo</th> */}
                     <th>User Name</th>
                     <th>Email Id</th>
                     <th>Role</th>
@@ -88,6 +107,7 @@ export default function ManageUser() {
                   </tr>
                 </thead>
                 <tbody className="fw-bold">
+<<<<<<< HEAD
                   {userData.map((item, i) => {
                     if (item.status === true) {
                       return (
@@ -124,6 +144,42 @@ export default function ManageUser() {
                       );
                     }
                   })}
+=======
+                  {userData.map((item, i) =>
+                    item.status === true ?
+                      <tr key={i}>
+                        <th>{i + 1}</th>
+                        {/* <td>
+                          <div
+                            className="rounded shadow me-3"
+                            style={{ width: "50px", height: "50px" }}
+                          >
+                            <img
+                              src={item.picture}
+                              alt=""
+                              className="w-100 h-100 overflow-hidden rounded "
+                            ></img>
+                          </div>
+                        </td> */}
+                        <td>{item.name}</td>
+                        <td>{item.email}</td>
+                        <td>{item.role}</td>
+                        <td className="text-center">
+                          <button
+                            ref={target}
+                            type="button"
+                            className="btn btn-outline-danger rounded-pill"
+                            onClick={() =>
+                              handleUsersDelete(item._id, item.name)
+                            }
+                          >
+                            Remove
+                          </button>
+                        </td>
+                      </tr>
+                      : ""
+                  )}
+>>>>>>> b99b16f78e45390860a828e62378448662e7c353
                 </tbody>
               </table>
             </div>

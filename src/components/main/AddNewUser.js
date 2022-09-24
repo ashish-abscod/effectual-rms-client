@@ -9,23 +9,24 @@ export default function AddNewUser() {
     confirmPassword: "",
     role: "",
     picture: "",
-    status:true
+    status: true
   });
-  const [file, setFile] = useState();
 
-  const uploadSingleFile = (e) => {
-    if (e.target.files[0]) {
-      // console.log("e.target.files[0]: ", e.target.files[0]);
-      const reader = new FileReader();
-      setFile(URL.createObjectURL(e.target.files[0]));
-      reader.readAsDataURL(e.target.files[0]);
-      reader.onloadend = () => {
-        // console.log("reader.result: ", reader.result);
-        setAddUser({ ...addUser, picture: reader.result });
-        setFile(reader.result);
-      };
-    }
-  };
+  // const [file, setFile] = useState();
+
+  // const uploadSingleFile = (e) => {
+  //   if (e.target.files[0]) {
+  //     // console.log("e.target.files[0]: ", e.target.files[0]);
+  //     const reader = new FileReader();
+  //     setFile(URL.createObjectURL(e.target.files[0]));
+  //     reader.readAsDataURL(e.target.files[0]);
+  //     reader.onloadend = () => {
+  //       // console.log("reader.result: ", reader.result);
+  //       setAddUser({ ...addUser, picture: reader.result });
+  //       setFile(reader.result);
+  //     };
+  //   }
+  // };
 
   const submitData = async () => {
     try {
@@ -46,7 +47,7 @@ export default function AddNewUser() {
         tabIndex="-1"
         aria-hidden="true"
       >
-        <div className="modal-dialog modal-lg">
+        <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
               <h5
@@ -65,7 +66,7 @@ export default function AddNewUser() {
             <div className="modal-body">
               <div className="container">
                 <div className="row">
-                  <div className="col-md-8">
+                  <div className="col-md-12">
                     <div className="input-field mt-0 ">
                       <input
                         type="text"
@@ -114,38 +115,26 @@ export default function AddNewUser() {
                         onChange={(e) =>
                           setAddUser({
                             ...addUser,
-                            confirmPassword:  setAddUser({ ...addUser, password: e.target.value }),
+                            confirmPassword: setAddUser({ ...addUser, password: e.target.value }),
                           })
                         }
                       />
                       <label>Confirm Password:</label>
                       <span className="d-none">Error : Field Required</span>
                     </div>
-                    {/* <div className="input-field">
-                      <input
-                        type="text"
-                        className="form-control"
-                        required
-                        value={addUser.role}
-                        onChange={(e) =>
-                          setAddUser({ ...addUser, role: e.target.value })
-                        }
-                      />
-                      <label>Role:</label>
-                      <span className="d-none">Error : Field Required</span>
-                    </div> */}
+
                     <div className="input-field">
                       <select className="form-select"
-                      type="text"
-                      name=" role"
-                      required
-                      id="role"
-                      onChange={(e) => {
-                        setAddUser({
-                          ...addUser,
-                          role: e.target.value,
-                        });
-                      }}
+                        type="text"
+                        name=" role"
+                        required
+                        id="role"
+                        onChange={(e) => {
+                          setAddUser({
+                            ...addUser,
+                            role: e.target.value,
+                          });
+                        }}
                       >
                         <option value="Manager">Manager</option>
                         <option value="Patent Expert">Patent Expert</option>
@@ -158,7 +147,7 @@ export default function AddNewUser() {
                       <span className="d-none">Error : Field Required</span>
                     </div>
                   </div>
-                  <div className="col-md-4 mt-4">
+                  {/* <div className="col-md-4 mt-4">
                     <div className="mt-3">
                       <label
                         htmlFor="exampleFormControlInput1"
@@ -180,7 +169,7 @@ export default function AddNewUser() {
                         width="200px"
                       />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

@@ -17,6 +17,10 @@ h1, h2, h3, h4, h5, h6 {
   color: #4338ca;
 }
 
+.light-grey{
+  background-color:#80808026;
+}
+
 .navbar .dropdown button::before {
   content: none;
 }
@@ -93,7 +97,13 @@ button.form:disabled {
 
 /* dynamic table header */
 header.TUEFO {
-  display: unset;
+  display: block;
+  padding: unset!important;
+  min-height: unset!important;
+}
+.dqmQwT input, .cfdVEr input{
+  width: 18px;
+  height: 18px;
 }
 
 #myTabContent .gyOPpE{
