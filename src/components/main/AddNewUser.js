@@ -9,9 +9,9 @@ export default function AddNewUser() {
     confirmPassword: "",
     role: "",
     picture: "",
-    status:true
+    status: true
   });
- 
+
   // const [file, setFile] = useState();
 
   // const uploadSingleFile = (e) => {
@@ -47,7 +47,7 @@ export default function AddNewUser() {
         tabIndex="-1"
         aria-hidden="true"
       >
-        <div className="modal-dialog modal-lg">
+        <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
               <h5
@@ -66,7 +66,7 @@ export default function AddNewUser() {
             <div className="modal-body">
               <div className="container">
                 <div className="row">
-                  <div className="col-md-8">
+                  <div className="col-md-12">
                     <div className="input-field mt-0 ">
                       <input
                         type="text"
@@ -115,26 +115,26 @@ export default function AddNewUser() {
                         onChange={(e) =>
                           setAddUser({
                             ...addUser,
-                            confirmPassword:  setAddUser({ ...addUser, password: e.target.value }),
+                            confirmPassword: setAddUser({ ...addUser, password: e.target.value }),
                           })
                         }
                       />
                       <label>Confirm Password:</label>
                       <span className="d-none">Error : Field Required</span>
                     </div>
-                    
+
                     <div className="input-field">
                       <select className="form-select"
-                      type="text"
-                      name=" role"
-                      required
-                      id="role"
-                      onChange={(e) => {
-                        setAddUser({
-                          ...addUser,
-                          role: e.target.value,
-                        });
-                      }}
+                        type="text"
+                        name=" role"
+                        required
+                        id="role"
+                        onChange={(e) => {
+                          setAddUser({
+                            ...addUser,
+                            role: e.target.value,
+                          });
+                        }}
                       >
                         <option value="Manager">Manager</option>
                         <option value="Patent Expert">Patent Expert</option>

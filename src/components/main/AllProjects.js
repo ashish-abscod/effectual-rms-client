@@ -12,16 +12,19 @@ export default function AllProjects() {
     const [projects, setProjects] = useState([]);
     const [filteredProjects, setFilteredProjects] = useState([]);
     const [selectedProjects, setSelectedProjects] = useState([]);
-    const {setProjectId} = useContext(ProjectContext);
-
+    const { setProjectId } = useContext(ProjectContext);
+    const [loading, setLoading] = useState(false);
     //fetching data from endpoint
     const getProjects = async () => {
         try {
+            setLoading(true);
             const response = await axios.get("http://localhost:8080/projects");
             setProjects(response.data);
             setFilteredProjects(response.data);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -33,9 +36,9 @@ export default function AllProjects() {
     //multiple fields search based on search key
     useEffect(() => {
         const filters = projects.filter(project => JSON.stringify(project)
-        .toLowerCase()
-        .indexOf(search.toLowerCase()) !== -1)
-    
+            .toLowerCase()
+            .indexOf(search.toLowerCase()) !== -1)
+
         setFilteredProjects(filters);
     }, [projects, search])
 
@@ -75,9 +78,9 @@ export default function AllProjects() {
         },
         {
             name: "Status",
-            selector: (row) => row.status === "0" ? <span>Interim Report</span> : row.status === "1" ?  <span className="badge rounded-pill bg-warning text-dark" style={{fontSize:"14px"}}>Progress</span> : row.status === "2" ? <span className="badge rounded-pill bg-success" style={{fontSize:"14px"}}>Completed</span> : <span>Terminated</span>,
+            selector: (row) => row.status === "0" ? <span>Interim Report</span> : row.status === "1" ? <span className="badge rounded-pill bg-warning text-dark" style={{ fontSize: "14px" }}>Progress</span> : row.status === "2" ? <span className="badge rounded-pill bg-success" style={{ fontSize: "14px" }}>Completed</span> : <span>Terminated</span>,
             sortable: true
-            
+
         }
     ]
 
@@ -100,9 +103,18 @@ export default function AllProjects() {
         <>
             <div className='d-flex flex-column align-items-center'>
                 <DataTable columns={columns} data={filteredProjects} pagination fixedHeader fixedHeaderScrollHeight='470px' selectableRows selectableRowsHighlight highlightOnHover subHeader
-                    subHeaderComponent={<TableHeader props={{setSearch, projects, selectedProjects}} />}
-                    onRowClicked={(row) => { navigate(`/project`);setProjectId(row.projectId) }} striped customStyles={customStyles} responsive 
-                    onSelectedRowsChange={(selectedRows) => {setSelectedProjects(selectedRows?.selectedRows)}}
+                    subHeaderComponent={<TableHeader props={{ setSearch, projects, selectedProjects }} />}
+                    onRowClicked={(row) => { navigate(`/project`); setProjectId(row.projectId) }} striped customStyles={customStyles} responsive
+                    onSelectedRowsChange={(selectedRows) => { setSelectedProjects(selectedRows?.selectedRows) }}
+                    progressPending={loading}
+                    progressComponent={
+                        <div className='d-flex align-items-center p-5'>
+                        <div className="spinner-border text-primary" style={{width: "3rem",height: "3rem"}} role="status">
+                            <span className="sr-only mt-5"></span>
+                        </div>
+                        <h5 className='color text-secondary ms-3'>Loading Projects...</h5>
+                        </div>
+                    }
                 />
 
             </div>

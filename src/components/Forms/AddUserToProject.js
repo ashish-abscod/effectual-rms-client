@@ -9,6 +9,7 @@ export default function AddUserToProject() {
   const [search, setSearch] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [assignedUsers, setAssignedUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { user } = useContext(UserContext);
   const { projectId } = useContext(ProjectContext);
 
@@ -16,22 +17,39 @@ export default function AddUserToProject() {
     getUserData();
   }, []);
 
-  const getUserData = async () => {
-    await fetch("http://localhost:8080/users")
-      .then((res) => res.json())
-      .then((data) => (setUserData(data), setFilteredUsers()));
-  };
+  // const updateProject = () => {
+  //   if (projectId === null) {
+  //     try{
+
+  //     }catch(error){
+
+  //     }
+  //   }
+  // };
 
   const submitData = async () => {
-    // let info = await axios.post("http://localhost:8080/assigned/", {
-    //   userId: assignedUsers._id,
-    //   projectId: "",
-    //   assignedBy: user.userData._id,
-    // });
-    // console.log(info);
-    console.log(assignedUsers._id);
+    let info = await axios.post("http://localhost:8080/assigned/", {
+      userId: [assignedUsers],
+      projectId: "",
+      assignedBy: user.userData._id,
+    });
+    console.log(info);
   };
 
+  const getUserData = async () => {
+    try{
+      setLoading(true);
+      await fetch("http://localhost:8080/users")
+      .then((res) => res.json())
+      .then((data) => (setUserData(data), setFilteredUsers()));
+    }catch(error){
+      console.log(error);
+    }finally{
+      setLoading(false);
+    }
+  };
+
+  console.log(assignedUsers);
   //multiple fields search based on search key
   useEffect(() => {
     const filters = userData.filter(
@@ -75,9 +93,9 @@ export default function AddUserToProject() {
     },
     table: {
       style: {
-        maxHeight: "49vh!important"
-      }
-    }
+        maxHeight: "49vh!important",
+      },
+    },
   };
 
   return (
@@ -94,18 +112,19 @@ export default function AddUserToProject() {
             selectableRowsHighlight
             highlightOnHover
             subHeader
-            subHeaderComponent={<input type="search" className="form-control"></input>}
+            subHeaderComponent={<div className="d-flex justify-content-around bg-light py-2"><h5 className="d-inline text-primary">Assign Users</h5><input type="search" className="form-control d-inline w-50" placeholder="Search User..."></input></div>}
             striped
             customStyles={customStyles}
             responsive
             onSelectedRowsChange={(selectedRows) => {
               setAssignedUsers(selectedRows?.selectedRows);
-            }
-            }
+            }}
+            progressPending={loading}
           />
         </div>
 
         <div className="col-lg-5">
+          <button onClick={submitData}>submit</button>
           <table className="table mt-4 table-striped">
             <thead className="thead-dark">
               <tr>
@@ -114,13 +133,13 @@ export default function AddUserToProject() {
                 <th scope="col">Role</th>
               </tr>
             </thead>
-            {assignedUsers.map((item) =>
-              <tr className="mb-2">
+            {assignedUsers.map((item,i) => (
+              <tr className="mb-2" key={i}>
                 <td>{item.name}</td>
                 <td>{item.email}</td>
                 <td>{item.role}</td>
               </tr>
-            )}
+            ))}
           </table>
         </div>
       </div>

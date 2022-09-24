@@ -5,25 +5,24 @@ import Header from "../../main/Header";
 import RichTextEditor from "./RichTextEditor";
 import axios from "axios"
 import { UserContext } from "../../contexts/UserContext";
+import Moment from "react-moment";
 
 export default function WriteComment() {
-    const { user, setUser } = useContext(UserContext);
+    const { user } = useContext(UserContext);
+    let { projectId, replyTo } = useContext(ProjectContext);
+    
+    let currentDateTime = new Date().toLocaleString();
     const [content, setContent] = useState({
-        
-        comment:"",
-        time:  Date.now(),
-        userName:user.userData.name,
-        userRole:user.userData.role
+        comment:"", 
+        time: `${currentDateTime}`,
+        userName:user?.userData?.name,
+        userRole:user?.userData?.role
     });
-    console.log(content);
-
-    let { projectId } = useContext(ProjectContext);
 
     const uploadData = async () => {
         try {
           const response = await axios.post("http://localhost:8080/comment", content);
-    
-          console.log("addresponse: ", response);
+          console.log(response);
         } catch (error) {
           console.log("error: ", error);
         }
@@ -34,8 +33,17 @@ export default function WriteComment() {
         <>
             <Header />
             <div className="container bg-white" style={{paddingTop:"4rem"}}>
-                <h5 className="text-center text-primary">Commenting on project - {projectId}</h5>
-                <RichTextEditor setContent={setContent} />
+
+                <div>
+                    {replyTo?.userName  ? 
+                    <h6 className="text-center text-primary fw-bold">Replying to {replyTo?.userName} for comment on <Moment format="DD/MM/YYYY HH:mm">{replyTo?.time}</Moment></h6>
+                    :
+                    <h6 className="text-center text-primary fw-bold">Writing Comment on Project - {projectId}</h6>
+                    }
+                </div>
+                
+                
+                <RichTextEditor setContent={setContent} content={content} />
 
                 <footer className="d-flex justify-content-between mt-3">
                     <div>

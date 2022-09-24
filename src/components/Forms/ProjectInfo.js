@@ -3,7 +3,7 @@ import React from 'react'
 export default function ProjectInfo({ formData, setFormData }) {
     return (
         <>
-            <div className='row gy-3 gy-md-3 gx-4 mt-3 row-cols-lg-3 row-cols-md-2 justify-content-evenly'>
+            <div className='row gy-3 gy-md-3 gx-4 row-cols-lg-3 row-cols-md-2 justify-content-evenly'>
                 <div className="input-field mt-5">
                     <input type="text" className="form-control" required value={formData.SearchObject} onChange={(e) => setFormData({ ...formData, SearchObject: e.target.value })} />
                     <label>Search Object:</label>
