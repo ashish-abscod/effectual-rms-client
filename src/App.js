@@ -11,7 +11,7 @@ import { UserContext } from "./components/contexts/UserContext";
 function App() {
   const [projectId, setProjectId] = useState(null);
   const [user, setUser] = useState({ userData: "", auth: false, token: null });
-  const [replyTo, setReplyTo] = useState({});
+  const [replyTo, setReplyTo] = useState(null);
 
   useEffect(() => {
     if (user?.auth) {
