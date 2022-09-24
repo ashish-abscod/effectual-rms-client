@@ -36,7 +36,7 @@ export default function CommentInbox() {
 
     return (
         <>
-            <Link to={"/comment"} className="btn btn-sm btn-warning py-1 px-4 float-end me-3 fw-bold" onClick={()=> setReplyTo({})}> <BiCommentDetail className="fs-5 fw-bold"/> Comment </Link>
+            <Link to={"/comment"} className="btn btn-sm btn-warning py-1 px-4 float-end me-3 fw-bold" onClick={()=> setReplyTo(null)}> <BiCommentDetail className="fs-5 fw-bold"/> Comment </Link>
             <section className='container commentInbox py-3 pt-0 h-100 overflow-auto'>
 
 
