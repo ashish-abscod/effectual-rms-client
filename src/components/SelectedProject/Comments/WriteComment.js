@@ -13,24 +13,31 @@ export default function WriteComment() {
     let { projectId, replyTo } = useContext(ProjectContext);
     const [isDisabled, setDisabled] = useState(false);
 
-    let currentDateTime = new Date().toLocaleString();
+    const getFormatedToday = () => {
+        var date = new Date();
+        var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        return str;
+    }
+
     const [body, setBody] = useState({
+        projectId: projectId,
+        commentId : replyTo?.commentId,
         content: "",
-        time: `${currentDateTime}`,
+        time: `${getFormatedToday()}`,
         userName: user?.userData?.name,
         userRole: user?.userData?.role
     });
 
     const uploadData = async () => {
         setDisabled(true);
-        if (!replyTo?.userName) {
+        if (!replyTo?.commentId) {
             try {
                 const response = await axios.post("http://localhost:8080/comment", body);
                 console.log(response);
             } catch (error) {
                 console.log("error: ", error);
             }
-        } else if (replyTo?.userName) {
+        } else if (replyTo?.commentId) {
             try {
                 const response = await axios.post("http://localhost:8080/replie", body);
                 console.log(response);
