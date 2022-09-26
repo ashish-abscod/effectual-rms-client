@@ -47,7 +47,7 @@ export default function CommentInbox() {
                             <span className='name text-primary fw-bold'>{item?.userName} </span> 
                             <span className='designation text-secondary fw-bold'>({item?.userRole})</span>
                             <span className='fw-normal'>: <Moment format='DD-MMM-YYYY hh:mm a' className='fw-bold'>{item?.time}</Moment> </span>
-                            <button type="button" className='btn btn-outline-primary rounded-pill ps-1 pe-2 py-1 float-end' onClick={() => {setReplyTo({userName : item.userName, time : item.time}); navigate('/comment')}}><BsReplyAllFill className='fs-4 pb-1' /> Reply</button>
+                            <button type="button" className='btn btn-outline-primary rounded-pill ps-1 pe-2 py-1 float-end' onClick={() => {setReplyTo({userName : item.userName, time : item.time, commentId : item.commentId}); navigate('/comment')}}><BsReplyAllFill className='fs-4 pb-1' /> Reply</button>
                         </div>
 
                         <div className='child-wrapper ps-md-2'>
@@ -96,8 +96,8 @@ export default function CommentInbox() {
                         </div>
                     </div>
                 )}
-
-
+                
+                {data?.length === 0 ? <h5 className='text-danger text-center mt-5'>No Comments and Replies</h5> : ""}
             </section>
         </>
     )
