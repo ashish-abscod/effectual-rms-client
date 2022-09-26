@@ -3,21 +3,24 @@ import React, { useState, useEffect, useContext } from "react";
 import DataTable from "react-data-table-component";
 import { ProjectContext } from "../contexts/ProjectContext";
 import { UserContext } from "../contexts/UserContext";
+import { MdDelete } from "react-icons/md";
 
 export default function AddUserToProject({ formData, setFormData }) {
   const [userData, setUserData] = useState([]);
   const [search, setSearch] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const [assignedUsers, setAssignedUsers] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const { user } = useContext(UserContext);
   const { projectId } = useContext(ProjectContext);
-
-  console.log(formData?.assignedUsers);
+  const [getassignedUserData, setassignedUserData] = useState();
 
   useEffect(() => {
     getUserData();
-  }, []);
+    if (projectId) {
+      getAssignmentData();
+    }
+  }, [projectId]);
 
   // const updateProject = () => {
   //   if (projectId === null) {
@@ -28,15 +31,6 @@ export default function AddUserToProject({ formData, setFormData }) {
   //     }
   //   }
   // };
-
-  const submitData = async () => {
-    let info = await axios.post("http://localhost:8080/assigned/createUser", {
-      userId: [assignedUsers],
-      projectId: "",
-      assignedBy: user.userData._id,
-    });
-    console.log(info);
-  };
 
   const getUserData = async () => {
     try {
@@ -50,9 +44,27 @@ export default function AddUserToProject({ formData, setFormData }) {
       setLoading(false);
     }
   };
+  const getAssignmentData = async () => {
+    // appointmentData.patientID = patientId;
+    await fetch(`http://localhost:8080/assigned/getUserById/${projectId}`)
+      .then((res) => res.json())
+      .then((data) => setassignedUserData(data));
+  };
 
-  // console.log(assignedUsers);
-  //multiple fields search based on search key
+  const handleAssignedUserDelete = async (userId) => {
+    let res = await fetch(
+      `http://localhost:8080/assigned/deleteUser/${[projectId]}/${userId}`,
+      {
+        method: "delete",
+      }
+    );
+    res = await res.json();
+    if (res) {
+      getAssignmentData();
+    }
+  };
+
+  //ltiple fields search based on search key
   useEffect(() => {
     const filters = userData.filter(
       (user) =>
@@ -144,14 +156,32 @@ export default function AddUserToProject({ formData, setFormData }) {
             <thead className="thead-dark">
               <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Email</th>
                 <th scope="col">Role</th>
+                <th scope="col">Action</th>
               </tr>
             </thead>
-            {assignedUsers.map((item, i) => (
+            {getassignedUserData?.userId?.map((item, i, index) => (
               <tr className="mb-2" key={i}>
                 <td>{item.name}</td>
-                <td>{item.email}</td>
+                <td>{item.role}</td>
+
+                <td>
+                  <p>
+                    <MdDelete
+                      style={{
+                        fontSize: "20px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleAssignedUserDelete(item._id)}
+                    />
+                  </p>
+                </td>
+              </tr>
+            ))}
+
+            {formData?.assignedUsers.map((item, i) => (
+              <tr className="mb-2" key={i}>
+                <td>{item.name}</td>
                 <td>{item.role}</td>
               </tr>
             ))}

@@ -142,18 +142,9 @@ export default function CreateProject() {
       }
     }
   };
-  const assignedUserHandler = async () => {
-    let info = await axios.post("http://localhost:8080/assigned/", {
-      // userId: [assignedUsers],
-      projectId: "hiiii",
-      assignedBy: user.userData._id,
-    });
-    console.log(info);
-  };
 
   const sumbitHandler = async () => {
     projectHandler();
-    assignedUserHandler();
   };
   return (
     <>
