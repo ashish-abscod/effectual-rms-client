@@ -13,6 +13,23 @@ export default function CreateProject() {
   const { projectId } = useContext(ProjectContext);
   const { user } = useContext(UserContext);
 
+  const [formData, setFormData] = useState({
+    SearchObject: "",
+    TechnicalField: "",
+    KnownPriorArt: "",
+    ClaimsToBeSearched: "",
+    RequirementForDelivery: "",
+    RequirementDeliveryDate: "",
+    PriorArtCuttOffDate: "",
+    StandardRelated: "",
+    SSONeeded: "",
+    USIPRSpecial: "",
+    ImportantClaims: "",
+    UnimportantClaims: "",
+    UsefulInformationForSearch: "",
+    file: "",
+  });
+
   const getProjects = async () => {
     if (projectId !== null) {
       try {
@@ -44,23 +61,6 @@ export default function CreateProject() {
   useEffect(() => {
     getProjects();
   }, []);
-
-  const [formData, setFormData] = useState({
-    SearchObject: "",
-    TechnicalField: "",
-    KnownPriorArt: "",
-    ClaimsToBeSearched: "",
-    RequirementForDelivery: "",
-    RequirementDeliveryDate: "",
-    PriorArtCuttOffDate: "",
-    ChooseFile: {},
-    StandardRelated: "",
-    SSONeeded: "",
-    USIPRSpecial: "",
-    ImportantClaims: "",
-    UnimportantClaims: "",
-    UsefulInformationForSearch: "",
-  });
 
   const FormTitles = [
     "Project Information",
