@@ -4,14 +4,17 @@ import DataTable from "react-data-table-component";
 import { ProjectContext } from "../contexts/ProjectContext";
 import { UserContext } from "../contexts/UserContext";
 
-export default function AddUserToProject() {
+export default function AddUserToProject({formData, setFormData}) {
   const [userData, setUserData] = useState([]);
   const [search, setSearch] = useState("");
-  const [filteredUsers, setFilteredUsers] = useState([]);
-  const [assignedUsers, setAssignedUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]); 
+   const [assignedUsers, setAssignedUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const { user } = useContext(UserContext);
   const { projectId } = useContext(ProjectContext);
+
+
+  console.log(formData?.assignedUsers);
 
   useEffect(() => {
     getUserData();
@@ -28,7 +31,7 @@ export default function AddUserToProject() {
   // };
 
   const submitData = async () => {
-    let info = await axios.post("http://localhost:8080/assigned/", {
+    let info = await axios.post("http://localhost:8080/assigned/createUser", {
       userId: [assignedUsers],
       projectId: "",
       assignedBy: user.userData._id,
@@ -49,7 +52,7 @@ export default function AddUserToProject() {
     }
   };
 
-  console.log(assignedUsers);
+  // console.log(assignedUsers);
   //multiple fields search based on search key
   useEffect(() => {
     const filters = userData.filter(
@@ -117,14 +120,15 @@ export default function AddUserToProject() {
             customStyles={customStyles}
             responsive
             onSelectedRowsChange={(selectedRows) => {
-              setAssignedUsers(selectedRows?.selectedRows);
+              setFormData({...formData, assignedUsers : selectedRows?.selectedRows});
+              console.log(selectedRows)
             }}
             progressPending={loading}
           />
         </div>
 
         <div className="col-lg-5">
-          <button onClick={submitData}>submit</button>
+          {/* <button onClick={submitData}>submit</button> */}
           <table className="table mt-4 table-striped">
             <thead className="thead-dark">
               <tr>

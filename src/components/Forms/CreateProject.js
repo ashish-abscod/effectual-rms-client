@@ -6,10 +6,12 @@ import UploadFiles from "./UploadFiles";
 import { ProjectContext } from "../contexts/ProjectContext";
 import axios from "axios";
 import { useEffect } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 export default function CreateProject() {
   const [page, setPage] = useState(0);
   const { projectId } = useContext(ProjectContext);
+  const { user } = useContext(UserContext);
 
   const [formData, setFormData] = useState({
     SearchObject: "",
@@ -25,7 +27,8 @@ export default function CreateProject() {
     ImportantClaims: "",
     UnimportantClaims: "",
     UsefulInformationForSearch: "",
-    file:""
+    file:"",
+    assignedUsers : []
   });
 
 
@@ -36,19 +39,28 @@ export default function CreateProject() {
           `http://localhost:8080/projects/${projectId}`
         );
         console.log(res.data);
-        setFormData({...formData,
-          SearchObject : res.data.searchObject ? res.data.searchObject : "",
-          TechnicalField : res.data.technicalField ?  res.data.technicalField : "",
-          ClaimsToBeSearched : res.data.claims ? res.data.claims : "",
-          RequirementForDelivery : res.data.reqDelivery ? res.data.reqDelivery : "",
-          RequirementDeliveryDate : res.data.deliveryDate ? res.data.deliveryDate : "",
-          PriorArtCuttOffDate : res.data.priorArtdate ? res.data.priorArtdate : "",
-          StandardRelated : res.data.standard ? res.data.standard : "",
-          SSONeeded : res.data.sso ? res.data.sso : "",
-          USIPRSpecial : res.data.usipr ? res.data.usipr : "",
+        setFormData({
+          ...formData,
+          SearchObject: res.data.searchObject ? res.data.searchObject : "",
+          TechnicalField: res.data.technicalField
+            ? res.data.technicalField
+            : "",
+          ClaimsToBeSearched: res.data.claims ? res.data.claims : "",
+          RequirementForDelivery: res.data.reqDelivery
+            ? res.data.reqDelivery
+            : "",
+          RequirementDeliveryDate: res.data.deliveryDate
+            ? res.data.deliveryDate
+            : "",
+          PriorArtCuttOffDate: res.data.priorArtdate
+            ? res.data.priorArtdate
+            : "",
+          StandardRelated: res.data.standard ? res.data.standard : "",
+          SSONeeded: res.data.sso ? res.data.sso : "",
+          USIPRSpecial: res.data.usipr ? res.data.usipr : "",
           ImportantClaims: res.data.impclaim ? res.data.impclaim : "",
           UnimportantClaims: res.data.nonImpClaim ? res.data.nonImpClaim : "",
-          UsefulInformationForSearch: res.data.info ? res.data.info : ""
+          UsefulInformationForSearch: res.data.info ? res.data.info : "",
         });
       } catch (error) {
         console.log(error);
@@ -78,7 +90,8 @@ export default function CreateProject() {
         break;
       case 1:
         returnvalue = (
-          <UploadFiles formData={formData} setFormData={setFormData} />
+          <UploadFiles formData={formData} setFormData={setFormData} 
+           />
         );
         break;
       case 2:
@@ -102,17 +115,22 @@ export default function CreateProject() {
   const projectHandler = async () => {
     if (projectId === null) {
       try {
-      const res =  await axios.post(
+        const res = await axios.post(
           "http://localhost:8080/projects/create",
-          formData,
-          
-        );
-        const info =  await axios.post(
-          "http://localhost:8080/files",
           formData
         );
-        console.log(info)
+        const info = await axios.post("http://localhost:8080/files", formData);
         console.log(res)
+        let data = await axios.post(
+          "http://localhost:8080/assigned/createUser",
+          {
+            userId: formData?.assignedUsers,
+            projectId: res?.data?.data?.projectId,
+            assignedBy: user.userData._id,
+
+          }
+        );
+        console.log(data);
       } catch (error) {
         console.log(error);
       }
