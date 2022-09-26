@@ -4,15 +4,14 @@ import DataTable from "react-data-table-component";
 import { ProjectContext } from "../contexts/ProjectContext";
 import { UserContext } from "../contexts/UserContext";
 
-export default function AddUserToProject({formData, setFormData}) {
+export default function AddUserToProject({ formData, setFormData }) {
   const [userData, setUserData] = useState([]);
   const [search, setSearch] = useState("");
-  const [filteredUsers, setFilteredUsers] = useState([]); 
-   const [assignedUsers, setAssignedUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [assignedUsers, setAssignedUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const { user } = useContext(UserContext);
   const { projectId } = useContext(ProjectContext);
-
 
   console.log(formData?.assignedUsers);
 
@@ -32,11 +31,7 @@ export default function AddUserToProject({formData, setFormData}) {
 
   const submitData = async () => {
     let info = await axios.post("http://localhost:8080/assigned/createUser", {
-<<<<<<< HEAD
-      userId: assignedUsers,
-=======
       userId: [assignedUsers],
->>>>>>> 3e7e300f84f5579e3781baa0813a338cd3e3de03
       projectId: "",
       assignedBy: user.userData._id,
     });
@@ -133,8 +128,11 @@ export default function AddUserToProject({formData, setFormData}) {
             customStyles={customStyles}
             responsive
             onSelectedRowsChange={(selectedRows) => {
-              setFormData({...formData, assignedUsers : selectedRows?.selectedRows});
-              console.log(selectedRows)
+              setFormData({
+                ...formData,
+                assignedUsers: selectedRows?.selectedRows,
+              });
+              console.log(selectedRows);
             }}
             progressPending={loading}
           />
