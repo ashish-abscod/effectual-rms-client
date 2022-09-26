@@ -76,8 +76,8 @@ export default function Evaluation() {
           <div className="input-field">
             <input
               type="text"
-              className="form-control"
               disabled
+              className="form-control"
               onChange={(e) => {
                 setevaluationData({
                   ...evaluationData,
@@ -95,7 +95,6 @@ export default function Evaluation() {
             <input
               type="text"
               className="form-control"
-              disabled
               value={user?.userData?.name}
             />
             <label>Last Edited By:</label>

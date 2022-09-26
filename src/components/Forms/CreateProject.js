@@ -27,10 +27,9 @@ export default function CreateProject() {
     ImportantClaims: "",
     UnimportantClaims: "",
     UsefulInformationForSearch: "",
-    file:"",
-    assignedUsers : []
+    file: "",
+    assignedUsers: [],
   });
-
 
   const getProjects = async () => {
     if (projectId !== null) {
@@ -72,7 +71,6 @@ export default function CreateProject() {
     getProjects();
   }, []);
 
-
   const FormTitles = [
     "Project Information",
     "Upload Files",
@@ -90,8 +88,7 @@ export default function CreateProject() {
         break;
       case 1:
         returnvalue = (
-          <UploadFiles formData={formData} setFormData={setFormData} 
-           />
+          <UploadFiles formData={formData} setFormData={setFormData} />
         );
         break;
       case 2:
@@ -120,14 +117,13 @@ export default function CreateProject() {
           formData
         );
         const info = await axios.post("http://localhost:8080/files", formData);
-        console.log(res)
+        console.log(res);
         let data = await axios.post(
           "http://localhost:8080/assigned/createUser",
           {
             userId: formData?.assignedUsers,
             projectId: res?.data?.data?.projectId,
             assignedBy: user.userData._id,
-
           }
         );
         console.log(data);
