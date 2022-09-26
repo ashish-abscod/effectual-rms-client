@@ -28,6 +28,7 @@ export default function CreateProject() {
     UnimportantClaims: "",
     UsefulInformationForSearch: "",
     file: "",
+    assignedUsers: [],
   });
 
   const getProjects = async () => {
@@ -39,18 +40,26 @@ export default function CreateProject() {
         console.log(res.data);
         setFormData({
           ...formData,
-          SearchObject: res.data.searchObject,
-          TechnicalField: res.data.technicalField,
-          ClaimsToBeSearched: res.data.claims,
-          RequirementForDelivery: res.data.reqDelivery,
-          RequirementDeliveryDate: res.data.deliveryDate,
-          PriorArtCuttOffDate: res.data.priorArtdate,
-          StandardRelated: res.data.standard,
-          SSONeeded: res.data.sso,
-          USIPRSpecial: res.data.usipr,
-          ImportantClaims: res.data.impclaim,
-          UnimportantClaims: res.data.nonImpClaim,
-          UsefulInformationForSearch: res.data.info,
+          SearchObject: res.data.searchObject ? res.data.searchObject : "",
+          TechnicalField: res.data.technicalField
+            ? res.data.technicalField
+            : "",
+          ClaimsToBeSearched: res.data.claims ? res.data.claims : "",
+          RequirementForDelivery: res.data.reqDelivery
+            ? res.data.reqDelivery
+            : "",
+          RequirementDeliveryDate: res.data.deliveryDate
+            ? res.data.deliveryDate
+            : "",
+          PriorArtCuttOffDate: res.data.priorArtdate
+            ? res.data.priorArtdate
+            : "",
+          StandardRelated: res.data.standard ? res.data.standard : "",
+          SSONeeded: res.data.sso ? res.data.sso : "",
+          USIPRSpecial: res.data.usipr ? res.data.usipr : "",
+          ImportantClaims: res.data.impclaim ? res.data.impclaim : "",
+          UnimportantClaims: res.data.nonImpClaim ? res.data.nonImpClaim : "",
+          UsefulInformationForSearch: res.data.info ? res.data.info : "",
         });
       } catch (error) {
         console.log(error);
@@ -103,7 +112,21 @@ export default function CreateProject() {
   const projectHandler = async () => {
     if (projectId === null) {
       try {
-        await axios.post("http://localhost:8080/projects/create", formData);
+        const res = await axios.post(
+          "http://localhost:8080/projects/create",
+          formData
+        );
+        const info = await axios.post("http://localhost:8080/files", formData);
+        console.log(res);
+        let data = await axios.post(
+          "http://localhost:8080/assigned/createUser",
+          {
+            userId: formData?.assignedUsers,
+            projectId: res?.data?.data?.projectId,
+            assignedBy: user.userData._id,
+          }
+        );
+        console.log(data);
       } catch (error) {
         console.log(error);
       }
