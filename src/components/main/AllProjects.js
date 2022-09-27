@@ -65,23 +65,14 @@ export default function AllProjects() {
             sortable: true
         },
         {
-            name: "Type",
-            selector: (row) => row.projectName,
-            sortable: true
-        },
-        {
-            name: "Requester",
-            selector: (row) => row.requesterName,
-            sortable: true
-        },
-        {
-            name: "Manager",
-            selector: (row) => row.projectManager,
-            sortable: true
-        },
-        {
             selector: (row) => <Moment format="DD/MM/YYYY">{row.requestedDate}</Moment>,
             name: "Request Date",
+            sortable: true
+        },
+        {
+            selector: (row) => <Moment format="DD/MM/YYYY">{row.deliveryDate
+            }</Moment>,
+            name: "Delievery Date",
             sortable: true
         },
         {
