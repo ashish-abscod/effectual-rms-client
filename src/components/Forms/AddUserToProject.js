@@ -1,17 +1,14 @@
-import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
 import DataTable from "react-data-table-component";
 import { ProjectContext } from "../contexts/ProjectContext";
-import { UserContext } from "../contexts/UserContext";
 import { MdDelete } from "react-icons/md";
 
 export default function AddUserToProject({ formData, setFormData }) {
   const [userData, setUserData] = useState([]);
-  const [search, setSearch] = useState("");
+  const [search] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
 
   const [loading, setLoading] = useState(false);
-  const { user } = useContext(UserContext);
   const { projectId } = useContext(ProjectContext);
   const [getassignedUserData, setassignedUserData] = useState();
 
@@ -22,30 +19,21 @@ export default function AddUserToProject({ formData, setFormData }) {
     }
   }, [projectId]);
 
-  // const updateProject = () => {
-  //   if (projectId === null) {
-  //     try{
-
-  //     }catch(error){
-
-  //     }
-  //   }
-  // };
-
+  
   const getUserData = async () => {
     try {
       setLoading(true);
       await fetch("http://localhost:8080/users")
         .then((res) => res.json())
-        .then((data) => (setUserData(data), setFilteredUsers()));
+        .then((data) => {setUserData(data);setFilteredUsers()});
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
   };
+
   const getAssignmentData = async () => {
-    // appointmentData.patientID = patientId;
     await fetch(`http://localhost:8080/assigned/getUserById/${projectId}`)
       .then((res) => res.json())
       .then((data) => setassignedUserData(data));
@@ -55,7 +43,7 @@ export default function AddUserToProject({ formData, setFormData }) {
     let res = await fetch(
       `http://localhost:8080/assigned/deleteUser/${[projectId]}/${userId}`,
       {
-        method: "delete",
+        method: "delete"
       }
     );
     res = await res.json();
@@ -64,7 +52,7 @@ export default function AddUserToProject({ formData, setFormData }) {
     }
   };
 
-  //ltiple fields search based on search key
+  //multiple fields search based on search key
   useEffect(() => {
     const filters = userData.filter(
       (user) =>
@@ -160,6 +148,7 @@ export default function AddUserToProject({ formData, setFormData }) {
                 <th scope="col">Action</th>
               </tr>
             </thead>
+            <tbody>
             {getassignedUserData?.userId?.map((item, i, index) => (
               <tr className="mb-2" key={i}>
                 <td>{item.name}</td>
@@ -185,6 +174,7 @@ export default function AddUserToProject({ formData, setFormData }) {
                 <td>{item.role}</td>
               </tr>
             ))}
+            </tbody>
           </table>
         </div>
       </div>
