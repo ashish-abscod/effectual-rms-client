@@ -1,12 +1,16 @@
 import { useContext, useState } from "react";
+import axios from "axios";
+// import loader from "loader"
 import { ProjectContext } from "../contexts/ProjectContext";
 
 export default function UploadFiles({ formData, setFormData }) {
   const { projectId } = useContext(ProjectContext);
 
+  const [chooseFile, setChooseFile] = useState({ file: "" });
+
   const [file, setFile] = useState();
 
-  const uploadSingleFile = (e) => {
+  const uploadSingleFile = async (e) => {
     if (e.target.files[0]) {
       //   console.log("e.target.files[0]: ", e.target.files[0]);
       const reader = new FileReader();
@@ -14,9 +18,17 @@ export default function UploadFiles({ formData, setFormData }) {
       reader.readAsDataURL(e.target.files[0]);
       reader.onloadend = () => {
         // console.log("reader.result: ", reader.result);
-        setFormData({ ...formData, file: reader.result });
+        setChooseFile({ ...chooseFile, file: reader.result });
         setFile(reader.result);
       };
+    }
+
+    try {
+      const info = await axios.post("http://localhost:8080/files", chooseFile);
+
+      console.log(info);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -36,8 +48,8 @@ export default function UploadFiles({ formData, setFormData }) {
               onChange={uploadSingleFile}
             />
           </label>
-          <span className="ms-3"  >
-            {formData.file ? "File(s) Selected" : "File(s) Not Selected"}
+          <span className="ms-3">
+            {chooseFile.file ? "File(s) Selected" : "File(s) Not Selected"}
           </span>
         </div>
       )}

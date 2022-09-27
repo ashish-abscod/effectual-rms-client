@@ -119,7 +119,7 @@ export default function CreateProject() {
           "http://localhost:8080/projects/create",
           formData
         );
-        const info = await axios.post("http://localhost:8080/files", formData);
+        
         console.log(res)
         let data = await axios.post(
           "http://localhost:8080/assigned/createUser",
