@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import TableHeader from './TableHeader';
 import { useContext } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
-import Moment from 'react-moment';
 
 export default function AllProjects() {
     const [search, setSearch] = useState("");
@@ -65,13 +64,12 @@ export default function AllProjects() {
             sortable: true
         },
         {
-            selector: (row) => <Moment format="DD/MM/YYYY">{row.requestedDate}</Moment>,
+            selector: (row) => new Date(row?.requestedDate).toLocaleDateString(),
             name: "Request Date",
             sortable: true
         },
         {
-            selector: (row) => <Moment format="DD/MM/YYYY">{row.deliveryDate
-            }</Moment>,
+            selector: (row) => new Date(row?.deliveryDate).toLocaleDateString(),
             name: "Delievery Date",
             sortable: true
         },
