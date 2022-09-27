@@ -51,17 +51,19 @@ export default function AddUserToProject({ formData, setFormData }) {
       .then((data) => setassignedUserData(data));
   };
 
-  const handleAssignedUserDelete = async (userId) => {
+  const handleAssignedUserDelete = async (userId, id) => {
     let res = await fetch(
-      `http://localhost:8080/assigned/deleteUser/${[projectId]}/${userId}`,
+      `http://localhost:8080/assigned/deleteUser/${id}/${userId}`,
       {
-        method: "delete",
+        method: "put",
       }
     );
     res = await res.json();
     if (res) {
       getAssignmentData();
     }
+
+    console.log(id);
   };
 
   //ltiple fields search based on search key
@@ -133,6 +135,7 @@ export default function AddUserToProject({ formData, setFormData }) {
                   type="search"
                   className="form-control d-inline w-50"
                   placeholder="Search User..."
+                  onChange={(e) => setSearch(e.target.value)}
                 ></input>
               </div>
             }
@@ -160,8 +163,8 @@ export default function AddUserToProject({ formData, setFormData }) {
                 <th scope="col">Action</th>
               </tr>
             </thead>
-            {getassignedUserData?.userId?.map((item, i, index) => (
-              <tr className="mb-2" key={i}>
+            {getassignedUserData?.userId?.map((item, index) => (
+              <tr className="mb-2" key={item._id}>
                 <td>{item.name}</td>
                 <td>{item.role}</td>
 
