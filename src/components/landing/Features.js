@@ -10,7 +10,7 @@ export default function Features() {
             <section className="ld features" id="features">
                 <div className="container">
                     <div className="row">
-                        <h1 className='theme3-color fw-bold m-auto text-center mb-3'>Effectual RMS Features</h1>
+                        <h1 className='theme3-color fw-bold m-auto text-center mb-5'>Effectual RMS Features</h1>
 
                         <div className="row">
 

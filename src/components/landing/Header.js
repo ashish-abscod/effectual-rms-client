@@ -18,25 +18,25 @@ export default function Header() {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav mb-2 mb-lg-0 ms-auto me-5 align-items-lg-center">
                             <li className="nav-item">
-                                <a className="nav-link active" aria-current="page" href="#home"><BiHome size={"1.2em"} className="mb-1"/> Home</a>
+                                <a className="nav-link active" aria-current="page" href="#home">Home</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#about"><FaBookReader/> About</a>
+                                <a className="nav-link" href="#about">About</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#highlights"><BsLightningCharge/> Highlights</a>
+                                <a className="nav-link" href="#highlights">Highlights</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#features"><BsListStars/> Features</a>
+                                <a className="nav-link" href="#features">Features</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#getStarted"><BsStars/>Get Started</a>
+                                <a className="nav-link" href="#getStarted">Get Started</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#contact"><BsPhone className='mb-1'/>Contact</a>
+                                <a className="nav-link" href="#contact">Contact</a>
                             </li>
                             <li className="nav-item">
-                                <button type="button" className='btn theme2-bg text-white px-4 mt-3 mt-md-0 text-nowrap' data-bs-toggle="modal" data-bs-target="#loginModal" >Login<BiLogInCircle className='fw-bold ms-1 fs-4'/></button>
+                                <button type="button" className='btn theme2-bg text-white px-4 mt-3 mt-md-0 text-nowrap' data-bs-toggle="modal" data-bs-target="#loginModal" >Login</button>
                             </li>
                         </ul>
                     </div>

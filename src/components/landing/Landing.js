@@ -20,8 +20,8 @@ export default function Landing() {
     <About/>
     <Highlights/>
     <Features/>
-    <GetStarted/>
     <Contact/>
+    <GetStarted/>
     <Footer/>
     </>
   )

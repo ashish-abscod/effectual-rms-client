@@ -1,8 +1,8 @@
-/* body {
-  background: lightgrey;
-} */
 h1, h2, h3, h4, h5, h6 {
   font-family: "Nunito", sans-serif;
+}
+p{
+  font-family: 'Roboto', sans-serif;
 }
 .theme-bg {
   background: #4338ca;
@@ -58,9 +58,17 @@ h1, h2, h3, h4, h5, h6 {
 .input-field select:valid,
 .input-field select:hover{
   border: thin solid #4338ca !important;
-  border-bottom: solid medium #4338ca !important;
+  border-bottom: solid medium #4338cae0 !important;
   background-color: #fff !important;
-  box-shadow: 0 0 0 0.25rem #4438ca81 !important;
+  box-shadow: 0  0 0.25rem #4438ca81 !important;
+}
+
+.input-field input:valid,
+.input-field select:valid{
+  border: thin solid #49ca38 !important;
+  border-bottom: solid medium #239f12c7 !important;
+  background-color: #fff !important;
+  box-shadow: 0 0 0.25rem #39f320 !important;;
 }
 
 .input-field label {
@@ -76,16 +84,24 @@ h1, h2, h3, h4, h5, h6 {
 top: 8px;
 left: 35px;
 }
-
-.input-field input:hover~label,
-.input-field input:focus~label,
 .input-field select:valid~label,
 .input-field input:valid~label{
   top: 8px;
   left: 35px;
   font-size: small;
   font-weight: bold;
-  color: #4338ca;
+  color: #239f12c7!important;
+  background-color: #fff;
+  padding: 0 5px 0 5px;
+}
+
+.input-field input:hover~label,
+.input-field input:focus~label{
+  color: #4338cae0;
+  top: 8px;
+  left: 35px;
+  font-size: small;
+  font-weight: bold;
   background-color: #fff;
   padding: 0 5px 0 5px;
 }
