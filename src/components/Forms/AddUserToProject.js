@@ -12,7 +12,7 @@ export default function AddUserToProject({ formData, setFormData }) {
 
   const [loading, setLoading] = useState(false);
   const { projectId } = useContext(ProjectContext);
-  const [getassignedUserData, setassignedUserData] = useState(null);
+  const [alreadyAssignedUsers, setAlreadyAssignedUsers] = useState(null);
 
   useEffect(() => {
     // getUserData();
@@ -47,11 +47,11 @@ export default function AddUserToProject({ formData, setFormData }) {
     // appointmentData.patientID = patientId;
     await fetch(`http://localhost:8080/assigned/getUserById/${projectId}`)
       .then((res) => res.json())
-      .then((data) => setassignedUserData(data));
+      .then((data) => setAlreadyAssignedUsers(data));
   };
-  console.log(getassignedUserData);
+
+
   const handleAssignedUserDelete = async (id, userId) => {
-    console.log(id + "---" + userId);
     let res = await fetch(
       `http://localhost:8080/assigned/deleteUser/${id}/${userId}`,
       {
@@ -62,11 +62,8 @@ export default function AddUserToProject({ formData, setFormData }) {
     if (res) {
       getAssignmentData();
     }
-
-    console.log(id);
   };
 
-  //ltiple fields search based on search key
   useEffect(() => {
     const filters = userData.filter(
       (user) =>
@@ -75,6 +72,7 @@ export default function AddUserToProject({ formData, setFormData }) {
 
     setFilteredUsers(filters);
   }, [userData, search]);
+
 
   const columns = [
     {
@@ -140,7 +138,7 @@ export default function AddUserToProject({ formData, setFormData }) {
                 <input
                   type="search"
                   className="form-control d-inline w-50"
-                  placeholder="Search User by name, email, role..."
+                  placeholder="Search User by name..."
                   onChange={getUserData}
                 ></input>
               </div>
@@ -153,7 +151,7 @@ export default function AddUserToProject({ formData, setFormData }) {
                 ...formData,
                 assignedUsers: selectedRows?.selectedRows,
               });
-              console.log(selectedRows);
+              console.log(formData?.assignedUsers)
             }}
             progressPending={loading}
           />
@@ -169,7 +167,7 @@ export default function AddUserToProject({ formData, setFormData }) {
               </tr>
             </thead>
             <tbody>
-            {getassignedUserData?.userId?.map((item, index) => (
+            {alreadyAssignedUsers?.userId?.map((item) => (
               <tr className="mb-2" key={item._id}>
                 <td>{item.name}</td>
                 <td>{item.role}</td>
@@ -182,7 +180,7 @@ export default function AddUserToProject({ formData, setFormData }) {
                       }}
                       onClick={() =>
                         handleAssignedUserDelete(
-                          getassignedUserData._id,
+                          alreadyAssignedUsers._id,
                           item._id
                         )
                       }
@@ -192,13 +190,13 @@ export default function AddUserToProject({ formData, setFormData }) {
               </tr>
             ))}
 
-            {formData?.assignedUsers.map((item, i, index) => (
+            {formData?.assignedUsers.map((item, i) => (
               <tr className="mb-2" key={i}>
                 <td>{item.name}</td>
                 <td>{item.role}</td>
                 <td>
                   <p>
-                    <AiOutlineClose onClick={handleClose(index)} />
+                    <AiOutlineClose onClick={handleClose(i)} />
                   </p>
                 </td>
               </tr>
