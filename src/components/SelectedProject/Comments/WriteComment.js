@@ -53,7 +53,7 @@ export default function WriteComment() {
             <Header />
             <div className="container bg-white" style={{ paddingTop: "4rem" }}>
 
-                <div className="d-flex justify-content-around pb-2">
+                <div className="d-flex justify-content-between pb-2">
                     <Link to={"/project"} className="btn btn-sm btn-secondary py-1 px-4 fw-bold">Back</Link>
                     {replyTo?.userName ?
                         <h6 className="text-center d-inline text-primary fw-bold">Replying to {replyTo?.userName} for comment on <Moment format="DD/MM/YYYY HH:mm">{replyTo?.time}</Moment></h6>
@@ -69,7 +69,7 @@ export default function WriteComment() {
                     <div>
                         <input type="file" name="files" multiple />
                     </div>
-                    <button type="button" disabled={isDisabled} className="btn theme-bg rounded-pill text-white px-2" onClick={uploadData}><i className="bi bi-plus-circle me-1"></i>Upload</button>
+                    <button type="button" disabled={isDisabled} className="btn theme-bg rounded-pill text-white px-2" onClick={uploadData}> Add {replyTo?.userName ? "Reply" : "Comment"}</button>
                 </footer>
             </div>
         </>
