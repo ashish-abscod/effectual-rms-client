@@ -42,7 +42,7 @@ export default function AllProjects() {
 
     //multiple fields search based on search key
     useEffect(() => {
-        const filters = projects.filter(project => JSON.stringify(project)
+        const filters = projects.filter(project => JSON.stringify(project?.projectId && project?.searchObject && new Date(project?.requestedDate).toLocaleDateString() && new Date(project?.deliveryDate).toLocaleDateString())
             .toLowerCase()
             .indexOf(search.toLowerCase()) !== -1)
 
@@ -102,7 +102,7 @@ export default function AllProjects() {
                 <DataTable columns={columns} data={filteredProjects} pagination fixedHeader fixedHeaderScrollHeight='470px' selectableRows selectableRowsHighlight highlightOnHover subHeader
                     subHeaderComponent={<TableHeader props={{ setSearch, projects, selectedProjects }} />}
                     onRowClicked={(row) => { navigate(`/project`); setProjectId(row.projectId) }} striped customStyles={customStyles} responsive
-                    onSelectedRowsChange={(selectedRows) => { setSelectedProjects(selectedRows?.selectedRows) }}
+                    onSelectedRowsChange={(selectedRows) => setSelectedProjects(selectedRows?.selectedRows)}
                     progressPending={loading}
                     progressComponent={
                         <div className='d-flex align-items-center p-5'>
