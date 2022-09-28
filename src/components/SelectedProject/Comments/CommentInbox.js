@@ -36,8 +36,9 @@ export default function CommentInbox() {
 
     return (
         <>
-            <Link to={"/comment"} className="btn btn-sm btn-warning py-1 px-4 float-end me-3 fw-bold" onClick={()=> setReplyTo(null)}> <BiCommentDetail className="fs-5 fw-bold"/> Comment </Link>
-            <section className='container commentInbox py-3 pt-0 h-100 overflow-auto'>
+        <h5 className='theme3-color fw-bold d-inline-block ms-3 mt-2'>Discussion Inbox</h5>
+            <Link to={"/comment"} className="btn btn-sm btn-primary my-1 py-2 px-4 float-end me-3 fw-bold" onClick={()=> setReplyTo(null)}> <BiCommentDetail className="fs-5 fw-bold"/> Add Comment </Link>
+            <section className='container commentInbox h-100 overflow-auto'>
 
 
                 {data?.map((item, i) =>
