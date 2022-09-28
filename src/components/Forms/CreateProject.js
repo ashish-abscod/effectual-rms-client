@@ -136,13 +136,20 @@ export default function CreateProject() {
           `http://localhost:8080/projects/update/${projectId}`,
           formData
         );
-        console.log(res);
+
+        const resp = await axios.put(
+          `http://localhost:8080/assigned/updateUser/${projectId}`, formData?.assignedUsers
+        );
+        console.log(resp);
       } catch (error) {
         console.log(error);
       }
     }
   };
 
+  const sumbitHandler = async () => {
+    projectHandler();
+  };
   return (
     <>
       <div className="container p-4 pt-1">
@@ -186,7 +193,7 @@ export default function CreateProject() {
               className="btn btn-success rounded-pill w-50 form"
               onClick={() => {
                 if (page === FormTitles.length - 1) {
-                  projectHandler();
+                  sumbitHandler();
                 } else {
                   setPage((current) => current + 1);
                 }
