@@ -42,7 +42,7 @@ export default function AllProjects() {
 
     //multiple fields search based on search key
     useEffect(() => {
-        const filters = projects.filter(project => JSON.stringify(project?.projectId && project?.searchObject && new Date(project?.requestedDate).toLocaleDateString() && new Date(project?.deliveryDate).toLocaleDateString())
+        const filters = projects.filter(project => JSON.stringify(project)
             .toLowerCase()
             .indexOf(search.toLowerCase()) !== -1)
 
