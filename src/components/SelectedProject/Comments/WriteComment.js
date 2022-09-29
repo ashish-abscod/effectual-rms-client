@@ -65,8 +65,8 @@ export default function WriteComment() {
     }
   };
 
-  const uploaadSingleFile = async (e) => {
-    
+  const uploaadSingleFile = async(e) => {
+
     if (e.target.files[0]) {
       //   console.log("e.target.files[0]: ", e.target.files[0]);
       const reader = new FileReader();
@@ -78,6 +78,10 @@ export default function WriteComment() {
         setFile(reader.result);
       };
     }
+
+  }
+  
+  const uploadFile = async (e) => {
 
     if (!replyTo?.commentId) {
       try {
@@ -132,7 +136,7 @@ export default function WriteComment() {
             <input
               type="file"
               name="file"
-              onChange={uploaadSingleFile}
+              onChange ={uploaadSingleFile}
             />
           </div>
           <button
@@ -141,8 +145,19 @@ export default function WriteComment() {
             className="btn theme-bg rounded-pill text-white px-2"
             onClick={addData}
           >
-            <i className="bi bi-plus-circle me-1"></i>Upload
+            <i className="bi bi-plus-circle me-1"></i>Upload Data
           </button>
+
+          <button
+            type="button"
+            disabled={isDisabled}
+            className="btn theme-bg rounded-pill text-white px-2"
+            onClick={uploadFile}
+          >
+            <i className="bi bi-plus-circle me-1"></i>Upload Fille
+          </button>
+          
+
         </footer>
       </div>
     </>

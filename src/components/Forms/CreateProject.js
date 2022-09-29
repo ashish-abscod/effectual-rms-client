@@ -27,10 +27,9 @@ export default function CreateProject() {
     ImportantClaims: "",
     UnimportantClaims: "",
     UsefulInformationForSearch: "",
-    file:"",
-    assignedUsers : []
+    file: "",
+    assignedUsers: [],
   });
-
 
   const getProjects = async () => {
     if (projectId !== null) {
@@ -72,7 +71,6 @@ export default function CreateProject() {
     getProjects();
   }, []);
 
-
   const FormTitles = [
     "Project Information",
     "Upload Files",
@@ -82,7 +80,8 @@ export default function CreateProject() {
 
   const PageDisplay = () => {
     let returnvalue;
-    switch (page) {
+    switch (page)
+ {
       case 0:
         returnvalue = (
           <ProjectInfo formData={formData} setFormData={setFormData} />
@@ -90,8 +89,7 @@ export default function CreateProject() {
         break;
       case 1:
         returnvalue = (
-          <UploadFiles formData={formData} setFormData={setFormData} 
-           />
+          <UploadFiles formData={formData} setFormData={setFormData} />
         );
         break;
       case 2:
@@ -119,18 +117,18 @@ export default function CreateProject() {
           "http://localhost:8080/projects/create",
           formData
         );
-        
-        console.log(res)
+        const info = await axios.post("http://localhost:8080/files", formData);
+        console.log(info)
+        console.log(res);
         let data = await axios.post(
           "http://localhost:8080/assigned/createUser",
           {
             userId: formData?.assignedUsers,
             projectId: res?.data?.data?.projectId,
             assignedBy: user.userData._id,
-
           }
         );
-        console.log(data);
+        // console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -147,6 +145,9 @@ export default function CreateProject() {
     }
   };
 
+  const sumbitHandler = async () => {
+    projectHandler();
+  };
   return (
     <>
       <div className="container p-4 pt-1">
@@ -190,7 +191,7 @@ export default function CreateProject() {
               className="btn btn-success rounded-pill w-50 form"
               onClick={() => {
                 if (page === FormTitles.length - 1) {
-                  projectHandler();
+                  sumbitHandler();
                 } else {
                   setPage((current) => current + 1);
                 }

@@ -1,10 +1,9 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
-import axios from 'axios';
-import { FaEyeSlash, FaEye } from 'react-icons/fa';
+import axios from "axios";
+import { FaEyeSlash, FaEye } from "react-icons/fa";
 
 export default function UpdateUser() {
-
   const { user, setUser } = useContext(UserContext);
   const [addUser, setAddUser] = useState({
     name: user?.userData?.name ? user?.userData?.name : "",
@@ -12,8 +11,10 @@ export default function UpdateUser() {
     password: "",
     confirmPassword: "",
   });
-  const [passType, setPassType] = useState({first : "Password", second : "Password" });
-
+  const [passType, setPassType] = useState({
+    first: "Password",
+    second: "Password",
+  });
 
   // const [file, setFile] = useState();
 
@@ -31,19 +32,18 @@ export default function UpdateUser() {
   //   }
   // };
 
-
-
-
   const handleUsersEdit = async () => {
     try {
-      let res = await axios.put(`http://localhost:8080/users/update/${user.userData._id}`, addUser);
+      let res = await axios.put(
+        `http://localhost:8080/users/update/${user.userData._id}`,
+        addUser
+      );
       console.log(res);
-      setUser()
+      setUser();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-
+  };
 
   return (
     <>
@@ -78,7 +78,10 @@ export default function UpdateUser() {
                         className="form-control"
                         // value={addUser.name}
                         onChange={(e) =>
-                          setAddUser({ ...addUser, [addUser.name]: e.target.value })
+                          setAddUser({
+                            ...addUser,
+                            [addUser.name]: e.target.value,
+                          })
                         }
                       />
                       <label>Name:</label>
@@ -90,7 +93,10 @@ export default function UpdateUser() {
                         className="form-control"
                         // value={addUser.email}
                         onChange={(e) =>
-                          setAddUser({ ...addUser, [addUser.email]: e.target.value })
+                          setAddUser({
+                            ...addUser,
+                            [addUser.email]: e.target.value,
+                          })
                         }
                       />
                       <label>Email:</label>
@@ -106,9 +112,21 @@ export default function UpdateUser() {
                         }
                         style={{ width: "90%" }}
                       />
-                      {passType.first === "Password" ? <FaEyeSlash className="fs-4 text-secondary ms-3" onClick={()=>setPassType({...passType, first : "text"})} /> :
-                        <FaEye className="fs-4 text-secondary ms-3" onClick={()=>setPassType({...passType, first : "Password"})}/>
-                      }
+                      {passType.first === "Password" ? (
+                        <FaEyeSlash
+                          className="fs-4 text-secondary ms-3"
+                          onClick={() =>
+                            setPassType({ ...passType, first: "text" })
+                          }
+                        />
+                      ) : (
+                        <FaEye
+                          className="fs-4 text-secondary ms-3"
+                          onClick={() =>
+                            setPassType({ ...passType, first: "Password" })
+                          }
+                        />
+                      )}
                       <label>Password:</label>
                       <span className="d-none">Error : Field Required</span>
                     </div>
@@ -125,9 +143,21 @@ export default function UpdateUser() {
                         }
                         style={{ width: "90%" }}
                       />
-                      {passType.second === "Password" ? <FaEyeSlash className="fs-4 text-secondary ms-3" onClick={()=>setPassType({...passType, second : "text"})} /> :
-                        <FaEye className="fs-4 text-secondary ms-3" onClick={()=>setPassType({...passType, second : "Password"})}/>
-                      }
+                      {passType.second === "Password" ? (
+                        <FaEyeSlash
+                          className="fs-4 text-secondary ms-3"
+                          onClick={() =>
+                            setPassType({ ...passType, second: "text" })
+                          }
+                        />
+                      ) : (
+                        <FaEye
+                          className="fs-4 text-secondary ms-3"
+                          onClick={() =>
+                            setPassType({ ...passType, second: "Password" })
+                          }
+                        />
+                      )}
                       <label>Confirm Password:</label>
                       <span className="d-none">Error : Field Required</span>
                     </div>
@@ -175,7 +205,6 @@ export default function UpdateUser() {
                       email: "",
                       password: "",
                       confirmPassword: "",
-
                     })
                   }
                 >

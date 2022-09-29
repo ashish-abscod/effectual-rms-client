@@ -4,15 +4,14 @@ import DataTable from "react-data-table-component";
 import { ProjectContext } from "../contexts/ProjectContext";
 import { UserContext } from "../contexts/UserContext";
 
-export default function AddUserToProject({formData, setFormData}) {
+export default function AddUserToProject({ formData, setFormData }) {
   const [userData, setUserData] = useState([]);
   const [search, setSearch] = useState("");
-  const [filteredUsers, setFilteredUsers] = useState([]); 
-   const [assignedUsers, setAssignedUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [assignedUsers, setAssignedUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const { user } = useContext(UserContext);
   const { projectId } = useContext(ProjectContext);
-
 
   console.log(formData?.assignedUsers);
 
@@ -40,14 +39,14 @@ export default function AddUserToProject({formData, setFormData}) {
   };
 
   const getUserData = async () => {
-    try{
+    try {
       setLoading(true);
       await fetch("http://localhost:8080/users")
-      .then((res) => res.json())
-      .then((data) => (setUserData(data), setFilteredUsers()));
-    }catch(error){
+        .then((res) => res.json())
+        .then((data) => (setUserData(data), setFilteredUsers()));
+    } catch (error) {
       console.log(error);
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -115,13 +114,25 @@ export default function AddUserToProject({formData, setFormData}) {
             selectableRowsHighlight
             highlightOnHover
             subHeader
-            subHeaderComponent={<div className="d-flex justify-content-around bg-light py-2"><h5 className="d-inline text-primary">Assign Users</h5><input type="search" className="form-control d-inline w-50" placeholder="Search User..."></input></div>}
+            subHeaderComponent={
+              <div className="d-flex justify-content-around bg-light py-2">
+                <h5 className="d-inline text-primary">Assign Users</h5>
+                <input
+                  type="search"
+                  className="form-control d-inline w-50"
+                  placeholder="Search User..."
+                ></input>
+              </div>
+            }
             striped
             customStyles={customStyles}
             responsive
             onSelectedRowsChange={(selectedRows) => {
-              setFormData({...formData, assignedUsers : selectedRows?.selectedRows});
-              console.log(selectedRows)
+              setFormData({
+                ...formData,
+                assignedUsers: selectedRows?.selectedRows,
+              });
+              console.log(selectedRows);
             }}
             progressPending={loading}
           />
@@ -137,7 +148,7 @@ export default function AddUserToProject({formData, setFormData}) {
                 <th scope="col">Role</th>
               </tr>
             </thead>
-            {assignedUsers.map((item,i) => (
+            {assignedUsers.map((item, i) => (
               <tr className="mb-2" key={i}>
                 <td>{item.name}</td>
                 <td>{item.email}</td>

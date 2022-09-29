@@ -32,19 +32,21 @@ export default function ManageUser() {
 
   const handleUsersDelete = async (id, name) => {
     const confirmation = window.confirm(`Are you sure to delete:  ${name} ?`);
-    if (confirmation){
+    if (confirmation) {
       try {
-        let res = await axios.put(`http://localhost:8080/users/delete/${id}`, status);
+        let res = await axios.put(
+          `http://localhost:8080/users/delete/${id}`,
+          status
+        );
         if (res) {
           getUserData();
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
-    return
+    return;
   };
-
 
   return (
     <>
@@ -91,7 +93,7 @@ export default function ManageUser() {
                 </thead>
                 <tbody className="fw-bold">
                   {userData.map((item, i) =>
-                    item.status === true ?
+                    item.status === true ? (
                       <tr key={i}>
                         <th>{i + 1}</th>
                         {/* <td>
@@ -122,7 +124,9 @@ export default function ManageUser() {
                           </button>
                         </td>
                       </tr>
-                      : ""
+                    ) : (
+                      ""
+                    )
                   )}
                 </tbody>
               </table>

@@ -3,7 +3,7 @@ import profile from "../../Assets/Effectual.jpg";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import UpdateUser from "./UpdateUser";
-import { BiUserCircle, BiLogOut } from 'react-icons/bi';
+import { BiUserCircle, BiLogOut } from "react-icons/bi";
 
 export default function Header({ projectSelected }) {
   const { user, setUser } = useContext(UserContext);
@@ -38,7 +38,12 @@ export default function Header({ projectSelected }) {
             id="navbarSupportedContent"
           >
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item" onClick={()=>{navigate("/main")}}>
+              <li
+                className="nav-item"
+                onClick={() => {
+                  navigate("/main");
+                }}
+              >
                 <button
                   className="nav-link active me-2 p-0 bg-transparent border-0 text-white "
                   aria-current="page"
@@ -80,16 +85,16 @@ export default function Header({ projectSelected }) {
                 style={{ top: "30px", right: "15%" }}
               >
                 <li className="mb-2">
-                  <button className="dropdown-item ps-2"
+                  <button
+                    className="dropdown-item ps-2"
                     type="button"
                     data-bs-toggle="modal"
                     data-bs-target="#changeProfile"
                   >
-                    <BiUserCircle className="fs-5 me-2" />  Profile
+                    <BiUserCircle className="fs-5 me-2" /> Profile
                   </button>
                 </li>
-                <li>
-                </li>
+                <li></li>
                 <li>
                   <button
                     className="dropdown-item ps-2"

@@ -9,7 +9,7 @@ export default function AddNewUser() {
     confirmPassword: "",
     role: "",
     picture: "",
-    status: true
+    status: true,
   });
 
   // const [file, setFile] = useState();
@@ -115,7 +115,10 @@ export default function AddNewUser() {
                         onChange={(e) =>
                           setAddUser({
                             ...addUser,
-                            confirmPassword: setAddUser({ ...addUser, password: e.target.value }),
+                            confirmPassword: setAddUser({
+                              ...addUser,
+                              password: e.target.value,
+                            }),
                           })
                         }
                       />
@@ -124,7 +127,8 @@ export default function AddNewUser() {
                     </div>
 
                     <div className="input-field">
-                      <select className="form-select"
+                      <select
+                        className="form-select"
                         type="text"
                         name=" role"
                         required
@@ -141,7 +145,9 @@ export default function AddNewUser() {
                         <option value="Searcher">Searcher</option>
                         <option value="Client Admin">Client Admin</option>
                         <option value="Effectual Admin">Effectual Admin</option>
-                        <option value="Technical Expert">Technical Expert</option>
+                        <option value="Technical Expert">
+                          Technical Expert
+                        </option>
                       </select>
                       <label>Role:</label>
                       <span className="d-none">Error : Field Required</span>
