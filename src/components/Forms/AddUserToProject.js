@@ -51,9 +51,8 @@ export default function AddUserToProject({ formData, setFormData }) {
       .then((res) => res.json())
       .then((data) => setassignedUserData(data));
   };
-  console.log(getassignedUserData);
-  const handleAssignedUserDelete = async (id, userId) => {
-    console.log(id + "---" + userId);
+
+  const handleAssignedUserDelete = async (userId, id) => {
     let res = await fetch(
       `http://localhost:8080/assigned/deleteUser/${id}/${userId}`,
       {
@@ -182,12 +181,7 @@ export default function AddUserToProject({ formData, setFormData }) {
                         fontSize: "20px",
                         cursor: "pointer",
                       }}
-                      onClick={() =>
-                        handleAssignedUserDelete(
-                          getassignedUserData._id,
-                          item._id
-                        )
-                      }
+                      onClick={() => handleAssignedUserDelete(item._id)}
                     />
                   </p>
                 </td>

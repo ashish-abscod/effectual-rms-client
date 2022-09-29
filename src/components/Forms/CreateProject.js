@@ -30,7 +30,7 @@ export default function CreateProject() {
     UnimportantClaims: "",
     UsefulInformationForSearch: "",
     file: "",
-    assignedUsers: [],
+    assignedUsers: [{}],
   });
 
   const getProjects = async () => {
@@ -140,12 +140,11 @@ export default function CreateProject() {
           formData
         );
 
-        const resp = await axios.put(
+        const resp = await axios.post(
           `http://localhost:8080/assigned/updateUser/${projectId}`,
-          { userId: formData?.assignedUsers }
+          formData?.assignedUsers
         );
-        console.log(resp);
-        console.log(formData?.assignedUsers);
+        console.log(resp.data);
       } catch (error) {
         console.log(error);
       }
