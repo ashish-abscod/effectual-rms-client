@@ -51,20 +51,19 @@ export default function Evaluation() {
     editedby: user?.userData?.name,
   });
 
-  let result = new Date().toLocaleDateString();
-  let final = `${result}`;
+  const getFormatedToday = () => {
+    var date = new Date();
+    var str = date.getFullYear() + "-" + (date.getMonth()<10 ?  `0${date.getMonth()+1}` : date.getMonth()+1) + "-" + (date.getDate()<10 ? `0${date.getDate()}` : date.getDate());
+    return str;
+}
 
   const submitData = async () => {
     try {
-      let date = new Date().toLocaleDateString();
-      evaluationData.modification = `${date}`;
+      evaluationData.modification = `${getFormatedToday()}`;
       const response = await axios.post(
         "http://localhost:8080/evaluation/",
         evaluationData
       );
-
-      console.log("addresponse: ", response);
-      console.log(evaluationData);
     } catch (error) {
       console.log("error: ", error);
     }
@@ -75,16 +74,10 @@ export default function Evaluation() {
         <div className="col">
           <div className="input-field">
             <input
-              type="text"
+              type="date"
               disabled
               className="form-control"
-              onChange={(e) => {
-                setevaluationData({
-                  ...evaluationData,
-                  modification: e.target.value,
-                });
-              }}
-              value={final}
+              value={getFormatedToday()}
               readOnly
             />
             <label>Modified Date:</label>
@@ -147,7 +140,7 @@ export default function Evaluation() {
 
       <div className="row justify-content-evenly mt-4">
         <div className="col-lg-4 col-md-6">
-          <span className="fw-bold text-secondary">
+          <span className="fw-bold text-secondary" style={{fontSize:"12px"}}>
             Score Range Refrences : X (55-65) | Y(45-55) | Z (0-25){" "}
           </span>
           <div
