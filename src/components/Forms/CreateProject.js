@@ -126,10 +126,12 @@ export default function CreateProject() {
             assignedBy: user.userData._id,
           }
         );
-        console.log(data);
+
       } catch (error) {
         console.log(error);
       }
+      //clear FormData Completely after creating project
+      setFormData(null);
     } else if (projectId !== null) {
       try {
         const res = await axios.put(
@@ -140,16 +142,15 @@ export default function CreateProject() {
         const resp = await axios.put(
           `http://localhost:8080/assigned/updateUser/${projectId}`, formData?.assignedUsers
         );
-        console.log(resp);
+        // clear assignedUsers from formdata after updation complete
+        setFormData({...formData, assignedUsers: []});
       } catch (error) {
         console.log(error);
       }
     }
   };
 
-  const sumbitHandler = async () => {
-    projectHandler();
-  };
+
   return (
     <>
       <div className="container p-4 pt-1">
@@ -193,7 +194,7 @@ export default function CreateProject() {
               className="btn btn-success rounded-pill w-50 form"
               onClick={() => {
                 if (page === FormTitles.length - 1) {
-                  sumbitHandler();
+                  projectHandler();
                 } else {
                   setPage((current) => current + 1);
                 }
