@@ -117,8 +117,7 @@ export default function CreateProject() {
           "http://localhost:8080/projects/create",
           formData
         );
-        const info = await axios.post("http://localhost:8080/files", formData);
-        console.log(info)
+        
         console.log(res);
         let data = await axios.post(
           "http://localhost:8080/assigned/createUser",
@@ -138,7 +137,11 @@ export default function CreateProject() {
           `http://localhost:8080/projects/update/${projectId}`,
           formData
         );
-        console.log(res);
+
+        const resp = await axios.put(
+          `http://localhost:8080/assigned/updateUser/${projectId}`, formData?.assignedUsers
+        );
+        console.log(resp);
       } catch (error) {
         console.log(error);
       }

@@ -4,6 +4,8 @@ import axios from "axios";
 export default function ManageUser() {
   const [userData, setUserData] = useState([]);
   const [status] = useState(true);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [search, setSearch] = useState("");
 
   const target = useRef(null);
 
@@ -14,21 +16,30 @@ export default function ManageUser() {
   const getUserData = async () => {
     await fetch("http://localhost:8080/users")
       .then((res) => res.json())
-      .then((data) => setUserData(data));
+      .then((data) => (setUserData(data), setFilteredUsers()));
   };
 
-  const searchHandle = async (event) => {
-    let key = event.target.value;
-    if (key) {
-      let result = await fetch(`http://localhost:8080/users/search/${key}`);
-      result = await result.json();
-      if (result) {
-        setUserData(result);
-      }
-    } else {
-      getUserData();
-    }
-  };
+  // const searchHandle = async (event) => {
+  //   let key = event.target.value;
+  //   if (key) {
+  //     let result = await fetch(`http://localhost:8080/users/search/${key}`);
+  //     result = await result.json();
+  //     if (result) {
+  //       setUserData(result);
+  //     }
+  //   } else {
+  //     getUserData();
+  //   }
+  // };
+  //multiple fields search based on search key
+  useEffect(() => {
+    const filters = userData.filter(
+      (user) =>
+        JSON.stringify(user).toLowerCase().indexOf(search.toLowerCase()) !== -1
+    );
+
+    setFilteredUsers(filters);
+  }, [userData, search]);
 
   const handleUsersDelete = async (id, name) => {
     const confirmation = window.confirm(`Are you sure to delete:  ${name} ?`);
@@ -62,7 +73,7 @@ export default function ManageUser() {
               className="form-control me-2 border border-primary"
               type="search"
               placeholder="Search"
-              onChange={searchHandle}
+              onChange={setFilteredUsers}
             />
           </div>
           <div className="col-md-3">
