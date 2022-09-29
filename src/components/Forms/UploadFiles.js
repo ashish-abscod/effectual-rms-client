@@ -50,7 +50,7 @@ export default function UploadFiles({ formData, setFormData }) {
             style={{ minHeight: "22rem" }}
             id="info"
             placeholder="Type Something here..."
-            value={formData.UsefulInformationForSearch}
+            value={formData?.UsefulInformationForSearch}
             onChange={(e) =>
               setFormData({
                 ...formData,
