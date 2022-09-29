@@ -7,13 +7,11 @@ import { ProjectContext } from "../contexts/ProjectContext";
 import axios from "axios";
 import { useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { useParams } from "react-router-dom";
 
 export default function CreateProject() {
   const [page, setPage] = useState(0);
   const { projectId } = useContext(ProjectContext);
   const { user } = useContext(UserContext);
-  const { project_Id } = useParams();
 
   const [formData, setFormData] = useState({
     SearchObject: "",
@@ -128,7 +126,6 @@ export default function CreateProject() {
             assignedBy: user.userData._id,
           }
         );
-
         console.log(data);
       } catch (error) {
         console.log(error);
@@ -140,11 +137,11 @@ export default function CreateProject() {
           formData
         );
 
-        const resp = await axios.post(
+        const resp = await axios.put(
           `http://localhost:8080/assigned/updateUser/${projectId}`,
           formData?.assignedUsers
         );
-        console.log(resp.data);
+        console.log(resp);
       } catch (error) {
         console.log(error);
       }

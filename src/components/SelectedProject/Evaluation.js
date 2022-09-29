@@ -85,6 +85,7 @@ export default function Evaluation() {
                 });
               }}
               value={final}
+              readOnly
             />
             <label>Modified Date:</label>
             <span className="d-none">Error : Field Required</span>

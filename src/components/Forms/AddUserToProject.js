@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
 import DataTable from "react-data-table-component";
 import { ProjectContext } from "../contexts/ProjectContext";
@@ -12,9 +11,8 @@ export default function AddUserToProject({ formData, setFormData }) {
   const [filteredUsers, setFilteredUsers] = useState([]);
 
   const [loading, setLoading] = useState(false);
-  const { user } = useContext(UserContext);
   const { projectId } = useContext(ProjectContext);
-  const [getassignedUserData, setassignedUserData] = useState(null);
+  const [alreadyAssignedUsers, setAlreadyAssignedUsers] = useState(null);
 
   useEffect(() => {
     // getUserData();
@@ -49,10 +47,10 @@ export default function AddUserToProject({ formData, setFormData }) {
     // appointmentData.patientID = patientId;
     await fetch(`http://localhost:8080/assigned/getUserById/${projectId}`)
       .then((res) => res.json())
-      .then((data) => setassignedUserData(data));
+      .then((data) => setAlreadyAssignedUsers(data));
   };
 
-  const handleAssignedUserDelete = async (userId, id) => {
+  const handleAssignedUserDelete = async (id, userId) => {
     let res = await fetch(
       `http://localhost:8080/assigned/deleteUser/${id}/${userId}`,
       {
@@ -63,11 +61,8 @@ export default function AddUserToProject({ formData, setFormData }) {
     if (res) {
       getAssignmentData();
     }
-
-    console.log(id);
   };
 
-  //ltiple fields search based on search key
   useEffect(() => {
     const filters = userData.filter(
       (user) =>
@@ -141,7 +136,7 @@ export default function AddUserToProject({ formData, setFormData }) {
                 <input
                   type="search"
                   className="form-control d-inline w-50"
-                  placeholder="Search User by name, email, role..."
+                  placeholder="Search User by name..."
                   onChange={getUserData}
                 ></input>
               </div>
@@ -150,11 +145,11 @@ export default function AddUserToProject({ formData, setFormData }) {
             customStyles={customStyles}
             responsive
             onSelectedRowsChange={(selectedRows) => {
-              setFormData({
-                ...formData,
-                assignedUsers: selectedRows?.selectedRows,
-              });
-              console.log(selectedRows);
+              // setFormData({
+              //   ...formData,
+              //   assignedUsers: selectedRows?.selectedRows,
+              // });
+              console.log(selectedRows?.selectedRows);
             }}
             progressPending={loading}
           />
@@ -169,36 +164,42 @@ export default function AddUserToProject({ formData, setFormData }) {
                 <th scope="col">Action</th>
               </tr>
             </thead>
+            <tbody>
+              {alreadyAssignedUsers?.userId?.map((item) => (
+                <tr className="mb-2" key={item._id}>
+                  <td>{item.name}</td>
+                  <td>{item.role}</td>
+                  <td>
+                    <p>
+                      <MdDelete
+                        style={{
+                          fontSize: "20px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() =>
+                          handleAssignedUserDelete(
+                            alreadyAssignedUsers._id,
+                            item._id
+                          )
+                        }
+                      />
+                    </p>
+                  </td>
+                </tr>
+              ))}
 
-            {getassignedUserData?.userId?.map((item, index) => (
-              <tr className="mb-2" key={item._id}>
-                <td>{item.name}</td>
-                <td>{item.role}</td>
-                <td>
-                  <p>
-                    <MdDelete
-                      style={{
-                        fontSize: "20px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => handleAssignedUserDelete(item._id)}
-                    />
-                  </p>
-                </td>
-              </tr>
-            ))}
-
-            {formData?.assignedUsers.map((item, i, index) => (
-              <tr className="mb-2" key={i}>
-                <td>{item.name}</td>
-                <td>{item.role}</td>
-                <td>
-                  <p>
-                    <AiOutlineClose onClick={handleClose(index)} />
-                  </p>
-                </td>
-              </tr>
-            ))}
+              {formData?.assignedUsers.map((item, i) => (
+                <tr className="mb-2" key={i}>
+                  <td>{item.name}</td>
+                  <td>{item.role}</td>
+                  <td>
+                    <p>
+                      <AiOutlineClose onClick={handleClose(i)} />
+                    </p>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
       </div>

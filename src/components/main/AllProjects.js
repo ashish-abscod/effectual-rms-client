@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import TableHeader from './TableHeader';
 import { useContext } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
-import Moment from 'react-moment';
 
 export default function AllProjects() {
     const [search, setSearch] = useState("");
@@ -65,23 +64,13 @@ export default function AllProjects() {
             sortable: true
         },
         {
-            name: "Type",
-            selector: (row) => row.projectName,
-            sortable: true
-        },
-        {
-            name: "Requester",
-            selector: (row) => row.requesterName,
-            sortable: true
-        },
-        {
-            name: "Manager",
-            selector: (row) => row.projectManager,
-            sortable: true
-        },
-        {
-            selector: (row) => <Moment format="DD/MM/YYYY">{row.requestedDate}</Moment>,
+            selector: (row) => new Date(row?.requestedDate).toLocaleDateString(),
             name: "Request Date",
+            sortable: true
+        },
+        {
+            selector: (row) => new Date(row?.deliveryDate).toLocaleDateString(),
+            name: "Delievery Date",
             sortable: true
         },
         {
@@ -113,7 +102,7 @@ export default function AllProjects() {
                 <DataTable columns={columns} data={filteredProjects} pagination fixedHeader fixedHeaderScrollHeight='470px' selectableRows selectableRowsHighlight highlightOnHover subHeader
                     subHeaderComponent={<TableHeader props={{ setSearch, projects, selectedProjects }} />}
                     onRowClicked={(row) => { navigate(`/project`); setProjectId(row.projectId) }} striped customStyles={customStyles} responsive
-                    onSelectedRowsChange={(selectedRows) => { setSelectedProjects(selectedRows?.selectedRows) }}
+                    onSelectedRowsChange={(selectedRows) => setSelectedProjects(selectedRows?.selectedRows)}
                     progressPending={loading}
                     progressComponent={
                         <div className='d-flex align-items-center p-5'>

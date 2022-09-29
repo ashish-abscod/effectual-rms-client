@@ -36,8 +36,9 @@ export default function CommentInbox() {
 
     return (
         <>
-            <Link to={"/comment"} className="btn btn-sm btn-warning py-1 px-4 float-end me-3 fw-bold" onClick={()=> setReplyTo(null)}> <BiCommentDetail className="fs-5 fw-bold"/> Comment </Link>
-            <section className='container commentInbox py-3 pt-0 h-100 overflow-auto'>
+        <h5 className='theme3-color fw-bold d-inline-block ms-3 mt-2'>Discussion Inbox</h5>
+            <Link to={"/comment"} className="btn btn-sm btn-primary my-1 py-2 px-4 float-end me-3 fw-bold" onClick={()=> setReplyTo(null)}> <BiCommentDetail className="fs-5 fw-bold"/> Add Comment </Link>
+            <section className='container commentInbox h-100 overflow-auto'>
 
 
                 {data?.map((item, i) =>
@@ -47,7 +48,7 @@ export default function CommentInbox() {
                             <span className='name text-primary fw-bold'>{item?.userName} </span> 
                             <span className='designation text-secondary fw-bold'>({item?.userRole})</span>
                             <span className='fw-normal'>: <Moment format='DD-MMM-YYYY hh:mm a' className='fw-bold'>{item?.time}</Moment> </span>
-                            <button type="button" className='btn btn-outline-primary rounded-pill ps-1 pe-2 py-1 float-end' onClick={() => {setReplyTo({userName : item.userName, time : item.time}); navigate('/comment')}}><BsReplyAllFill className='fs-4 pb-1' /> Reply</button>
+                            <button type="button" className='btn btn-outline-primary rounded-pill ps-1 pe-2 py-1 float-end' onClick={() => {setReplyTo({userName : item.userName, time : item.time, commentId : item.commentId}); navigate('/comment')}}><BsReplyAllFill className='fs-4 pb-1' /> Reply</button>
                         </div>
 
                         <div className='child-wrapper ps-md-2'>
@@ -96,8 +97,8 @@ export default function CommentInbox() {
                         </div>
                     </div>
                 )}
-
-
+                
+                {data?.length === 0 ? <h5 className='text-danger text-center mt-5'>No Comments and Replies</h5> : ""}
             </section>
         </>
     )

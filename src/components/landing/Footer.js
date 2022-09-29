@@ -7,7 +7,7 @@ export default function Footer() {
       <footer className='pb-3'>
         <div className="footer-top py-5 ld border-top border-bottom">
           <div className="container">
-            <div className="row gy-4 justify-content-evenly">
+            <div className="row gy-4 justify-content-around">
               <div className="col-lg-5 col-md-12 footer-info">
                 <a href="index.html" className="d-flex align-items-center text-decoration-none mb-4">
                   <img src={logo} alt="" width={60} />
@@ -22,35 +22,6 @@ export default function Footer() {
                   <a className="instagram" href="/"><i className="bi bi-instagram"></i></a>
                   <a className="linkedin" href="/"><i className="bi bi-linkedin"></i></a>
                 </div>
-              </div>
-              <div className="col-lg-3 col-6 footer-links">
-                <h4>Useful Links</h4>
-                <ul style={{listStyle:"none",padding:"0"}}>
-                  <li>
-                    <BiChevronRight className='fs-3 fw-bold text-secondary'/>
-                    <a href="#home">Home</a>
-                  </li>
-                  <li>
-                    <BiChevronRight className='fs-3 fw-bold text-secondary'/>
-                    <a href="#about">About</a>
-                  </li>
-                  <li>
-                    <BiChevronRight className='fs-3 fw-bold text-secondary'/>
-                    <a href="#highlights">Highlights</a>
-                  </li>
-                  <li>
-                    <BiChevronRight className='fs-3 fw-bold text-secondary'/>
-                    <a href="#features">Features</a>
-                  </li>
-                  <li>
-                    <BiChevronRight className='fs-3 fw-bold text-secondary'/>
-                    <a href="#getStarted">Get Started</a>
-                  </li>
-                  <li>
-                    <BiChevronRight className='fs-3 fw-bold text-secondary'/>
-                    <a href="#contact">Contact</a>
-                  </li>
-                </ul>
               </div>
               <div className="col-lg-3 col-md-12 text-center text-md-start">
                 <h4>Contact Us</h4>
