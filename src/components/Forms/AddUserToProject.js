@@ -149,7 +149,7 @@ export default function AddUserToProject({ formData, setFormData }) {
               //   ...formData,
               //   assignedUsers: selectedRows?.selectedRows,
               // });
-              console.log(selectedRows?.selectedRows);
+              console.log(selectedRows?.se);
             }}
             progressPending={loading}
           />
