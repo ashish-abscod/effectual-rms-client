@@ -14,13 +14,10 @@ export default function AllProjects() {
     const { setProjectId } = useContext(ProjectContext);
     const [loading, setLoading] = useState(false);
     
-    
-    
-    
     //setProjectId null when user press back button to main panel, which helps to create new project instead to update selected project.
     setProjectId(null); 
     
-
+    
     //fetching data from endpoint
     const getProjects = async () => {
         try {

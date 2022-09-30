@@ -10,7 +10,7 @@ import { UserContext } from "../contexts/UserContext";
 
 export default function CreateProject() {
   const [page, setPage] = useState(0);
-  const { projectId } = useContext(ProjectContext);
+  const { projectId,setProjectId } = useContext(ProjectContext);
   const { user } = useContext(UserContext);
 
   const [formData, setFormData] = useState({
@@ -31,6 +31,7 @@ export default function CreateProject() {
     assignedUsers: [],
   });
 
+
   const getProjects = async () => {
     if (projectId !== null) {
       try {
@@ -41,23 +42,16 @@ export default function CreateProject() {
         setFormData({
           ...formData,
           SearchObject: res.data.searchObject ? res.data.searchObject : "",
-          TechnicalField: res.data.technicalField
-            ? res.data.technicalField
-            : "",
+          TechnicalField: res.data.technicalField ? res.data.technicalField: "",
+          KnownPriorArt : res.data.patentNumber ? res.data.patentNumber : "",
           ClaimsToBeSearched: res.data.claims ? res.data.claims : "",
-          RequirementForDelivery: res.data.reqDelivery
-            ? res.data.reqDelivery
-            : "",
-          RequirementDeliveryDate: res.data.deliveryDate
-            ? res.data.deliveryDate
-            : "",
-          PriorArtCuttOffDate: res.data.priorArtdate
-            ? res.data.priorArtdate
-            : "",
+          RequirementForDelivery: res.data.reqDelivery ? res.data.reqDelivery: "",
+          RequirementDeliveryDate: res.data.deliveryDate? res.data.deliveryDate: "",
+          PriorArtCuttOffDate: res.data.priorArtDate? res.data.priorArtDate: "",
           StandardRelated: res.data.standard ? res.data.standard : "",
           SSONeeded: res.data.sso ? res.data.sso : "",
           USIPRSpecial: res.data.usipr ? res.data.usipr : "",
-          ImportantClaims: res.data.impclaim ? res.data.impclaim : "",
+          ImportantClaims: res.data.impClaim ? res.data.impClaim : "",
           UnimportantClaims: res.data.nonImpClaim ? res.data.nonImpClaim : "",
           UsefulInformationForSearch: res.data.info ? res.data.info : "",
         });
@@ -69,7 +63,7 @@ export default function CreateProject() {
   //getting project based on id
   useEffect(() => {
     getProjects();
-  }, []);
+  }, [projectId]);
 
   const FormTitles = [
     "Project Information",

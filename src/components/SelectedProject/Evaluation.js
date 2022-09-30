@@ -90,6 +90,8 @@ export default function Evaluation() {
               type="text"
               className="form-control"
               value={user?.userData?.name}
+              readOnly
+              disabled
             />
             <label>Last Edited By:</label>
             <span className="d-none">Error : Field Required</span>
