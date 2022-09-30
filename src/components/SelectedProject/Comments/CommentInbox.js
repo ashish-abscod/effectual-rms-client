@@ -58,11 +58,11 @@ export default function CommentInbox() {
                                     </div>
                                     <div className='comment-footer row justify-content-between align-items-center mb-2'>
                                         <div className='files mt-3 col-lg-10'>
-                                            <span className='fw-bold'>Attached Files: </span>
+                                            {/* <span className='fw-bold'>Attached Files: </span>
                                             <a href={myPDF} className="me-3"> My PDF</a>
                                             <a href={myPDF} className="me-3">My Document</a>
                                             <a href={myPDF} className="me-3">My Document</a>
-                                            <a href={myPDF} className="me-3">My Document</a>
+                                            <a href={myPDF} className="me-3">My Document</a> */}
                                         </div>
                                         <div className='col-lg-2 ps-lg-5'>
                                         </div>
@@ -83,11 +83,11 @@ export default function CommentInbox() {
                                                 <div className='replie-txt mt-2' dangerouslySetInnerHTML={{__html:item?.replie}}>
                                                 </div>
                                                 <div className='files mt-3'>
-                                                    <span className='fw-bold'>Attached Files: </span>
+                                                    {/* <span className='fw-bold'>Attached Files: </span>
                                                     <a href={myPDF} className="me-3">My Document</a>
                                                     <a href={myPDF} className="me-3">My Document</a>
                                                     <a href={myPDF} className="me-3">My Document</a>
-                                                    <a href={myPDF} className="me-3">My Document</a>
+                                                    <a href={myPDF} className="me-3">My Document</a> */}
                                                 </div>
                                             </div>
                                         </div>
