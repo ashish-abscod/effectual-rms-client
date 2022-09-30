@@ -11,7 +11,7 @@ export default function Evaluation() {
   const [isClaimHovering, setIsClaimHovering] = useState(false);
   const [isHistoryHovering, setIsHistoryHovering] = useState(false);
   const [isDataHovering, setIsDataHovering] = useState(false);
-  const [isUpdated, setIsUpdated] = useState(false);
+  // const [isUpdated, setIsUpdated] = useState(false);
 
   const claimMouseOver = () => {
     setIsClaimHovering(true);
@@ -73,8 +73,9 @@ export default function Evaluation() {
         appSerachResult: res.data.appSerachResult,
         editedby: res.data.editedby,
       });
-      setIsUpdated(true);
-      setIsUpdated(false);
+      if (res?.data?.claimscore) {
+        // setIsUpdated(true);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -85,26 +86,27 @@ export default function Evaluation() {
   }, []);
 
   const submitData = async () => {
-    if (isUpdated === false) {
-      try {
-        let date = new Date().toLocaleDateString();
-        evaluationData.modification = `${date}`;
-        const response = await axios.post(
-          "http://localhost:8080/evaluation/",
-          evaluationData
-        );
+    // if (isUpdated === false) {
+    // try {
+    //   let date = new Date().toLocaleDateString();
+    //   evaluationData.modification = `${date}`;
+    //   const response = await axios.post(
+    //     "http://localhost:8080/evaluation/",
+    //     evaluationData
+    //   );
+    //   // setIsUpdated(false);
 
-        console.log("addresponse: ", response);
-        console.log(evaluationData);
-      } catch (error) {
-        console.log("error: ", error);
-      }
-    } else if (isUpdated === true) {
-      const res = await axios.put(
-        `http://localhost:8080/evaluation/${projectId}`,
-        evaluationData
-      );
-    }
+    //   console.log("addresponse: ", response);
+    //   console.log(evaluationData);
+    // } catch (error) {
+    //   console.log("error: ", error);
+    // }
+    // } else if (isUpdated === true) {
+    const res = await axios.post(
+      `http://localhost:8080/evaluation/${projectId}`,
+      evaluationData
+    );
+    // }
   };
   return (
     <div className="container">
