@@ -37,7 +37,7 @@ export default function UploadFiles({ formData, setFormData }) {
             />
           </label>
           <span className="ms-3"  >
-            {formData.file ? "File(s) Selected" : "File(s) Not Selected"}
+            {formData?.file ? "File(s) Selected" : "File(s) Not Selected"}
           </span>
         </div>
       )}
