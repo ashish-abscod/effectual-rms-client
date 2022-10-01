@@ -27,8 +27,13 @@ export default function CreateProject() {
     ImportantClaims: "",
     UnimportantClaims: "",
     UsefulInformationForSearch: "",
-    file: "",
     assignedUsers: [],
+  });
+
+  const [attachment, setAttachment] = useState({
+    files: [],
+    filesName: [],
+    uploadedBy: user?.userData?.name,
   });
 
   const getProjects = async () => {
@@ -80,8 +85,7 @@ export default function CreateProject() {
 
   const PageDisplay = () => {
     let returnvalue;
-    switch (page)
- {
+    switch (page) {
       case 0:
         returnvalue = (
           <ProjectInfo formData={formData} setFormData={setFormData} />
@@ -89,7 +93,12 @@ export default function CreateProject() {
         break;
       case 1:
         returnvalue = (
-          <UploadFiles formData={formData} setFormData={setFormData} />
+          <UploadFiles
+            formData={formData}
+            setFormData={setFormData}
+            attachment={attachment}
+            setAttachment={setAttachment}
+          />
         );
         break;
       case 2:
@@ -117,8 +126,17 @@ export default function CreateProject() {
           "http://localhost:8080/projects/create",
           formData
         );
-        
-        console.log(res);
+
+        setAttachment({...attachment, projectId: res?.data?.data?.projectId})
+
+        const info = await axios.post("http://localhost:8080/files/saveToDb",{
+          projectId : res?.data?.data?.projectId,
+          files : attachment?.files,
+          filesName : attachment?.filesName,
+          uploadedBy : attachment?.uploadedBy
+        });
+        console.log(info)
+
         let data = await axios.post(
           "http://localhost:8080/assigned/createUser",
           {
@@ -127,6 +145,7 @@ export default function CreateProject() {
             assignedBy: user.userData._id,
           }
         );
+
         // console.log(data);
       } catch (error) {
         console.log(error);
@@ -139,7 +158,8 @@ export default function CreateProject() {
         );
 
         const resp = await axios.put(
-          `http://localhost:8080/assigned/updateUser/${projectId}`, formData?.assignedUsers
+          `http://localhost:8080/assigned/updateUser/${projectId}`,
+          formData?.assignedUsers
         );
         console.log(resp);
       } catch (error) {
@@ -147,6 +167,8 @@ export default function CreateProject() {
       }
     }
   };
+
+  console.log(attachment)
 
   const sumbitHandler = async () => {
     projectHandler();

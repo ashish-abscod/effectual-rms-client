@@ -23,6 +23,7 @@ export default function CommentInbox() {
         `http://localhost:8080/discussion/${projectId}`
       );
       setData(response.data);
+      console.log(response.data)
     } catch (error) {
       console.log(error);
     }

@@ -43,6 +43,12 @@ export default function WriteComment() {
     userRole: user?.userData?.role,
   });
 
+  const [attachment, setAttachment] = useState({
+    files: [],
+    filesName: [],
+    uploadedBy: user?.userData?.name,
+  });
+
   const addData = async () => {
     setDisabled(true);
     if (!replyTo?.commentId) {
@@ -51,7 +57,17 @@ export default function WriteComment() {
           "http://localhost:8080/comment",
           body
         );
+
+        const info = await axios.post("http://localhost:8080/commentFiles/saveToDb", {
+          projectId: projectId,
+          commentId: response?.data?.commentId,
+          files: attachment?.files,
+          filesName: attachment?.filesName,
+          uploadedBy: attachment?.uploadedBy,
+        });
         console.log(response);
+
+        console.log(info);
       } catch (error) {
         console.log("error: ", error);
       }
@@ -59,14 +75,26 @@ export default function WriteComment() {
       try {
         const response = await axios.post("http://localhost:8080/replie", body);
         console.log(response);
+
+        const info = await axios.post("http://localhost:8080/replyFiles/saveToDb", {
+          
+          projectId: projectId,
+          commentId: response?.data?.commentId,
+          files: attachment?.files,
+          filesName: attachment?.filesName,
+          uploadedBy: attachment?.uploadedBy,
+        });
+        console.log(response);
+        console.log(replyTo?.commentId)
+        console.log(info);
+
       } catch (error) {
         console.log("error: ", error);
       }
     }
   };
 
-  const uploaadSingleFile = async(e) => {
-
+  const uploaadSingleFile = async (e) => {
     if (e.target.files[0]) {
       //   console.log("e.target.files[0]: ", e.target.files[0]);
       const reader = new FileReader();
@@ -78,18 +106,17 @@ export default function WriteComment() {
         setFile(reader.result);
       };
     }
+  };
 
-  }
-  
   const uploadFile = async (e) => {
-
     if (!replyTo?.commentId) {
       try {
         const response = await axios.post(
           "http://localhost:8080/commentFiles",
           chooseFile
         );
-        console.log(response);
+        attachment.files.push(response.data.data);
+        console.log(attachment);
       } catch (error) {
         console.log("error: ", error);
       }
@@ -99,7 +126,8 @@ export default function WriteComment() {
           "http://localhost:8080/replyFiles",
           chooseFile
         );
-        console.log(response);
+        attachment.files.push(response.data.data);
+        console.log(attachment);
       } catch (error) {
         console.log("error: ", error);
       }
@@ -117,6 +145,7 @@ export default function WriteComment() {
           >
             Back
           </Link>
+          {replyTo?.commentId}
           {replyTo?.userName ? (
             <h6 className="text-center d-inline text-primary fw-bold">
               Replying to {replyTo?.userName} for comment on{" "}
@@ -133,11 +162,7 @@ export default function WriteComment() {
 
         <footer className="d-flex justify-content-between mt-3">
           <div>
-            <input
-              type="file"
-              name="file"
-              onChange ={uploaadSingleFile}
-            />
+            <input type="file" name="file" onChange={uploaadSingleFile} />
           </div>
           <button
             type="button"
@@ -156,8 +181,6 @@ export default function WriteComment() {
           >
             <i className="bi bi-plus-circle me-1"></i>Upload Fille
           </button>
-          
-
         </footer>
       </div>
     </>
