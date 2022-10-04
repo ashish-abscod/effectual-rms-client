@@ -34,6 +34,8 @@ export default function WriteComment() {
     return str;
   };
 
+
+
   const [body, setBody] = useState({
     projectId: projectId,
     commentId: replyTo?.commentId,
@@ -45,7 +47,7 @@ export default function WriteComment() {
 
   const [attachment, setAttachment] = useState({
     files: [],
-    filesName: [],
+    fileNames: [],
     uploadedBy: user?.userData?.name,
   });
 
@@ -58,13 +60,16 @@ export default function WriteComment() {
           body
         );
 
-        const info = await axios.post("http://localhost:8080/commentFiles/saveToDb", {
-          projectId: projectId,
-          commentId: response?.data?.commentId,
-          files: attachment?.files,
-          filesName: attachment?.filesName,
-          uploadedBy: attachment?.uploadedBy,
-        });
+        const info = await axios.post(
+          "http://localhost:8080/commentFiles/saveToDb",
+          {
+            projectId: projectId,
+            commentId: response?.data?.commentId,
+            files: attachment?.files,
+            fileNames: attachment?.fileNames,
+            uploadedBy: attachment?.uploadedBy,
+          }
+        );
         console.log(response);
 
         console.log(info);
@@ -76,18 +81,19 @@ export default function WriteComment() {
         const response = await axios.post("http://localhost:8080/replie", body);
         console.log(response);
 
-        const info = await axios.post("http://localhost:8080/replyFiles/saveToDb", {
-          
-          projectId: projectId,
-          commentId: response?.data?.commentId,
-          files: attachment?.files,
-          filesName: attachment?.filesName,
-          uploadedBy: attachment?.uploadedBy,
-        });
+        const info = await axios.post(
+          "http://localhost:8080/replyFiles/saveToDb",
+          {
+            projectId: projectId,
+            commentId: response?.data?.commentId,
+            files: attachment?.files,
+            fileNames: attachment?.fileNames,
+            uploadedBy: attachment?.uploadedBy,
+          }
+        );
         console.log(response);
-        console.log(replyTo?.commentId)
+        console.log(replyTo?.commentId);
         console.log(info);
-
       } catch (error) {
         console.log("error: ", error);
       }
@@ -103,10 +109,13 @@ export default function WriteComment() {
       reader.onloadend = () => {
         // console.log("reader.result: ", reader.result);
         setChooseFile({ ...chooseFile, file: reader.result });
+        setAttachment({...attachment,fileNames:e.target.files[0].name})
+        console.log(e.target.files[0].name)
         setFile(reader.result);
       };
     }
   };
+
 
   const uploadFile = async (e) => {
     if (!replyTo?.commentId) {
@@ -116,6 +125,7 @@ export default function WriteComment() {
           chooseFile
         );
         attachment.files.push(response.data.data);
+        attachment.fileNames.push(response.data.data)
         console.log(attachment);
       } catch (error) {
         console.log("error: ", error);
@@ -127,6 +137,7 @@ export default function WriteComment() {
           chooseFile
         );
         attachment.files.push(response.data.data);
+        attachment.fileNames.push(response.data.data)
         console.log(attachment);
       } catch (error) {
         console.log("error: ", error);
@@ -137,51 +148,56 @@ export default function WriteComment() {
   return (
     <>
       <Header />
-      <div className="container bg-white" style={{ paddingTop: "4rem" }}>
-        <div className="d-flex justify-content-around pb-2">
-          <Link
-            to={"/project"}
-            className="btn btn-sm btn-secondary py-1 px-4 fw-bold"
-          >
-            Back
-          </Link>
-          {replyTo?.commentId}
-          {replyTo?.userName ? (
-            <h6 className="text-center d-inline text-primary fw-bold">
-              Replying to {replyTo?.userName} for comment on{" "}
-              <Moment format="DD/MM/YYYY HH:mm">{replyTo?.time}</Moment>
-            </h6>
-          ) : (
-            <h6 className="text-center d-inline text-primary fw-bold">
-              Writing Comment on Project - {projectId}
-            </h6>
-          )}
-        </div>
+      <div className="container-fluid bg-white" style={{ paddingTop: "4rem" }}>
+        <div className="row ">
+          <div className="col-8">
+            <div className="d-flex justify-content-between  pb-2">
+              <Link
+                to={"/project"}
+                className="btn btn-sm btn-secondary py-1 px-4 fw-bold"
+              >
+                Back
+              </Link>
+              {replyTo?.commentId}
+              {replyTo?.userName ? (
+                <h6 className="text-center d-inline text-primary fw-bold">
+                  Replying to {replyTo?.userName} for comment on{" "}
+                  <Moment format="DD/MM/YYYY HH:mm">{replyTo?.time}</Moment>
+                </h6>
+              ) : (
+                <h6 className="text-center d-inline text-primary fw-bold">
+                  Writing Comment on Project - {projectId}
+                </h6>
+              )}
+            </div>
 
-        <RichTextEditor setBody={setBody} body={body} />
+            <RichTextEditor setBody={setBody} body={body} />
 
-        <footer className="d-flex justify-content-between mt-3">
-          <div>
-            <input type="file" name="file" onChange={uploaadSingleFile} />
+              <button
+                type="button"
+                disabled={isDisabled}
+                className="btn bg-success rounded-pill text-white px-2 mt-3 float-end"
+                onClick={addData}
+              >
+                <i className="bi bi-plus-circle me-1"></i>Add Comment
+              </button>
           </div>
-          <button
-            type="button"
-            disabled={isDisabled}
-            className="btn theme-bg rounded-pill text-white px-2"
-            onClick={addData}
-          >
-            <i className="bi bi-plus-circle me-1"></i>Upload Data
-          </button>
 
-          <button
-            type="button"
-            disabled={isDisabled}
-            className="btn theme-bg rounded-pill text-white px-2"
-            onClick={uploadFile}
-          >
-            <i className="bi bi-plus-circle me-1"></i>Upload Fille
-          </button>
-        </footer>
+          <div className="col-4 pt-3 bg-light border-2" style={{marginTop:"5vh",height:"68vh"}}>
+            <div className="d-flex justify-content-center pb-2">
+              <input type="file" name="file" onChange={uploaadSingleFile} />
+
+              <button
+                type="button"
+                disabled={isDisabled}
+                className="btn theme-bg rounded-pill text-white px-2 "
+                onClick={uploadFile}
+              >
+                Upload Fille
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
