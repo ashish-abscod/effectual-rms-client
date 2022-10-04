@@ -1,8 +1,5 @@
 import React from 'react'
 import logo from '../../Assets/img/effectual-logo.png'
-import {BiLogInCircle,BiHome} from 'react-icons/bi'
-import {FaBookReader} from 'react-icons/fa'
-import {BsLightningCharge,BsListStars,BsStars,BsPhone} from 'react-icons/bs'
 
 export default function Header() {
     return (
