@@ -133,7 +133,7 @@ export default function CreateProject() {
           formData
         );
 
-        const resp = await axios.put(
+        const resp = await axios.post(
           `http://localhost:8080/assigned/updateUser/${projectId}`, formData?.assignedUsers
         );
         // clear assignedUsers from formdata after updation complete

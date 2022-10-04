@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ProjectContext } from "../contexts/ProjectContext";
 import { UserContext } from "../contexts/UserContext";
 import { BsQuestionDiamondFill } from "react-icons/bs";
@@ -11,6 +11,7 @@ export default function Evaluation() {
   const [isClaimHovering, setIsClaimHovering] = useState(false);
   const [isHistoryHovering, setIsHistoryHovering] = useState(false);
   const [isDataHovering, setIsDataHovering] = useState(false);
+  // const [isUpdated, setIsUpdated] = useState(false);
 
   const claimMouseOver = () => {
     setIsClaimHovering(true);
@@ -57,16 +58,58 @@ export default function Evaluation() {
     return str;
 }
 
-  const submitData = async () => {
+  const getEvaluationData = async () => {
     try {
-      evaluationData.modification = `${getFormatedToday()}`;
-      const response = await axios.post(
-        "http://localhost:8080/evaluation/",
-        evaluationData
+      const res = await axios.get(
+        `http://localhost:8080/evaluation/getById/${projectId}`
       );
+      console.log(res);
+      setevaluationData({
+        ...evaluationData,
+        modification: res?.data?.modification,
+        searchscore: res.data.searchscore,
+        claimscore: res.data.claimscore,
+        historyscore: res.data.historyscore,
+        datacoverage: res.data.datacoverage,
+        category: res.data.category,
+        comment: res.data.comment,
+        appSerachResult: res.data.appSerachResult,
+        editedby: res.data.editedby,
+      });
+      if (res?.data?.claimscore) {
+        // setIsUpdated(true);
+      }
     } catch (error) {
-      console.log("error: ", error);
+      console.log(error);
     }
+  };
+
+  useEffect(() => {
+    getEvaluationData();
+  }, []);
+
+  const submitData = async () => {
+    // if (isUpdated === false) {
+    // try {
+    //   let date = new Date().toLocaleDateString();
+    //   evaluationData.modification = `${date}`;
+    //   const response = await axios.post(
+    //     "http://localhost:8080/evaluation/",
+    //     evaluationData
+    //   );
+    //   // setIsUpdated(false);
+
+    //   console.log("addresponse: ", response);
+    //   console.log(evaluationData);
+    // } catch (error) {
+    //   console.log("error: ", error);
+    // }
+    // } else if (isUpdated === true) {
+    const res = await axios.post(
+      `http://localhost:8080/evaluation/${projectId}`,
+      evaluationData
+    );
+    // }
   };
   return (
     <div className="container">
@@ -89,9 +132,13 @@ export default function Evaluation() {
             <input
               type="text"
               className="form-control"
-              value={user?.userData?.name}
-              readOnly
+              value={
+                evaluationData?.editedby
+                  ? evaluationData?.editedby
+                  : user?.userData?.name
+              }
               disabled
+              readOnly
             />
             <label>Last Edited By:</label>
             <span className="d-none">Error : Field Required</span>
@@ -101,6 +148,7 @@ export default function Evaluation() {
           <div className="input-field">
             <select
               className="form-select"
+              value={evaluationData?.category}
               onChange={(e) => {
                 setevaluationData({
                   ...evaluationData,
@@ -121,6 +169,7 @@ export default function Evaluation() {
             <input
               type="text"
               className="form-control"
+              value={evaluationData?.appSerachResult}
               required
               onChange={(e) => {
                 setevaluationData({
@@ -153,6 +202,7 @@ export default function Evaluation() {
               type="text"
               className="form-control"
               required
+              value={evaluationData?.searchscore}
               onChange={(e) => {
                 setevaluationData({
                   ...evaluationData,
@@ -202,6 +252,7 @@ export default function Evaluation() {
               type="text"
               className="form-control"
               required
+              value={evaluationData?.claimscore}
               onChange={(e) => {
                 setevaluationData({
                   ...evaluationData,
@@ -264,6 +315,7 @@ export default function Evaluation() {
               type="text"
               className="form-control"
               required
+              value={evaluationData?.historyscore}
               onChange={(e) => {
                 setevaluationData({
                   ...evaluationData,
@@ -322,6 +374,7 @@ export default function Evaluation() {
               type="text"
               className="form-control"
               required
+              value={evaluationData?.datacoverage}
               onChange={(e) => {
                 setevaluationData({
                   ...evaluationData,
@@ -401,6 +454,7 @@ export default function Evaluation() {
             rows="11"
             className="w-100 border border-primary rounded p-3"
             placeholder="Write your comment here..."
+            value={evaluationData?.comment}
             onChange={(e) => {
               setevaluationData({
                 ...evaluationData,

@@ -41,7 +41,6 @@ export default function AddUserToProject({ formData, setFormData }) {
       .then((data) => setAlreadyAssignedUsers(data));
   };
 
-
   const handleAssignedUserDelete = async (id, userId) => {
     let res = await fetch(
       `http://localhost:8080/assigned/deleteUser/${id}/${userId}`,
@@ -164,28 +163,28 @@ export default function AddUserToProject({ formData, setFormData }) {
               </tr>
             </thead>
             <tbody>
-            {alreadyAssignedUsers?.userId?.map((item) => (
-              <tr className="mb-2" key={item._id}>
-                <td>{item.name}</td>
-                <td>{item.role}</td>
-                <td>
-                  <p>
-                    <MdDelete
-                      style={{
-                        fontSize: "20px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() =>
-                        handleAssignedUserDelete(
-                          alreadyAssignedUsers._id,
-                          item._id
-                        )
-                      }
-                    />
-                  </p>
-                </td>
-              </tr>
-            ))}
+              {alreadyAssignedUsers?.userId?.map((item) => (
+                <tr className="mb-2" key={item._id}>
+                  <td>{item.name}</td>
+                  <td>{item.role}</td>
+                  <td>
+                    <p>
+                      <MdDelete
+                        style={{
+                          fontSize: "20px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() =>
+                          handleAssignedUserDelete(
+                            alreadyAssignedUsers._id,
+                            item._id
+                          )
+                        }
+                      />
+                    </p>
+                  </td>
+                </tr>
+              ))}
 
             {formData?.assignedUsers?.map((item, i) => (
               <tr className="mb-2" key={i}>
