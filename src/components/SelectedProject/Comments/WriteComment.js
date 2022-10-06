@@ -84,7 +84,7 @@ export default function WriteComment() {
           "http://localhost:8080/replyFiles/saveToDb",
           {
             projectId: projectId,
-            commentId: response?.data?.commentId,
+            replieId: response?.data?.replieId,
             files: attachment?.files,
             fileNames: attachment?.fileNames,
             uploadedBy: attachment?.uploadedBy,
@@ -159,7 +159,7 @@ export default function WriteComment() {
                 Back
               </Link>
               {replyTo?.commentId}
-              {replyTo?.userName ? (
+              {replyTo?.commentId ? (
                 <h6 className="text-center d-inline text-primary fw-bold">
                   Replying to {replyTo?.userName} for comment on{" "}
                   <Moment format="DD/MM/YYYY HH:mm">{replyTo?.time}</Moment>
