@@ -10,7 +10,7 @@ import { UserContext } from "../contexts/UserContext";
 
 export default function CreateProject() {
   const [page, setPage] = useState(0);
-  const { projectId } = useContext(ProjectContext);
+  const { projectId,setProjectId } = useContext(ProjectContext);
   const { user } = useContext(UserContext);
 
   const [formData, setFormData] = useState({
@@ -46,23 +46,16 @@ export default function CreateProject() {
         setFormData({
           ...formData,
           SearchObject: res.data.searchObject ? res.data.searchObject : "",
-          TechnicalField: res.data.technicalField
-            ? res.data.technicalField
-            : "",
+          TechnicalField: res.data.technicalField ? res.data.technicalField: "",
+          KnownPriorArt : res.data.patentNumber ? res.data.patentNumber : "",
           ClaimsToBeSearched: res.data.claims ? res.data.claims : "",
-          RequirementForDelivery: res.data.reqDelivery
-            ? res.data.reqDelivery
-            : "",
-          RequirementDeliveryDate: res.data.deliveryDate
-            ? res.data.deliveryDate
-            : "",
-          PriorArtCuttOffDate: res.data.priorArtdate
-            ? res.data.priorArtdate
-            : "",
+          RequirementForDelivery: res.data.reqDelivery ? res.data.reqDelivery: "",
+          RequirementDeliveryDate: res.data.deliveryDate? res.data.deliveryDate: "",
+          PriorArtCuttOffDate: res.data.priorArtDate? res.data.priorArtDate: "",
           StandardRelated: res.data.standard ? res.data.standard : "",
           SSONeeded: res.data.sso ? res.data.sso : "",
           USIPRSpecial: res.data.usipr ? res.data.usipr : "",
-          ImportantClaims: res.data.impclaim ? res.data.impclaim : "",
+          ImportantClaims: res.data.impClaim ? res.data.impClaim : "",
           UnimportantClaims: res.data.nonImpClaim ? res.data.nonImpClaim : "",
           UsefulInformationForSearch: res.data.info ? res.data.info : "",
         });
@@ -74,7 +67,7 @@ export default function CreateProject() {
   //getting project based on id
   useEffect(() => {
     getProjects();
-  }, []);
+  }, [projectId]);
 
   const FormTitles = [
     "Project Information",
@@ -150,6 +143,8 @@ export default function CreateProject() {
       } catch (error) {
         console.log(error);
       }
+      //clear FormData Completely after creating project
+      setFormData(null);
     } else if (projectId !== null) {
       try {
         const res = await axios.put(
@@ -157,11 +152,11 @@ export default function CreateProject() {
           formData
         );
 
-        const resp = await axios.put(
-          `http://localhost:8080/assigned/updateUser/${projectId}`,
-          formData?.assignedUsers
+        const resp = await axios.post(
+          `http://localhost:8080/assigned/updateUser/${projectId}`, formData?.assignedUsers
         );
-        console.log(resp);
+        // clear assignedUsers from formdata after updation complete
+        setFormData({...formData, assignedUsers: []});
       } catch (error) {
         console.log(error);
       }
@@ -216,7 +211,7 @@ export default function CreateProject() {
               className="btn btn-success rounded-pill w-50 form"
               onClick={() => {
                 if (page === FormTitles.length - 1) {
-                  sumbitHandler();
+                  projectHandler();
                 } else {
                   setPage((current) => current + 1);
                 }

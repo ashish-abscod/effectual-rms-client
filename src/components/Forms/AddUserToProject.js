@@ -20,15 +20,6 @@ export default function AddUserToProject({ formData, setFormData }) {
     }
   }, [projectId]);
 
-  // const updateProject = () => {
-  //   if (projectId === null) {
-  //     try{
-
-  //     }catch(error){
-
-  //     }
-  //   }
-  // };
 
   const getUserData = async (event) => {
     let key = event.target.value;
@@ -48,7 +39,6 @@ export default function AddUserToProject({ formData, setFormData }) {
       .then((res) => res.json())
       .then((data) => setAlreadyAssignedUsers(data));
   };
-
 
   const handleAssignedUserDelete = async (id, userId) => {
     let res = await fetch(
@@ -71,6 +61,21 @@ export default function AddUserToProject({ formData, setFormData }) {
 
     setFilteredUsers(filters);
   }, [userData, search]);
+
+
+  const handleRemove = async (id) => {
+    console.log(id);
+    console.log(formData.assignedUsers);
+    const filteredUsers = formData?.assignedUsers?.filter(obj => obj._id !== id);
+    console.log(filteredUsers);
+    setFormData({...formData, assignedUsers : filteredUsers});
+  }
+  
+  const selectUser = async (row) =>{
+    formData?.assignedUsers.push(row);
+    setFilteredUsers([]);
+  } 
+  
 
 
   const columns = [
@@ -111,9 +116,6 @@ export default function AddUserToProject({ formData, setFormData }) {
     },
   };
 
-  const handleClose = (index) => {
-    console.log(formData.assignedUsers);
-  };
 
   return (
     <>
@@ -122,10 +124,10 @@ export default function AddUserToProject({ formData, setFormData }) {
           <DataTable
             columns={columns}
             data={filteredUsers}
+            noDataComponent="Please Search User to assign."
             pagination
             fixedHeader
             fixedHeaderScrollHeight="470px"
-            selectableRows
             selectableRowsHighlight
             highlightOnHover
             subHeader
@@ -145,18 +147,12 @@ export default function AddUserToProject({ formData, setFormData }) {
             striped
             customStyles={customStyles}
             responsive
-            onSelectedRowsChange={(selectedRows) => {
-              setFormData({
-                ...formData,
-                assignedUsers: selectedRows?.selectedRows,
-              });
-              console.log(formData?.assignedUsers)
-            }}
+            onRowClicked={(row) => selectUser(row)}
             progressPending={loading}
           />
         </div>
 
-        <div className="col-lg-5">
+        <div className="col-lg-5 overflow-auto" style={{maxHeight: "70vh"}}>
           <table className="table mt-4 table-striped">
             <thead className="thead-dark">
               <tr>
@@ -166,37 +162,35 @@ export default function AddUserToProject({ formData, setFormData }) {
               </tr>
             </thead>
             <tbody>
-            {alreadyAssignedUsers?.userId?.map((item) => (
-              <tr className="mb-2" key={item._id}>
-                <td>{item.name}</td>
-                <td>{item.role}</td>
-                <td>
-                  <p>
-                    <MdDelete
-                      style={{
-                        fontSize: "20px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() =>
-                        handleAssignedUserDelete(
-                          alreadyAssignedUsers._id,
-                          item._id
-                        )
-                      }
-                    />
-                  </p>
-                </td>
-              </tr>
-            ))}
+              {alreadyAssignedUsers?.userId?.map((item) => (
+                <tr className="mb-2" key={item._id}>
+                  <td>{item.name}</td>
+                  <td>{item.role}</td>
+                  <td>
+                    <p>
+                      <MdDelete
+                        style={{
+                          fontSize: "20px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() =>
+                          handleAssignedUserDelete(
+                            alreadyAssignedUsers._id,
+                            item._id
+                          )
+                        }
+                      />
+                    </p>
+                  </td>
+                </tr>
+              ))}
 
-            {formData?.assignedUsers.map((item, i) => (
+            {formData?.assignedUsers?.map((item, i) => (
               <tr className="mb-2" key={i}>
                 <td>{item.name}</td>
                 <td>{item.role}</td>
                 <td>
-                  <p>
-                    <AiOutlineClose onClick={handleClose(i)} />
-                  </p>
+                    <AiOutlineClose onClick={()=> handleRemove(item._id)} />
                 </td>
               </tr>
             ))}

@@ -52,18 +52,21 @@ export default function Header({ projectSelected }) {
                 </button>
               </li>
               <li className="nav-item d-lg-none">
-                <a className="nav-link" href="/#">
-                  <i className="bi bi-key me-1"></i>Password
-                </a>
-              </li>
-              <li className="nav-item d-lg-none">
                 <a className="nav-link" href="/#" tabIndex="-1">
                   <i className="bi bi-box-arrow-left me-1"></i>Sign Out
                 </a>
               </li>
             </ul>
             <div className="dropdown dropstart d-none d-lg-block">
-              <span className="fw-bold me-2">{user.userData.name}</span>
+              <span
+                className="fw-bold me-2"
+                id="dropdownMenu1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                style={{ cursor: "pointer" }}
+              >
+                {user.userData.name}
+              </span>
               <button
                 className="btn rounded-circle overflow-hidden p-0 ms-1 dropdown-toggle"
                 style={{ width: "2em", height: "2em" }}
@@ -94,7 +97,6 @@ export default function Header({ projectSelected }) {
                     <BiUserCircle className="fs-5 me-2" /> Profile
                   </button>
                 </li>
-                <li></li>
                 <li>
                   <button
                     className="dropdown-item ps-2"

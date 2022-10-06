@@ -93,7 +93,7 @@ export default function ReviewInformation({ formData }) {
             <li className="list-group-item d-flex justify-content-between align-items-start">
               <div className="ms-2 me-auto">
                 <div className='fw-bold theme3-color'>Uploaded Files</div>
-                <span className='fw-bold theme2-color'>{formData.file ? "File(s) Selected" : "File(s) Not Selected"}</span>
+                <span className='fw-bold theme2-color'>{formData?.file ? "File(s) Selected" : "File(s) Not Selected"}</span>
               </div>
             </li>
             <li className="list-group-item d-flex justify-content-between align-items-start">

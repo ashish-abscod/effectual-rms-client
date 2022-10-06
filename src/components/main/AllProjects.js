@@ -14,13 +14,10 @@ export default function AllProjects() {
     const { setProjectId } = useContext(ProjectContext);
     const [loading, setLoading] = useState(false);
     
-    
-    
-    
     //setProjectId null when user press back button to main panel, which helps to create new project instead to update selected project.
     setProjectId(null); 
     
-
+    
     //fetching data from endpoint
     const getProjects = async () => {
         try {
@@ -49,8 +46,13 @@ export default function AllProjects() {
         setFilteredProjects(filters);
     }, [projects, search])
 
-
     const navigate = useNavigate();
+
+    const getFormatedToday = (value) => {
+        var date = new Date(value);
+        var str = date.getFullYear() + "-" + (date.getMonth()<10 ?  `0${date.getMonth()+1}` : date.getMonth()+1) + "-" + (date.getDate()<10 ? `0${date.getDate()}` : date.getDate());
+        return str;
+    }
 
     const columns = [
         {
@@ -64,12 +66,13 @@ export default function AllProjects() {
             sortable: true
         },
         {
-            selector: (row) => new Date(row?.requestedDate).toLocaleDateString(),
+            // row?.requestedDate
+            selector: (row) => getFormatedToday(row?.requestedDate) ,
             name: "Request Date",
             sortable: true
         },
         {
-            selector: (row) => new Date(row?.deliveryDate).toLocaleDateString(),
+            selector: (row) => getFormatedToday(row?.deliveryDate),
             name: "Delievery Date",
             sortable: true
         },

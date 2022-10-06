@@ -14,10 +14,7 @@ export default function Login() {
     });
 
 
-    const loginApi = async () => {
-       
-        console.log(userDetails);
-       
+    const loginApi = async () => {       
         try {
             const response = await axios.post(
                 "http://localhost:8080/signin",
@@ -32,8 +29,6 @@ export default function Login() {
                 token: response.data,
             });
 
-           
-            console.log("response: ", response);
             localStorage.setItem("userData", JSON.stringify(response.data.user));
             //to save in localstorage we have to serialize it, means to stringfy it
             localStorage.setItem("token", JSON.stringify(response.data.token));

@@ -49,8 +49,8 @@ export default function UploadFiles({ formData, setFormData,attachment,setAttach
               onChange={uploadSingleFile}
             />
           </label>
-          <span className="ms-3">
-            {formData.file ? "File(s) Selected" : "File(s) Not Selected"}
+          <span className="ms-3"  >
+            {formData?.file ? "File(s) Selected" : "File(s) Not Selected"}
           </span>
 
           <button
@@ -73,7 +73,7 @@ export default function UploadFiles({ formData, setFormData,attachment,setAttach
             style={{ minHeight: "22rem" }}
             id="info"
             placeholder="Type Something here..."
-            value={formData.UsefulInformationForSearch}
+            value={formData?.UsefulInformationForSearch}
             onChange={(e) =>
               setFormData({
                 ...formData,
