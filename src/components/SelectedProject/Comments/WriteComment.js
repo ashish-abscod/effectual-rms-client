@@ -14,9 +14,8 @@ export default function WriteComment() {
   const [isDisabled, setDisabled] = useState(false);
 
   const [chooseFile, setChooseFile] = useState({ file: "" });
-
   const [file, setFile] = useState();
-
+  const [fileName, setFileName] = useState("");
   const getFormatedToday = () => {
     var date = new Date();
     var str =
@@ -109,8 +108,7 @@ export default function WriteComment() {
       reader.onloadend = () => {
         // console.log("reader.result: ", reader.result);
         setChooseFile({ ...chooseFile, file: reader.result });
-        setAttachment({...attachment,fileNames:e.target.files[0].name})
-        console.log(e.target.files[0].name)
+        setFileName(e.target.files[0].name);
         setFile(reader.result);
       };
     }
@@ -124,9 +122,9 @@ export default function WriteComment() {
           "http://localhost:8080/commentFiles",
           chooseFile
         );
+        console.log(response?.data)
         attachment.files.push(response.data.data);
-        attachment.fileNames.push(response.data.data)
-        console.log(attachment);
+        attachment.fileNames.push(fileName)
       } catch (error) {
         console.log("error: ", error);
       }
@@ -136,15 +134,17 @@ export default function WriteComment() {
           "http://localhost:8080/replyFiles",
           chooseFile
         );
+        
         attachment.files.push(response.data.data);
-        attachment.fileNames.push(response.data.data)
-        console.log(attachment);
+        attachment.fileNames.push(fileName)
+       
       } catch (error) {
         console.log("error: ", error);
       }
     }
   };
 
+  console.log(attachment?.fileNames)
   return (
     <>
       <Header />
