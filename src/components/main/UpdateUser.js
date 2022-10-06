@@ -6,31 +6,17 @@ import { FaEyeSlash, FaEye } from "react-icons/fa";
 export default function UpdateUser() {
   const { user, setUser } = useContext(UserContext);
   const [addUser, setAddUser] = useState({
-    name: user?.userData?.name ? user?.userData?.name : "",
-    email: user?.userData?.email ? user?.userData?.email : "",
+    name: "",
+    email: "",
     password: "",
     confirmPassword: "",
   });
+
   const [passType, setPassType] = useState({
     first: "Password",
     second: "Password",
   });
 
-  // const [file, setFile] = useState();
-
-  // const uploadSingleFile = (e) => {
-  //   if (e.target.files[0]) {
-  //     // console.log("e.target.files[0]: ", e.target.files[0]);
-  //     const reader = new FileReader();
-  //     setFile(URL.createObjectURL(e.target.files[0]));
-  //     reader.readAsDataURL(e.target.files[0]);
-  //     reader.onloadend = () => {
-  //       // console.log("reader.result: ", reader.result);
-  //       setAddUser({ ...addUser, picture: reader.result });
-  //       setFile(reader.result);
-  //     };
-  //   }
-  // };
 
   const handleUsersEdit = async () => {
     try {
@@ -79,8 +65,7 @@ export default function UpdateUser() {
                         // value={addUser.name}
                         onChange={(e) =>
                           setAddUser({
-                            ...addUser,
-                            [addUser.name]: e.target.value,
+                            ...addUser, name: e.target.value,
                           })
                         }
                       />
@@ -94,8 +79,7 @@ export default function UpdateUser() {
                         // value={addUser.email}
                         onChange={(e) =>
                           setAddUser({
-                            ...addUser,
-                            [addUser.email]: e.target.value,
+                            ...addUser, email: e.target.value,
                           })
                         }
                       />
@@ -136,10 +120,7 @@ export default function UpdateUser() {
                         className="form-control"
                         value={addUser.confirmPassword}
                         onChange={(e) =>
-                          setAddUser({
-                            ...addUser,
-                            confirmPassword: e.target.value,
-                          })
+                          setAddUser({...addUser, confirmPassword: e.target.value,})
                         }
                         style={{ width: "90%" }}
                       />
@@ -162,27 +143,6 @@ export default function UpdateUser() {
                       <span className="d-none">Error : Field Required</span>
                     </div>
                   </div>
-                  {/* <div className="col-md-4">
-                    <div>
-                      <label
-                        htmlFor="exampleFormControlInput1"
-                        className="form-label"
-                      >
-                        Choose image
-                      </label>
-                      <input
-                        type="file"
-                        className="form-control mb-2"
-                        onChange={uploadSingleFile}
-                      />
-                      <img
-                        src={file && file}
-                        alt="profile"
-                        height="200px"
-                        width="200px"
-                      />
-                    </div>
-                  </div> */}
                 </div>
               </div>
             </div>
