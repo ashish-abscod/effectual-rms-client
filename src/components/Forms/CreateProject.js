@@ -27,10 +27,14 @@ export default function CreateProject() {
     ImportantClaims: "",
     UnimportantClaims: "",
     UsefulInformationForSearch: "",
-    file: "",
     assignedUsers: [],
   });
 
+  const [attachment, setAttachment] = useState({
+    files: [],
+    filesName: [],
+    uploadedBy: user?.userData?.name,
+  });
 
   const getProjects = async () => {
     if (projectId !== null) {
@@ -82,7 +86,12 @@ export default function CreateProject() {
         break;
       case 1:
         returnvalue = (
-          <UploadFiles formData={formData} setFormData={setFormData} />
+          <UploadFiles
+            formData={formData}
+            setFormData={setFormData}
+            attachment={attachment}
+            setAttachment={setAttachment}
+          />
         );
         break;
       case 2:
@@ -110,8 +119,17 @@ export default function CreateProject() {
           "http://localhost:8080/projects/create",
           formData
         );
-        const info = await axios.post("http://localhost:8080/files", formData);
-        console.log(res);
+
+        setAttachment({...attachment, projectId: res?.data?.data?.projectId})
+
+        const info = await axios.post("http://localhost:8080/files/saveToDb",{
+          projectId : res?.data?.data?.projectId,
+          files : attachment?.files,
+          filesName : attachment?.filesName,
+          uploadedBy : attachment?.uploadedBy
+        });
+        console.log(info)
+
         let data = await axios.post(
           "http://localhost:8080/assigned/createUser",
           {
@@ -143,7 +161,6 @@ export default function CreateProject() {
       }
     }
   };
-
 
   return (
     <>

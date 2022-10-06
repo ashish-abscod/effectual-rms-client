@@ -76,7 +76,7 @@ export default function UpdateUser() {
                       <input
                         type="text"
                         className="form-control"
-                        value={addUser.name}
+                        // value={addUser.name}
                         onChange={(e) =>
                           setAddUser({
                             ...addUser,
@@ -91,7 +91,7 @@ export default function UpdateUser() {
                       <input
                         type="text"
                         className="form-control"
-                        value={addUser.email}
+                        // value={addUser.email}
                         onChange={(e) =>
                           setAddUser({
                             ...addUser,
