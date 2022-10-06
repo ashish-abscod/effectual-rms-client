@@ -7,12 +7,14 @@ import { ProjectContext } from "../contexts/ProjectContext";
 import axios from "axios";
 import { useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/inject-style";
 
 export default function CreateProject() {
   const [page, setPage] = useState(0);
-  const { projectId,setProjectId } = useContext(ProjectContext);
+  const { projectId, setProjectId } = useContext(ProjectContext);
   const { user } = useContext(UserContext);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     SearchObject: "",
     TechnicalField: "",
@@ -46,12 +48,20 @@ export default function CreateProject() {
         setFormData({
           ...formData,
           SearchObject: res.data.searchObject ? res.data.searchObject : "",
-          TechnicalField: res.data.technicalField ? res.data.technicalField: "",
-          KnownPriorArt : res.data.patentNumber ? res.data.patentNumber : "",
+          TechnicalField: res.data.technicalField
+            ? res.data.technicalField
+            : "",
+          KnownPriorArt: res.data.patentNumber ? res.data.patentNumber : "",
           ClaimsToBeSearched: res.data.claims ? res.data.claims : "",
-          RequirementForDelivery: res.data.reqDelivery ? res.data.reqDelivery: "",
-          RequirementDeliveryDate: res.data.deliveryDate? res.data.deliveryDate: "",
-          PriorArtCuttOffDate: res.data.priorArtDate? res.data.priorArtDate: "",
+          RequirementForDelivery: res.data.reqDelivery
+            ? res.data.reqDelivery
+            : "",
+          RequirementDeliveryDate: res.data.deliveryDate
+            ? res.data.deliveryDate
+            : "",
+          PriorArtCuttOffDate: res.data.priorArtDate
+            ? res.data.priorArtDate
+            : "",
           StandardRelated: res.data.standard ? res.data.standard : "",
           SSONeeded: res.data.sso ? res.data.sso : "",
           USIPRSpecial: res.data.usipr ? res.data.usipr : "",
@@ -114,21 +124,29 @@ export default function CreateProject() {
   //----------------Handler for Project Creation and Updation---------------
   const projectHandler = async () => {
     if (projectId === null) {
+      setIsLoading(true);
       try {
+
         const res = await axios.post(
           "http://localhost:8080/projects/create",
           formData
         );
+        
+          setIsLoading(false);
+          if(res?.data === null) toast.success("You have created the project successfully!")
+          else toast.error("sorry your project creation is failed!");
+          console.log(res)
+        
+        
+        setAttachment({ ...attachment, projectId: res?.data?.data?.projectId });
 
-        setAttachment({...attachment, projectId: res?.data?.data?.projectId})
-
-        const info = await axios.post("http://localhost:8080/files/saveToDb",{
-          projectId : res?.data?.data?.projectId,
-          files : attachment?.files,
-          filesName : attachment?.filesName,
-          uploadedBy : attachment?.uploadedBy
+        const info = await axios.post("http://localhost:8080/files/saveToDb", {
+          projectId: res?.data?.data?.projectId,
+          files: attachment?.files,
+          filesName: attachment?.filesName,
+          uploadedBy: attachment?.uploadedBy,
         });
-        console.log(info)
+        // console.log(info);
 
         let data = await axios.post(
           "http://localhost:8080/assigned/createUser",
@@ -138,10 +156,11 @@ export default function CreateProject() {
             assignedBy: user.userData._id,
           }
         );
-
         // console.log(data);
       } catch (error) {
-        console.log(error);
+        setIsLoading(false);
+        console.log("error: ", error.res);
+        toast("sorry your project creation is failed!");
       }
       //clear FormData Completely after creating project
       setFormData(null);
@@ -153,17 +172,22 @@ export default function CreateProject() {
         );
 
         const resp = await axios.post(
-          `http://localhost:8080/assigned/updateUser/${projectId}`, formData?.assignedUsers
+          `http://localhost:8080/assigned/updateUser/${projectId}`,
+          formData?.assignedUsers
         );
         // clear assignedUsers from formdata after updation complete
-        setFormData({...formData, assignedUsers: []});
+        setFormData({ ...formData, assignedUsers: [] });
+        setIsLoading(false);
+        toast.success("You have updated the project successfully!");
       } catch (error) {
-        console.log(error);
+        setIsLoading(false);
+        console.log("error: ", error.res);
+        toast("sorry your project updation is failed!");
       }
     }
   };
 
-  console.log(attachment)
+  // console.log(attachment);
 
   const sumbitHandler = async () => {
     projectHandler();
@@ -218,7 +242,13 @@ export default function CreateProject() {
               }}
             >
               {page === FormTitles.length - 1 ? "Submit" : "Next"}{" "}
+              {isLoading && (
+                    <div className="spinner-border" role="status">
+                      <span className="sr-only"></span>
+                    </div>
+                  )}
             </button>
+            <ToastContainer/>
           </div>
         </div>
 

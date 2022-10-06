@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function AddNewUser() {
   const [addUser, setAddUser] = useState({
@@ -12,29 +14,20 @@ export default function AddNewUser() {
     status: true,
   });
 
-  // const [file, setFile] = useState();
-
-  // const uploadSingleFile = (e) => {
-  //   if (e.target.files[0]) {
-  //     // console.log("e.target.files[0]: ", e.target.files[0]);
-  //     const reader = new FileReader();
-  //     setFile(URL.createObjectURL(e.target.files[0]));
-  //     reader.readAsDataURL(e.target.files[0]);
-  //     reader.onloadend = () => {
-  //       // console.log("reader.result: ", reader.result);
-  //       setAddUser({ ...addUser, picture: reader.result });
-  //       setFile(reader.result);
-  //     };
-  //   }
-  // };
+  const [isLoading, setIsLoading] = useState(false);
 
   const submitData = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.post("http://localhost:8080/users", addUser);
 
+      setIsLoading(false);
+      toast.success("Adding User successfull!");
       console.log("addresponse: ", response);
     } catch (error) {
-      console.log("error: ", error);
+      setIsLoading(false);
+      console.log("error: ", error.response);
+      toast("Adding user is unsuccessfull")
     }
   };
   return (
@@ -206,12 +199,20 @@ export default function AddNewUser() {
                   Clear
                 </button>
                 <button
-                  type="button"
+                  type="submit"
+                  variant="btn btn-success w-100"
+                  disabled={isLoading}
                   className="btn theme-bg text-white rounded-pill"
                   onClick={submitData}
                 >
                   Add User
+                  {isLoading && (
+                                    <div className="spinner-border" role="status">
+                                        <span className="sr-only"></span>
+                                    </div>
+                   )}
                 </button>
+                <ToastContainer/>
               </div>
             </div>
           </div>

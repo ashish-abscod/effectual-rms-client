@@ -1,10 +1,16 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/inject-style";
+
 
 export default function UpdateUser() {
   const { user, setUser } = useContext(UserContext);
+  const {navigate} = useNavigate()
+  const [isLoading, setIsLoading] = useState(false);
   const [addUser, setAddUser] = useState({
     name: user?.userData?.name ? user?.userData?.name : "",
     email: user?.userData?.email ? user?.userData?.email : "",
@@ -16,32 +22,31 @@ export default function UpdateUser() {
     second: "Password",
   });
 
-  // const [file, setFile] = useState();
-
-  // const uploadSingleFile = (e) => {
-  //   if (e.target.files[0]) {
-  //     // console.log("e.target.files[0]: ", e.target.files[0]);
-  //     const reader = new FileReader();
-  //     setFile(URL.createObjectURL(e.target.files[0]));
-  //     reader.readAsDataURL(e.target.files[0]);
-  //     reader.onloadend = () => {
-  //       // console.log("reader.result: ", reader.result);
-  //       setAddUser({ ...addUser, picture: reader.result });
-  //       setFile(reader.result);
-  //     };
-  //   }
-  // };
 
   const handleUsersEdit = async () => {
+    setIsLoading(true);
     try {
       let res = await axios.put(
         `http://localhost:8080/users/update/${user.userData._id}`,
         addUser
       );
-      console.log(res);
-      setUser();
+
+      setIsLoading(false);
+      toast("profile updation successfull!");
+      console.log("response: ", res);
+      setUser({
+        ...user,
+        auth: false,
+        userData: "",
+        token: null,
+      });
+      localStorage.clear();
+      window.location.replace('/');
+    
     } catch (error) {
-      console.log(error);
+      setIsLoading(false);
+      console.log("error: ", error.res);
+      toast.error("updating user is unsuccessfull");
     }
   };
 
@@ -211,12 +216,20 @@ export default function UpdateUser() {
                   Clear
                 </button>
                 <button
-                  type="button"
+                  type="submit"
+                  variant="btn btn-success w-100"
+                  disabled={isLoading}
                   className="btn theme-bg text-white rounded-pill"
                   onClick={handleUsersEdit}
                 >
                   Update Profile
+                  {isLoading && (
+                    <div className="spinner-border">
+                      <span className="sr-only"></span>
+                    </div>
+                  )}
                 </button>
+                <ToastContainer/>
               </div>
             </div>
           </div>

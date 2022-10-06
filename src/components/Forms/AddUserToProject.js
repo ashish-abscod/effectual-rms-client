@@ -9,6 +9,7 @@ export default function AddUserToProject({ formData, setFormData }) {
   const [userData, setUserData] = useState([]);
   const [search, setSearch] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const { projectId } = useContext(ProjectContext);
   const [alreadyAssignedUsers, setAlreadyAssignedUsers] = useState(null);
@@ -27,7 +28,7 @@ export default function AddUserToProject({ formData, setFormData }) {
       let result = await fetch(`http://localhost:8080/users/search/${key}`);
       result = await result.json();
       if (result) {
-        setFilteredUsers(result);
+        setFilteredUsers(result); 
       }
     } else {
       setFilteredUsers([]);
@@ -35,10 +36,10 @@ export default function AddUserToProject({ formData, setFormData }) {
   };
   const getAssignmentData = async () => {
     // appointmentData.patientID = patientId;
-    await fetch(`http://localhost:8080/assigned/getUserById/${projectId}`)
+   await fetch(`http://localhost:8080/assigned/getUserById/${projectId}`)
       .then((res) => res.json())
       .then((data) => setAlreadyAssignedUsers(data));
-  };
+         };
 
   const handleAssignedUserDelete = async (id, userId) => {
     let res = await fetch(
@@ -64,8 +65,8 @@ export default function AddUserToProject({ formData, setFormData }) {
 
 
   const handleRemove = async (id) => {
-    console.log(id);
-    console.log(formData.assignedUsers);
+    // console.log(id);
+    // console.log(formData.assignedUsers);
     const filteredUsers = formData?.assignedUsers?.filter(obj => obj._id !== id);
     console.log(filteredUsers);
     setFormData({...formData, assignedUsers : filteredUsers});
@@ -74,6 +75,7 @@ export default function AddUserToProject({ formData, setFormData }) {
   const selectUser = async (row) =>{
     formData?.assignedUsers.push(row);
     setFilteredUsers([]);
+    document.getElementById("searchUser").value = "";
   } 
   
 
@@ -138,6 +140,7 @@ export default function AddUserToProject({ formData, setFormData }) {
                 </h5>
                 <input
                   type="search"
+                  id="searchUser"
                   className="form-control d-inline w-50"
                   placeholder="Search User by name..."
                   onChange={getUserData}
