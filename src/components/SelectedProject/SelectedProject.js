@@ -1,26 +1,24 @@
-import { useState } from "react";
-import Header from "../main/Header";
-import CommentInbox from "./Comments/CommentInbox";
-import CreateProject from "../Forms/CreateProject";
-import FileManger from "./FileManger";
-import Feedback from "./Feedback";
-import Evaluation from "./Evaluation";
-import { useContext } from "react";
-import { ProjectContext } from "../contexts/ProjectContext";
+import { useState } from 'react'
+import Header from '../main/Header'
+import CommentInbox from './Comments/CommentInbox';
+import CreateProject from '../Forms/CreateProject';
+import FileManger from './FileManger';
+import Feedback from './Feedback';
+import Evaluation from './Evaluation';
+import { useContext } from 'react';
+import { ProjectContext } from '../contexts/ProjectContext';
 
 export default function SelectedProject() {
   const [projectSelected] = useState(true);
-  const { projectId } = useContext(ProjectContext);
+  const {projectId} = useContext(ProjectContext);
   window.onbeforeunload = function (e) {
-    return window.confirm(
-      "If you refresh this page project might be unselected!"
-    );
-  };
+    return window.confirm("If you refresh this page project might be unselected!");
+};
   return (
     <>
       <Header projectSelected={projectSelected} />
-
-      <div className="container" style={{ paddingTop: "4rem" }}>
+      
+      <div className='container' style={{paddingTop:"4rem"}} >
         <ul className="nav nav-tabs" id="myTab" role="tablist">
           <li className="nav-item" role="presentation">
             <button className="nav-link fw-bold active" data-bs-toggle="tab" data-bs-target="#comment" type="button" role="tab" aria-controls="comment" aria-selected="true">{projectId}</button>
@@ -57,5 +55,5 @@ export default function SelectedProject() {
         </div>
       </div>
     </>
-  );
+  )
 }

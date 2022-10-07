@@ -156,7 +156,6 @@ export default function CreateProject() {
             assignedBy: user.userData._id,
           }
         );
-        // console.log(data);
       } catch (error) {
         setIsLoading(false);
         console.log("error: ", error.res);
@@ -187,11 +186,6 @@ export default function CreateProject() {
     }
   };
 
-  // console.log(attachment);
-
-  const sumbitHandler = async () => {
-    projectHandler();
-  };
   return (
     <>
       <div className="container p-4 pt-1">

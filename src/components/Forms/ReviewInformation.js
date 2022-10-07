@@ -1,6 +1,7 @@
-import React from "react";
+import React from 'react'
 
 export default function ReviewInformation({ formData }) {
+
   // console.log(formData)
 
   return (
@@ -47,7 +48,7 @@ export default function ReviewInformation({ formData }) {
           </ol>
         </div>
 
-        <div className="col-md-6 col-lg-4" style={{ cursor: "pointer" }}>
+        <div className='col-md-6 col-lg-4' style={{ cursor: "pointer" }}>
           <ol className="list-group">
             <li className="list-group-item d-flex justify-content-between align-items-start">
               <div className="ms-2 me-auto">
@@ -88,7 +89,7 @@ export default function ReviewInformation({ formData }) {
           </ol>
         </div>
 
-        <div className="col-md-6 col-lg-4" style={{ cursor: "pointer" }}>
+        <div className='col-md-6 col-lg-4' style={{ cursor: "pointer" }}>
           <ol className="list-group">
             <li className="list-group-item d-flex justify-content-between align-items-start">
               <div className="ms-2 me-auto">
@@ -107,5 +108,5 @@ export default function ReviewInformation({ formData }) {
         </div>
       </div>
     </>
-  );
+  )
 }
