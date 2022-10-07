@@ -37,6 +37,7 @@ export default function AllProjects() {
         getProjects();
     }, []);
 
+    
     //multiple fields search based on search key
     useEffect(() => {
         const filters = projects.filter(project => JSON.stringify(project)
@@ -46,11 +47,15 @@ export default function AllProjects() {
         setFilteredProjects(filters);
     }, [projects, search])
 
+
+    // settingProject id in state as well as local storage so that we can persist our 
+    // state after refreshing in selected project components 
     const navigate = useNavigate();
+    setProjectIdHandler
 
     const getFormatedToday = (value) => {
         var date = new Date(value);
-        var str = date.getFullYear() + "-" + (date.getMonth()<10 ?  `0${date.getMonth()+1}` : date.getMonth()+1) + "-" + (date.getDate()<10 ? `0${date.getDate()}` : date.getDate());
+        var str = date.getFullYear() + "-" + (date.getMonth()<9 ?  `0${date.getMonth()+1}` : date.getMonth()+1) + "-" + (date.getDate()<10 ? `0${date.getDate()}` : date.getDate());
         return str;
     }
 
@@ -104,7 +109,7 @@ export default function AllProjects() {
             <div className='d-flex flex-column align-items-center'>
                 <DataTable columns={columns} data={filteredProjects} pagination fixedHeader fixedHeaderScrollHeight='470px' selectableRows selectableRowsHighlight highlightOnHover subHeader
                     subHeaderComponent={<TableHeader props={{ setSearch, projects, selectedProjects }} />}
-                    onRowClicked={(row) => { navigate(`/project`); setProjectId(row.projectId) }} striped customStyles={customStyles} responsive
+                    onRowClicked={(row) => { navigate(`/project`); setProjectIdHandler(row.projectId) }} striped customStyles={customStyles} responsive
                     onSelectedRowsChange={(selectedRows) => setSelectedProjects(selectedRows?.selectedRows)}
                     progressPending={loading}
                     progressComponent={
