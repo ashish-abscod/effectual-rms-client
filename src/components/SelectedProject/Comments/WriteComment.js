@@ -7,12 +7,15 @@ import axios from "axios";
 import { UserContext } from "../../contexts/UserContext";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/inject-style";
+
 
 export default function WriteComment() {
   const { user } = useContext(UserContext);
   let { projectId, replyTo } = useContext(ProjectContext);
   const [isDisabled, setDisabled] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [chooseFile, setChooseFile] = useState({ file: "" });
   const [file, setFile] = useState();
   const [fileName, setFileName] = useState("");
@@ -53,6 +56,7 @@ export default function WriteComment() {
   const addData = async () => {
     setDisabled(true);
     if (!replyTo?.commentId) {
+    setIsLoading(true);
       try {
         const response = await axios.post(
           "http://localhost:8080/comment",
@@ -69,11 +73,15 @@ export default function WriteComment() {
             uploadedBy: attachment?.uploadedBy,
           }
         );
+        setIsLoading(false);
+        toast("you have added data successfully!");
         console.log(response);
 
         console.log(info);
       } catch (error) {
-        console.log("error: ", error);
+        setIsLoading(false);
+      console.log("error: ", error.response);
+      toast("We are unable to add your data");
       }
     } else if (replyTo?.commentId) {
       try {
@@ -117,6 +125,7 @@ export default function WriteComment() {
 
   const uploadFile = async (e) => {
     if (!replyTo?.commentId) {
+      setIsLoading(true);
       try {
         const response = await axios.post(
           "http://localhost:8080/commentFiles",
@@ -125,10 +134,15 @@ export default function WriteComment() {
         console.log(response?.data)
         attachment.files.push(response.data.data);
         attachment.fileNames.push(fileName)
+        setIsLoading(false);
+        toast.success("your file uploadation is successfull!");
       } catch (error) {
-        console.log("error: ", error);
+      setIsLoading(false);
+      console.log("error: ", error.response);
+      toast("your file uploadation is unsuccessfull");
       }
     } else if (replyTo?.commentId) {
+      setIsLoading(true);
       try {
         const response = await axios.post(
           "http://localhost:8080/replyFiles",
@@ -137,9 +151,12 @@ export default function WriteComment() {
         
         attachment.files.push(response.data.data);
         attachment.fileNames.push(fileName)
-       
+        setIsLoading(false);
+        toast.success("your file uploadation is successfull!");
       } catch (error) {
-        console.log("error: ", error);
+        setIsLoading(false);
+        console.log("error: ", error.response);
+        toast.error("your file uploadation is unsuccessfull");
       }
     }
   };
@@ -194,7 +211,13 @@ export default function WriteComment() {
                 onClick={uploadFile}
               >
                 Upload Fille
+                {isLoading && (
+                    <div className="spinner-border">
+                      <span className="sr-only"></span>
+                    </div>
+                  )}
               </button>
+              <ToastContainer/>
             </div>
           </div>
         </div>

@@ -1,9 +1,12 @@
 import { useContext, useState } from "react";
 import { ProjectContext } from "../contexts/ProjectContext";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/inject-style";
 
 export default function UploadFiles({ formData, setFormData,attachment,setAttachment }) {
   const { projectId } = useContext(ProjectContext);
+  const [isLoading, setIsLoading] = useState(false);
   const [chooseFile, setChooseFile] = useState({ file: "" });
   const [isDisabled, setDisabled] = useState(false);
   const [file, setFile] = useState([]);
@@ -23,14 +26,20 @@ export default function UploadFiles({ formData, setFormData,attachment,setAttach
   };
 
   const uploadFile = async (e) => {
+    setIsLoading(true);
     try {
       const info = await axios.post("http://localhost:8080/files", chooseFile);
       // console.log(info.data.data);
       attachment.files.push(info.data.data); 
+      setIsLoading(false);
+      toast.success("you have successfully uploaded the file!");
      console.log(attachment)
 
+
     } catch (error) {
-      console.log(error);
+      setIsLoading(false);
+      console.log("error: ", error.info);
+      toast("your file uploadtion is unsuccessfull");
     }
   };
 
@@ -45,7 +54,6 @@ export default function UploadFiles({ formData, setFormData,attachment,setAttach
             <input
               type="file"
               className="form-control"
-              // multiple
               onChange={uploadSingleFile}
             />
           </label>
@@ -60,8 +68,14 @@ export default function UploadFiles({ formData, setFormData,attachment,setAttach
             onClick={uploadFile}
             style={{ marginLeft: "210px" }}
           >
-            <i className="bi bi-plus-circle me-1"></i>Upload Fille
+            Upload File
+            {isLoading && (
+                    <div className="spinner-border" role="status">
+                      <span className="sr-only"></span>
+                    </div>
+            )}
           </button>
+          <ToastContainer/>
         </div>
       )}
       <div className="col-md-12 mt-3">
