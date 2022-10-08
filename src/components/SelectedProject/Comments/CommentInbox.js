@@ -3,12 +3,10 @@ import { useState } from 'react';
 import { useContext } from 'react';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
-import myPDF from '../../../Assets/React Componen LifeCycle.pdf'
 import { ProjectContext } from '../../contexts/ProjectContext';
 import { BsReplyAllFill } from 'react-icons/bs'
 import { BiCommentDetail } from 'react-icons/bi'
 import Moment from 'react-moment';
-import { useRef } from 'react';
 import DOMPurify from "dompurify";
 
 
@@ -17,21 +15,24 @@ export default function CommentInbox() {
     const navigate = useNavigate();
     const { projectId, setReplyTo } = useContext(ProjectContext);
     const [data, setData] = useState();
-    const elementRef = useRef();
+    const [loading, setLoading] = useState(false);
 
-
-    const getDiscussions = async (req, res) => {
-        try {
-            const response = await axios.get(`http://localhost:8080/discussion/${projectId}`);
-            setData(response.data);
-            console.log(response.data);
-        } catch (error) {
-            console.log(error);
+    const getDiscussions = async (projectId) => {
+        if (projectId) {
+            try {
+                setLoading(true);
+                const response = await axios.get(`http://localhost:8080/discussion/${projectId}`);
+                setData(response.data);
+            } catch (error) {
+                console.log(error);
+            }finally{
+                setLoading(false);
+            }
         }
     }
     useEffect(() => {
-        getDiscussions()
-    }, [])
+        getDiscussions(projectId)
+    }, [projectId])
 
     return (
         <>
@@ -53,7 +54,7 @@ export default function CommentInbox() {
                         <div className='child-wrapper ps-md-2'>
                             <div className='comment'>
                                 <div className='ms-md-3 mt-2'>
-                                    <div className='text' ref={elementRef} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(items?.comment) }}>
+                                    <div className='text' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(items?.comment) }}>
                                     </div>
                                     <div className='comment-footer row justify-content-between align-items-center mb-2'>
                                         <div className='files mt-3 col-lg-10'>
@@ -98,7 +99,12 @@ export default function CommentInbox() {
                         </div>
                     </div>
                 )}
-
+                {loading ? <div className='d-flex align-items-center justify-content-center p-5'>
+                        <div className="spinner-border text-primary" style={{width: "3rem",height: "3rem"}} role="status">
+                            <span className="sr-only mt-5"></span>
+                        </div>
+                        <h5 className='color text-secondary ms-3'>Loading Comments...</h5>
+                        </div> : ""}
                 {data?.length === 0 ? <h5 className='text-danger text-center mt-5'>No Comments and Replies</h5> : ""}
             </section>
         </>
