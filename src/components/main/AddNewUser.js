@@ -22,12 +22,12 @@ export default function AddNewUser() {
       const response = await axios.post("http://localhost:8080/users", addUser);
 
       setIsLoading(false);
-      toast.success("Adding User successfull!");
+      toast.success(response.message);
       console.log("addresponse: ", response);
     } catch (error) {
       setIsLoading(false);
       console.log("error: ", error.response);
-      toast("Adding user is unsuccessfull")
+      toast.error(error.message)
     }
   };
   return (

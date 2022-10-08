@@ -32,7 +32,7 @@ export default function Login() {
       });
 
       setIsLoading(false);
-      toast.success("you have loggedin successfuly!");
+      toast.success(response?.data?.mssg);
       localStorage.setItem("userData", JSON.stringify(response.data.user));
       //to save in localstorage we have to serialize it, means to stringfy it
       localStorage.setItem("token", JSON.stringify(response.data.token));

@@ -65,7 +65,7 @@ export default function Header() {
                 aria-expanded="false"
                 style={{ cursor: "pointer" }}
               >
-                {user.userData.name}
+                {user?.userData?.name}
               </span>
               <button
                 className="btn rounded-circle overflow-hidden p-0 ms-1 dropdown-toggle"

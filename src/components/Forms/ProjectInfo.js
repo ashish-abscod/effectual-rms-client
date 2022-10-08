@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from 'axios';
 
 export default function ProjectInfo({ formData, setFormData }) {
+    const [error,setError] = useState("");
+
+    const findSearchObjectHandler = async(e) => {
+        try {
+            setFormData({ ...formData, SearchObject: e.target.value });
+            const value = document.getElementById('searchObject').value;
+            console.log(value)
+            const res = await axios.post(
+              `http://localhost:8080/projects/findSearchObject`, {SearchObject : value}
+            );
+            console.log(res.data);
+        }catch(error){
+        console.log(error);
+    }
+}
+
     return (
         <>
             <div className='row gy-3 gy-md-3 gx-4 row-cols-lg-3 row-cols-md-2 justify-content-evenly'>
                 <div className="input-field mt-5">
-                    <input type="text" className="form-control" required value={formData?.SearchObject} onChange={(e) => setFormData({ ...formData, SearchObject: e.target.value })} />
+                    <input type="text" className="form-control" id="searchObject" required value={formData?.SearchObject} onChange={(e)=>findSearchObjectHandler(e)} />
                     <label>Search Object:</label>
-                    <span className='d-none text-danger'>Error : Field Required</span>
+                    <span className='text-danger'>{}</span>
                 </div>
                 <div className="input-field mt-5">
                     <input type="text" className="form-control" required value={formData?.TechnicalField}

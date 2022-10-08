@@ -30,7 +30,7 @@ export default function UploadFiles({ formData, setFormData,attachment,setAttach
     try {
       const info = await axios.post("http://localhost:8080/files", chooseFile);
       // console.log(info.data.data);
-      attachment.files.push(info.data.data); 
+      attachment.files.push(info?.data?.data); 
       setIsLoading(false);
       toast.success("you have successfully uploaded the file!");
      console.log(attachment)
@@ -38,7 +38,7 @@ export default function UploadFiles({ formData, setFormData,attachment,setAttach
 
     } catch (error) {
       setIsLoading(false);
-      console.log("error: ", error.info);
+      console.log("error: ", error?.info);
       toast("your file uploadtion is unsuccessfull");
     }
   };
@@ -58,7 +58,7 @@ export default function UploadFiles({ formData, setFormData,attachment,setAttach
             />
           </label>
           <span className="ms-3">
-            {formData.file ? "File(s) Selected" : "File(s) Not Selected"}
+            {formData?.file ? "File(s) Selected" : "File(s) Not Selected"}
           </span>
 
           <button
