@@ -3,6 +3,8 @@ import { ProjectContext } from "../contexts/ProjectContext";
 import { UserContext } from "../contexts/UserContext";
 import { BsQuestionDiamondFill } from "react-icons/bs";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/inject-style";
 
 export default function Evaluation() {
   const { user } = useContext(UserContext);
@@ -12,6 +14,7 @@ export default function Evaluation() {
   const [isHistoryHovering, setIsHistoryHovering] = useState(false);
   const [isDataHovering, setIsDataHovering] = useState(false);
   // const [isUpdated, setIsUpdated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const claimMouseOver = () => {
     setIsClaimHovering(true);
@@ -59,6 +62,7 @@ export default function Evaluation() {
 }
 
   const getEvaluationData = async () => {
+    
     try {
       const res = await axios.get(
         `http://localhost:8080/evaluation/getById/${projectId}`
@@ -105,10 +109,21 @@ export default function Evaluation() {
     //   console.log("error: ", error);
     // }
     // } else if (isUpdated === true) {
-    const res = await axios.post(
-      `http://localhost:8080/evaluation/${projectId}`,
-      evaluationData
-    );
+      setIsLoading(true);
+      try{
+        const res = await axios.post(
+          `http://localhost:8080/evaluation/${projectId}`,
+          evaluationData
+        );
+        setIsLoading(false);
+        toast.success("Evaluation successfull!");
+        console.log("response: ", res);
+      }catch(error){
+        setIsLoading(false);
+        console.log("error: ", error.res);
+        toast.error("Evaluation unsuccessfull");
+      }
+   
     // }
   };
   return (
@@ -468,7 +483,9 @@ export default function Evaluation() {
             onClick={submitData}
           >
             Evaluate
+
           </button>
+          <ToastContainer/>
         </div>
       </div>
     </div>

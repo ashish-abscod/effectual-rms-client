@@ -1,6 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
@@ -9,7 +8,6 @@ import "react-toastify/dist/inject-style";
 
 export default function UpdateUser() {
   const { user, setUser } = useContext(UserContext);
-  const {navigate} = useNavigate()
   const [isLoading, setIsLoading] = useState(false);
   const [addUser, setAddUser] = useState({
     name: "",
@@ -33,21 +31,26 @@ export default function UpdateUser() {
       );
 
       setIsLoading(false);
-      toast("profile updation successfull!");
+      toast.success(res.message);
       console.log("response: ", res);
-      setUser({
-        ...user,
-        auth: false,
-        userData: "",
-        token: null,
-      });
-      localStorage.clear();
-      window.location.replace('/');
+      if(addUser.email || addUser.password){
+        setUser({
+          ...user,
+          auth: false,
+          userData: "",
+          token: null,
+        });
+        localStorage.clear();
+        window.location.replace('/');
+        toast.success(res.message);
+        console.log("response: ", res);
+      }
+      
     
     } catch (error) {
       setIsLoading(false);
       console.log("error: ", error.res);
-      toast.error("updating user is unsuccessfull");
+      toast.error(error.message);
     }
   };
 
@@ -82,7 +85,7 @@ export default function UpdateUser() {
                       <input
                         type="text"
                         className="form-control"
-                        // value={addUser.name}
+                        value={addUser.name}
                         onChange={(e) =>
                           setAddUser({
                             ...addUser, name: e.target.value,
@@ -96,7 +99,7 @@ export default function UpdateUser() {
                       <input
                         type="text"
                         className="form-control"
-                        // value={addUser.email}
+                        value={addUser.email}
                         onChange={(e) =>
                           setAddUser({
                             ...addUser, email: e.target.value,
@@ -140,7 +143,7 @@ export default function UpdateUser() {
                         className="form-control"
                         value={addUser.confirmPassword}
                         onChange={(e) =>
-                          setAddUser({...addUser, confirmPassword: e.target.value,})
+                          setAddUser({...addUser, confirmPassword: e.target.value})
                         }
                         style={{ width: "90%" }}
                       />

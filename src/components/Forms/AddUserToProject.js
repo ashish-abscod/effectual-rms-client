@@ -78,8 +78,6 @@ export default function AddUserToProject({ formData, setFormData }) {
     document.getElementById("searchUser").value = "";
   } 
   
-
-
   const columns = [
     {
       name: "Name",
