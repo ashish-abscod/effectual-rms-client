@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import UpdateUser from "./UpdateUser";
 import { BiUserCircle, BiLogOut } from "react-icons/bi";
 
-export default function Header({ projectSelected }) {
+export default function Header() {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 

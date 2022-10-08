@@ -5,18 +5,31 @@ import { useNavigate } from 'react-router-dom';
 import TableHeader from './TableHeader';
 import { useContext } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
+import Moment from 'react-moment';
 
 export default function AllProjects() {
     const [search, setSearch] = useState("");
     const [projects, setProjects] = useState([]);
     const [filteredProjects, setFilteredProjects] = useState([]);
     const [selectedProjects, setSelectedProjects] = useState([]);
-    const { setProjectId } = useContext(ProjectContext);
+    const { setProjectId , projectId} = useContext(ProjectContext);
     const [loading, setLoading] = useState(false);
     
-    //setProjectId null when user press back button to main panel, which helps to create new project instead to update selected project.
-    setProjectId(null); 
     
+    // settingProject id in state as well as local storage so that we can persist our 
+    // state after refreshing in selected project components 
+    setProjectId(null); 
+
+    const navigate = useNavigate();
+    const setProjectIdHandler = async (projectId) =>{
+        await setProjectId(projectId);
+        await window.localStorage.setItem('projectId',`${projectId}`);
+        navigate('/project');
+    }
+    
+    //setProjectId null when user press back button to main panel, 
+    // which helps to create new project instead to update selected project.
+
     
     //fetching data from endpoint
     const getProjects = async () => {
@@ -48,17 +61,6 @@ export default function AllProjects() {
     }, [projects, search])
 
 
-    // settingProject id in state as well as local storage so that we can persist our 
-    // state after refreshing in selected project components 
-    const navigate = useNavigate();
-    setProjectIdHandler
-
-    const getFormatedToday = (value) => {
-        var date = new Date(value);
-        var str = date.getFullYear() + "-" + (date.getMonth()<9 ?  `0${date.getMonth()+1}` : date.getMonth()+1) + "-" + (date.getDate()<10 ? `0${date.getDate()}` : date.getDate());
-        return str;
-    }
-
     const columns = [
         {
             name: "Project Id",
@@ -72,12 +74,12 @@ export default function AllProjects() {
         },
         {
             // row?.requestedDate
-            selector: (row) => getFormatedToday(row?.requestedDate) ,
+            selector: (row) => <Moment format="DD/MM/YYYY">{row?.requestedDate}</Moment>,
             name: "Request Date",
             sortable: true
         },
         {
-            selector: (row) => getFormatedToday(row?.deliveryDate),
+            selector: (row) => <Moment format="DD/MM/YYYY">{row?.deliveryDate}</Moment>,
             name: "Delievery Date",
             sortable: true
         },
@@ -109,7 +111,7 @@ export default function AllProjects() {
             <div className='d-flex flex-column align-items-center'>
                 <DataTable columns={columns} data={filteredProjects} pagination fixedHeader fixedHeaderScrollHeight='470px' selectableRows selectableRowsHighlight highlightOnHover subHeader
                     subHeaderComponent={<TableHeader props={{ setSearch, projects, selectedProjects }} />}
-                    onRowClicked={(row) => { navigate(`/project`); setProjectIdHandler(row.projectId) }} striped customStyles={customStyles} responsive
+                    onRowClicked={(row) => setProjectIdHandler(row.projectId)} striped customStyles={customStyles} responsive
                     onSelectedRowsChange={(selectedRows) => setSelectedProjects(selectedRows?.selectedRows)}
                     progressPending={loading}
                     progressComponent={

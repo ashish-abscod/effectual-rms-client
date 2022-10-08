@@ -12,7 +12,7 @@ import "react-toastify/dist/inject-style";
 
 export default function CreateProject() {
   const [page, setPage] = useState(0);
-  const { projectId, setProjectId } = useContext(ProjectContext);
+  const { projectId} = useContext(ProjectContext);
   const { user } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -38,13 +38,12 @@ export default function CreateProject() {
     uploadedBy: user?.userData?.name,
   });
 
-  const getProjects = async () => {
-    if (projectId !== null) {
+
+  const getProject = async (projectId) => {
       try {
         const res = await axios.get(
           `http://localhost:8080/projects/${projectId}`
         );
-        console.log(res.data);
         setFormData({
           ...formData,
           SearchObject: res.data.searchObject ? res.data.searchObject : "",
@@ -72,11 +71,10 @@ export default function CreateProject() {
       } catch (error) {
         console.log(error);
       }
-    }
   };
   //getting project based on id
   useEffect(() => {
-    getProjects();
+    getProject(projectId);
   }, [projectId]);
 
   const FormTitles = [

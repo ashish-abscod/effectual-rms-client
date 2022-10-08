@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Header from '../main/Header'
 import CommentInbox from './Comments/CommentInbox';
 import CreateProject from '../Forms/CreateProject';
@@ -9,14 +8,12 @@ import { useContext } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
 
 export default function SelectedProject() {
-  const [projectSelected] = useState(true);
-  const {projectId} = useContext(ProjectContext);
-  window.onbeforeunload = function (e) {
-    return window.confirm("If you refresh this page project might be unselected!");
-};
+  const {projectId,setProjectId} = useContext(ProjectContext);
+  setProjectId(window?.localStorage?.getItem('projectId'))
+
   return (
     <>
-      <Header projectSelected={projectSelected} />
+      <Header />
       
       <div className='container' style={{paddingTop:"4rem"}} >
         <ul className="nav nav-tabs" id="myTab" role="tablist">
