@@ -1,18 +1,25 @@
 import React, { useState } from "react";
 import axios from 'axios';
+import { useRef } from "react";
 
-export default function ProjectInfo({ formData, setFormData }) {
-    const [error,setError] = useState("");
+export default function ProjectInfo({ formData, setFormData, setIsDisabled, projectId }) {
+    const [msg, setMsg] = useState("");
+    const inputRef = useRef(null);
 
-    const findSearchObjectHandler = async(e) => {
+    const searchObjectHandler = async(e) => {
         try {
             setFormData({ ...formData, SearchObject: e.target.value });
-            const value = document.getElementById('searchObject').value;
-            console.log(value)
             const res = await axios.post(
-              `http://localhost:8080/projects/findSearchObject`, {SearchObject : value}
+              `http://localhost:8080/projects/findSearchObject`, {searchObject : inputRef?.current?.value}
             );
-            console.log(res.data);
+            if(res?.data?.status === "failed" && projectId === null){
+                setMsg(res?.data?.msg);
+                setIsDisabled(true);
+            }
+            else{
+                setMsg("");
+                setIsDisabled(false);
+            };
         }catch(error){
         console.log(error);
     }
@@ -22,9 +29,9 @@ export default function ProjectInfo({ formData, setFormData }) {
         <>
             <div className='row gy-3 gy-md-3 gx-4 row-cols-lg-3 row-cols-md-2 justify-content-evenly'>
                 <div className="input-field mt-5">
-                    <input type="text" className="form-control" id="searchObject" required value={formData?.SearchObject} onChange={(e)=>findSearchObjectHandler(e)} />
+                    <input type="text" className="form-control" id="searchObject" ref={inputRef} required value={formData?.SearchObject} onChange={(e)=>searchObjectHandler(e)} />
                     <label>Search Object:</label>
-                    <span className='text-danger'>{}</span>
+                    <span className='text-danger'>{msg}</span>
                 </div>
                 <div className="input-field mt-5">
                     <input type="text" className="form-control" required value={formData?.TechnicalField}

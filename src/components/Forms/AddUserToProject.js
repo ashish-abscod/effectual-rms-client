@@ -133,7 +133,7 @@ export default function AddUserToProject({ formData, setFormData }) {
             subHeader
             subHeaderComponent={
               <div className="d-flex justify-content-around bg-light py-2">
-                <h5 className="d-inline text-primary">
+                <h5 className="d-inline text-primary fw-bold">
                   Assign users to project
                 </h5>
                 <input
