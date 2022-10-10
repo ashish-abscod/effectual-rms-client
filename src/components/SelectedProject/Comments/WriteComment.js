@@ -7,7 +7,7 @@ import axios from "axios";
 import { UserContext } from "../../contexts/UserContext";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import {toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
 
 
@@ -217,7 +217,6 @@ export default function WriteComment() {
                     </div>
                   )}
               </button>
-              <ToastContainer/>
             </div>
           </div>
         </div>

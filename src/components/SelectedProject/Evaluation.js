@@ -3,7 +3,7 @@ import { ProjectContext } from "../contexts/ProjectContext";
 import { UserContext } from "../contexts/UserContext";
 import { BsQuestionDiamondFill } from "react-icons/bs";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import {toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
 
 export default function Evaluation() {
@@ -485,7 +485,6 @@ export default function Evaluation() {
             Evaluate
 
           </button>
-          <ToastContainer/>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "../../components/contexts/UserContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import {toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
 
 export default function Login() {
@@ -10,7 +10,7 @@ export default function Login() {
   const { setUser, user } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
 
-  //   user initial state before login
+  //user initial state before login
   const [userDetails, setDetails] = useState({
     email: "",
     password: "",
@@ -30,18 +30,17 @@ export default function Login() {
         userData: response.data.user,
         token: response.data,
       });
-
-      setIsLoading(false);
-      toast.success(response?.data?.mssg);
       localStorage.setItem("userData", JSON.stringify(response.data.user));
-      //to save in localstorage we have to serialize it, means to stringfy it
       localStorage.setItem("token", JSON.stringify(response.data.token));
       document.getElementById("loginModalClose").click();
-      navigate("/main");
+      if (response?.data?.status === "success") {
+        toast.success(response?.data?.mssg);
+        navigate("/main")
+      }
     } catch (error) {
-        setIsLoading(false);
-        console.log("error: ", error.res);
-        toast("invalid  credentials");
+      toast.error(error?.response?.data?.msg);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -110,32 +109,16 @@ export default function Login() {
                     setDetails({ ...userDetails, password: e.target.value })
                   }
                 />
-                <div className="mt-5 mb-4">
-                  <a
-                    href="/"
-                    className="me-5"
-                    data-bs-target="#forgotPassModal"
-                    data-bs-toggle="modal"
-                    type="submit"
-                    data-bs-dismiss="modal"
-                  >
+                <div className="mt-4 mb-4 d-flex align-items-center justify-content-between">
+                  <a href="/" data-bs-target="#forgotPassModal" data-bs-toggle="modal" type="submit" data-bs-dismiss="modal">
                     Forgot password?
                   </a>
-                  <button
-                    className="btn bg-success text-white px-5 float-end"
-                    type="button"
-                    value="LOGIN"
-                    onClick={loginApi}
-                  >
-                    Login
-                    {isLoading && (
-                      <div className="spinner-border" role="status">
-                        <span className="sr-only"></span>
-                      </div>
-                    )}
-                    <ToastContainer />
-                  </button>
-                  
+                  {isLoading && (
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="sr-only"></span>
+                    </div>
+                  )}
+                  <button className="btn bg-success text-white px-5" type="button" value="LOGIN" onClick={loginApi}>Login</button>
                 </div>
               </form>
             </div>

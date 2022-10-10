@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import {toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function AddNewUser() {
@@ -9,25 +9,24 @@ export default function AddNewUser() {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "",
-    picture: "",
+    role: "Patent Expert", //default value for role
     status: true
   });
 
   const [isLoading, setIsLoading] = useState(false);
 
   const submitData = async () => {
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       const response = await axios.post("http://localhost:8080/users", addUser);
 
-      setIsLoading(false);
-      toast.success(response.message);
-      console.log("addresponse: ", response);
+      console.log(response.data);
+      toast.success(response.data.msg);
     } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong.")
+    }finally{
       setIsLoading(false);
-      console.log("error: ", error.response);
-      toast.error(error.message)
     }
   };
   return (
@@ -130,7 +129,7 @@ export default function AddNewUser() {
                         }}
                       >
                         <option value="Manager">Manager</option>
-                        <option value="Patent Expert">Patent Expert</option>
+                        <option value="Patent Expert" selected={true}>Patent Expert</option>
                         <option value="Searcher">Searcher</option>
                         <option value="Client Admin">Client Admin</option>
                         <option value="Effectual Admin">Effectual Admin</option>
@@ -140,29 +139,6 @@ export default function AddNewUser() {
                       <span className="d-none">Error : Field Required</span>
                     </div>
                   </div>
-                  {/* <div className="col-md-4 mt-4">
-                    <div className="mt-3">
-                      <label
-                        htmlFor="exampleFormControlInput1"
-                        className="form-label"
-                      >
-                        Choose image
-                      </label>
-                      <input
-                        // disabled={loader}
-                        type="file"
-                        // disabled={file || loader}
-                        className="form-control mb-2"
-                        onChange={uploadSingleFile}
-                      />
-                      <img
-                        src={file && file}
-                        alt="dummy"
-                        height="200px"
-                        width="200px"
-                      />
-                    </div>
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -206,7 +182,6 @@ export default function AddNewUser() {
                                     </div>
                    )}
                 </button>
-                <ToastContainer/>
               </div>
             </div>
           </div>

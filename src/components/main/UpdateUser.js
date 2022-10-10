@@ -2,13 +2,12 @@ import React, { useState, useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
 
 
 export default function UpdateUser() {
   const { user, setUser } = useContext(UserContext);
-  const [isLoading, setIsLoading] = useState(false);
   const [addUser, setAddUser] = useState({
     name: "",
     email: "",
@@ -23,17 +22,15 @@ export default function UpdateUser() {
 
 
   const handleUsersEdit = async () => {
-    setIsLoading(true);
     try {
       let res = await axios.put(
         `http://localhost:8080/users/update/${user.userData._id}`,
         addUser
       );
-
-      setIsLoading(false);
-      toast.success(res.message);
+      console.log(res)
+      toast.success(res?.msg);
       console.log("response: ", res);
-      if(addUser.email || addUser.password){
+      if (addUser.email || addUser.password) {
         setUser({
           ...user,
           auth: false,
@@ -45,12 +42,11 @@ export default function UpdateUser() {
         toast.success(res.message);
         console.log("response: ", res);
       }
-      
-    
+
+
     } catch (error) {
-      setIsLoading(false);
-      console.log("error: ", error.res);
-      toast.error(error.message);
+      console.log(error);
+      toast.error("Something went wrong.");
     }
   };
 
@@ -143,7 +139,7 @@ export default function UpdateUser() {
                         className="form-control"
                         value={addUser.confirmPassword}
                         onChange={(e) =>
-                          setAddUser({...addUser, confirmPassword: e.target.value})
+                          setAddUser({ ...addUser, confirmPassword: e.target.value })
                         }
                         style={{ width: "90%" }}
                       />
@@ -196,18 +192,11 @@ export default function UpdateUser() {
                 <button
                   type="submit"
                   variant="btn btn-success w-100"
-                  disabled={isLoading}
                   className="btn theme-bg text-white rounded-pill"
                   onClick={handleUsersEdit}
                 >
                   Update Profile
-                  {isLoading && (
-                    <div className="spinner-border">
-                      <span className="sr-only"></span>
-                    </div>
-                  )}
                 </button>
-                <ToastContainer/>
               </div>
             </div>
           </div>

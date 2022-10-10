@@ -6,6 +6,7 @@ import Feedback from './Feedback';
 import Evaluation from './Evaluation';
 import { useContext } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
+import { ToastContainer } from 'react-toastify';
 
 export default function SelectedProject() {
   const {projectId,setProjectId} = useContext(ProjectContext);
@@ -51,6 +52,7 @@ export default function SelectedProject() {
           </div>
         </div>
       </div>
+      <ToastContainer/>
     </>
   )
 }
