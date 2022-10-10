@@ -7,14 +7,15 @@ import { ProjectContext } from "../contexts/ProjectContext";
 import axios from "axios";
 import { useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { ToastContainer, toast } from "react-toastify";
+import {toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
 
 export default function CreateProject() {
   const [page, setPage] = useState(0);
-  const { projectId} = useContext(ProjectContext);
+  const { projectId } = useContext(ProjectContext);
   const { user } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [formData, setFormData] = useState({
     SearchObject: "",
     TechnicalField: "",
@@ -31,6 +32,8 @@ export default function CreateProject() {
     UsefulInformationForSearch: "",
     assignedUsers: [],
   });
+  const [fileNames, setFileNames] = useState([]);
+
 
   const [attachment, setAttachment] = useState({
     files: [],
@@ -38,39 +41,41 @@ export default function CreateProject() {
     uploadedBy: user?.userData?.name,
   });
 
+  const selectedProjectId = window.localStorage.getItem('projectId');
+
 
   const getProject = async (projectId) => {
-      try {
-        const res = await axios.get(
-          `http://localhost:8080/projects/${projectId}`
-        );
-        setFormData({
-          ...formData,
-          SearchObject: res.data.searchObject ? res.data.searchObject : "",
-          TechnicalField: res.data.technicalField
-            ? res.data.technicalField
-            : "",
-          KnownPriorArt: res.data.patentNumber ? res.data.patentNumber : "",
-          ClaimsToBeSearched: res.data.claims ? res.data.claims : "",
-          RequirementForDelivery: res.data.reqDelivery
-            ? res.data.reqDelivery
-            : "",
-          RequirementDeliveryDate: res.data.deliveryDate
-            ? res.data.deliveryDate
-            : "",
-          PriorArtCuttOffDate: res.data.priorArtDate
-            ? res.data.priorArtDate
-            : "",
-          StandardRelated: res.data.standard ? res.data.standard : "",
-          SSONeeded: res.data.sso ? res.data.sso : "",
-          USIPRSpecial: res.data.usipr ? res.data.usipr : "",
-          ImportantClaims: res.data.impClaim ? res.data.impClaim : "",
-          UnimportantClaims: res.data.nonImpClaim ? res.data.nonImpClaim : "",
-          UsefulInformationForSearch: res.data.info ? res.data.info : "",
-        });
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      const res = await axios.get(
+        `http://localhost:8080/projects/${projectId}`
+      );
+      setFormData({
+        ...formData,
+        SearchObject: res?.data?.searchObject ? res?.data?.searchObject : "",
+        TechnicalField: res?.data?.technicalField
+          ? res?.data?.technicalField
+          : "",
+        KnownPriorArt: res?.data?.patentNumber ? res?.data?.patentNumber : "",
+        ClaimsToBeSearched: res?.data?.claims ? res?.data?.claims : "",
+        RequirementForDelivery: res?.data?.reqDelivery
+          ? res?.data?.reqDelivery
+          : "",
+        RequirementDeliveryDate: res?.data?.deliveryDate
+          ? res?.data?.deliveryDate
+          : "",
+        PriorArtCuttOffDate: res?.data?.priorArtDate
+          ? res?.data?.priorArtDate
+          : "",
+        StandardRelated: res?.data?.standard ? res?.data?.standard : "",
+        SSONeeded: res?.data?.sso ? res?.data?.sso : "",
+        USIPRSpecial: res?.data?.usipr ? res?.data?.usipr : "",
+        ImportantClaims: res?.data?.impClaim ? res?.data?.impClaim : "",
+        UnimportantClaims: res?.data?.nonImpClaim ? res?.data?.nonImpClaim : "",
+        UsefulInformationForSearch: res?.data?.info ? res?.data?.info : "",
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
   //getting project based on id
   useEffect(() => {
@@ -89,7 +94,7 @@ export default function CreateProject() {
     switch (page) {
       case 0:
         returnvalue = (
-          <ProjectInfo formData={formData} setFormData={setFormData} />
+          <ProjectInfo formData={formData} setFormData={setFormData} setIsDisabled={setIsDisabled} projectId={projectId} />
         );
         break;
       case 1:
@@ -98,7 +103,7 @@ export default function CreateProject() {
             formData={formData}
             setFormData={setFormData}
             attachment={attachment}
-            setAttachment={setAttachment}
+            fileNames={fileNames} setFileNames={setFileNames}
           />
         );
         break;
@@ -123,23 +128,20 @@ export default function CreateProject() {
   const projectHandler = async () => {
     if (projectId === null) {
       setIsLoading(true);
+      setIsDisabled(true);
       try {
-
         const res = await axios.post(
           "http://localhost:8080/projects/create",
           formData
         );
+
+        if (res?.data?.status === "success") toast.success(res?.data?.msg)
+        else toast.error(res?.data?.msg);
         
-          setIsLoading(false);
-          if(res?.data === null) toast.success("You have created the project successfully!")
-          else toast.error("sorry your project creation is failed!");
-          console.log(res)
-        
-        
-        setAttachment({ ...attachment, projectId: res?.data?.data?.projectId });
+        setAttachment({ ...attachment, projectId: res?.data?.projectId });
 
         const info = await axios.post("http://localhost:8080/files/saveToDb", {
-          projectId: res?.data?.data?.projectId,
+          projectId: res?.data?.projectId,
           files: attachment?.files,
           filesName: attachment?.filesName,
           uploadedBy: attachment?.uploadedBy,
@@ -150,19 +152,24 @@ export default function CreateProject() {
           "http://localhost:8080/assigned/createUser",
           {
             userId: formData?.assignedUsers,
-            projectId: res?.data?.data?.projectId,
+            projectId: res?.data?.projectId,
             assignedBy: user.userData._id,
           }
         );
       } catch (error) {
+        console.log(error);
+        toast.error("something went wrong.");
+      } finally{
         setIsLoading(false);
-        console.log("error: ", error.res);
-        toast("sorry your project creation is failed!");
+        setIsDisabled(false);
       }
+
       //clear FormData Completely after creating project
       setFormData(null);
     } else if (projectId !== null) {
       try {
+        setIsLoading(true);
+        setIsDisabled(true);
         const res = await axios.put(
           `http://localhost:8080/projects/update/${projectId}`,
           formData
@@ -174,12 +181,13 @@ export default function CreateProject() {
         );
         // clear assignedUsers from formdata after updation complete
         setFormData({ ...formData, assignedUsers: [] });
-        setIsLoading(false);
-        toast.success("You have updated the project successfully!");
+        toast.success(res?.data?.msg);
       } catch (error) {
+        toast("Something went wrong.");
+        console.log(error.res);
+      }finally{
         setIsLoading(false);
-        console.log("error: ", error.res);
-        toast("sorry your project updation is failed!");
+        setIsDisabled(false);
       }
     }
   };
@@ -200,10 +208,10 @@ export default function CreateProject() {
                   page === 0
                     ? "25%"
                     : page === 1
-                    ? "50%"
-                    : page === 2
-                    ? "75%"
-                    : "100%",
+                      ? "50%"
+                      : page === 2
+                        ? "75%"
+                        : "100%",
               }}
               aria-valuenow="25"
               aria-valuemin="0"
@@ -222,8 +230,17 @@ export default function CreateProject() {
             >
               Previous
             </button>
+            {isLoading && (
+              <>
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only"></span>
+              </div>
+              <span className="text-primary ms-2 mt-1">Please wait...</span>
+              </>
+            )}
             <button
               type="button"
+              disabled={isDisabled}
               className="btn btn-success rounded-pill w-50 form"
               onClick={() => {
                 if (page === FormTitles.length - 1) {
@@ -234,13 +251,7 @@ export default function CreateProject() {
               }}
             >
               {page === FormTitles.length - 1 ? "Submit" : "Next"}{" "}
-              {isLoading && (
-                    <div className="spinner-border" role="status">
-                      <span className="sr-only"></span>
-                    </div>
-                  )}
             </button>
-            <ToastContainer/>
           </div>
         </div>
 
