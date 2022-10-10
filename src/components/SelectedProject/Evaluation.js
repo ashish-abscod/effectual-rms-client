@@ -3,7 +3,7 @@ import { ProjectContext } from "../contexts/ProjectContext";
 import { UserContext } from "../contexts/UserContext";
 import { BsQuestionDiamondFill } from "react-icons/bs";
 import axios from "axios";
-import {toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
 
 export default function Evaluation() {
@@ -57,17 +57,18 @@ export default function Evaluation() {
 
   const getFormatedToday = () => {
     var date = new Date();
-    var str = date.getFullYear() + "-" + (date.getMonth()<10 ?  `0${date.getMonth()+1}` : date.getMonth()+1) + "-" + (date.getDate()<10 ? `0${date.getDate()}` : date.getDate());
+    var str = date.getFullYear() + "-" + (date.getMonth() < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1) + "-" + (date.getDate() < 10 ? `0${date.getDate()}` : date.getDate());
     return str;
-}
+  }
 
   const getEvaluationData = async () => {
-    
+
     try {
+      console.log(projectId);
       const res = await axios.get(
         `http://localhost:8080/evaluation/getById/${projectId}`
       );
-      console.log(res);
+      console.log(res.data)
       setevaluationData({
         ...evaluationData,
         modification: res?.data?.modification,
@@ -93,38 +94,21 @@ export default function Evaluation() {
   }, []);
 
   const submitData = async () => {
-    // if (isUpdated === false) {
-    // try {
-    //   let date = new Date().toLocaleDateString();
-    //   evaluationData.modification = `${date}`;
-    //   const response = await axios.post(
-    //     "http://localhost:8080/evaluation/",
-    //     evaluationData
-    //   );
-    //   // setIsUpdated(false);
+    setIsLoading(true);
+    try {
+      const res = await axios.post(
+        `http://localhost:8080/evaluation/${projectId}`,
+        evaluationData
+      );
+      if (res?.data?.status === "success") toast.success(res?.data?.msg);
+      else toast.error(res?.data?.msg);
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong.");
+    } finally {
+      setIsLoading(false);
+    }
 
-    //   console.log("addresponse: ", response);
-    //   console.log(evaluationData);
-    // } catch (error) {
-    //   console.log("error: ", error);
-    // }
-    // } else if (isUpdated === true) {
-      setIsLoading(true);
-      try{
-        const res = await axios.post(
-          `http://localhost:8080/evaluation/${projectId}`,
-          evaluationData
-        );
-        setIsLoading(false);
-        toast.success("Evaluation successfull!");
-        console.log("response: ", res);
-      }catch(error){
-        setIsLoading(false);
-        console.log("error: ", error.res);
-        toast.error("Evaluation unsuccessfull");
-      }
-   
-    // }
   };
   return (
     <div className="container">
@@ -206,7 +190,7 @@ export default function Evaluation() {
 
       <div className="row justify-content-evenly mt-4">
         <div className="col-lg-4 col-md-6">
-          <span className="fw-bold text-secondary" style={{fontSize:"12px"}}>
+          <span className="fw-bold text-secondary" style={{ fontSize: "12px" }}>
             Score Range Refrences : X (55-65) | Y(45-55) | Z (0-25){" "}
           </span>
           <div

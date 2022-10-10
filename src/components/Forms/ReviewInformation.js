@@ -88,7 +88,29 @@ export default function ReviewInformation({ formData }) {
             </li>
           </ol>
         </div>
-
+        <div className='col-md-3 col-lg-4' style={{ cursor: "pointer" }}>
+        <table className="table mt-4 table-striped">
+            <thead className="thead-dark">
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+              </tr>
+            </thead>
+            <tbody>
+            {formData?.assignedUsers?.map((item) => {
+              return(
+              <tr className="mb-2" >
+            <td>{item.name}</td>
+            <td>{item.email}</td>
+            <td>{item.role}</td>
+            </tr>
+              )
+            })}
+            
+            </tbody>
+              </table>
+        </div>
         <div className='col-md-6 col-lg-4' style={{ cursor: "pointer" }}>
           <ol className="list-group">
             <li className="list-group-item d-flex justify-content-between align-items-start">
@@ -105,7 +127,9 @@ export default function ReviewInformation({ formData }) {
             </li>
             {/* <li className="list-group-item overflow-auto tooltips" style={{ maxHeight: "170px", top: "0px" }}>14. <span className='ms-3 fw-bold theme2-color'>{formData?.UsefulInformationForSearch}</span> <span className="tooltiptext">Useful Information For Search</span></li> */}
           </ol>
+          
         </div>
+       
       </div>
     </>
   )
