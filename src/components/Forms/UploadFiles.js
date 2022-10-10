@@ -4,7 +4,12 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
 
-export default function UploadFiles({ formData, setFormData,attachment,setAttachment }) {
+export default function UploadFiles({
+  formData,
+  setFormData,
+  attachment,
+  setAttachment,
+}) {
   const { projectId } = useContext(ProjectContext);
   const [isLoading, setIsLoading] = useState(false);
   const [chooseFile, setChooseFile] = useState({ file: "" });
@@ -30,12 +35,10 @@ export default function UploadFiles({ formData, setFormData,attachment,setAttach
     try {
       const info = await axios.post("http://localhost:8080/files", chooseFile);
       // console.log(info.data.data);
-      attachment.files.push(info.data.data); 
+      attachment.files.push(info.data.data);
       setIsLoading(false);
       toast.success("you have successfully uploaded the file!");
-     console.log(attachment)
-
-
+      console.log(attachment);
     } catch (error) {
       setIsLoading(false);
       console.log("error: ", error.info);
@@ -58,7 +61,7 @@ export default function UploadFiles({ formData, setFormData,attachment,setAttach
             />
           </label>
           <span className="ms-3">
-            {formData.file ? "File(s) Selected" : "File(s) Not Selected"}
+            {/* {formData.file ? "File(s) Selected" : "File(s) Not Selected"} */}
           </span>
 
           <button
@@ -70,12 +73,12 @@ export default function UploadFiles({ formData, setFormData,attachment,setAttach
           >
             Upload File
             {isLoading && (
-                    <div className="spinner-border" role="status">
-                      <span className="sr-only"></span>
-                    </div>
+              <div className="spinner-border" role="status">
+                <span className="sr-only"></span>
+              </div>
             )}
           </button>
-          <ToastContainer/>
+          <ToastContainer />
         </div>
       )}
       <div className="col-md-12 mt-3">

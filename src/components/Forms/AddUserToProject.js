@@ -21,14 +21,13 @@ export default function AddUserToProject({ formData, setFormData }) {
     }
   }, [projectId]);
 
-
   const getUserData = async (event) => {
     let key = event.target.value;
     if (key) {
       let result = await fetch(`http://localhost:8080/users/search/${key}`);
       result = await result.json();
       if (result) {
-        setFilteredUsers(result); 
+        setFilteredUsers(result);
       }
     } else {
       setFilteredUsers([]);
@@ -36,10 +35,10 @@ export default function AddUserToProject({ formData, setFormData }) {
   };
   const getAssignmentData = async () => {
     // appointmentData.patientID = patientId;
-   await fetch(`http://localhost:8080/assigned/getUserById/${projectId}`)
+    await fetch(`http://localhost:8080/assigned/getUserById/${projectId}`)
       .then((res) => res.json())
       .then((data) => setAlreadyAssignedUsers(data));
-         };
+  };
 
   const handleAssignedUserDelete = async (id, userId) => {
     let res = await fetch(
@@ -63,21 +62,22 @@ export default function AddUserToProject({ formData, setFormData }) {
     setFilteredUsers(filters);
   }, [userData, search]);
 
-
   const handleRemove = async (id) => {
     // console.log(id);
     // console.log(formData.assignedUsers);
-    const filteredUsers = formData?.assignedUsers?.filter(obj => obj._id !== id);
+    const filteredUsers = formData?.assignedUsers?.filter(
+      (obj) => obj._id !== id
+    );
     console.log(filteredUsers);
-    setFormData({...formData, assignedUsers : filteredUsers});
-  }
-  
-  const selectUser = async (row) =>{
+    setFormData({ ...formData, assignedUsers: filteredUsers });
+  };
+
+  const selectUser = async (row) => {
     formData?.assignedUsers.push(row);
     setFilteredUsers([]);
     document.getElementById("searchUser").value = "";
-  } 
-  
+  };
+
   const columns = [
     {
       name: "Name",
@@ -116,7 +116,6 @@ export default function AddUserToProject({ formData, setFormData }) {
     },
   };
 
-
   return (
     <>
       <div className="row">
@@ -153,7 +152,7 @@ export default function AddUserToProject({ formData, setFormData }) {
           />
         </div>
 
-        <div className="col-lg-5 overflow-auto" style={{maxHeight: "70vh"}}>
+        <div className="col-lg-5 overflow-auto" style={{ maxHeight: "70vh" }}>
           <table className="table mt-4 table-striped">
             <thead className="thead-dark">
               <tr>
@@ -186,15 +185,15 @@ export default function AddUserToProject({ formData, setFormData }) {
                 </tr>
               ))}
 
-            {formData?.assignedUsers?.map((item, i) => (
-              <tr className="mb-2" key={i}>
-                <td>{item.name}</td>
-                <td>{item.role}</td>
-                <td>
-                    <AiOutlineClose onClick={()=> handleRemove(item._id)} />
-                </td>
-              </tr>
-            ))}
+              {formData?.assignedUsers?.map((item, i) => (
+                <tr className="mb-2" key={i}>
+                  <td>{item.name}</td>
+                  <td>{item.role}</td>
+                  <td>
+                    <AiOutlineClose onClick={() => handleRemove(item._id)} />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

@@ -39,9 +39,9 @@ export default function Login() {
       document.getElementById("loginModalClose").click();
       navigate("/main");
     } catch (error) {
-        setIsLoading(false);
-        console.log("error: ", error.res);
-        toast("invalid  credentials");
+      setIsLoading(false);
+      console.log("error: ", error.res);
+      toast("invalid  credentials");
     }
   };
 
@@ -135,7 +135,6 @@ export default function Login() {
                     )}
                     <ToastContainer />
                   </button>
-                  
                 </div>
               </form>
             </div>

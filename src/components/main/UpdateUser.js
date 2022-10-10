@@ -16,6 +16,12 @@ export default function UpdateUser() {
     confirmPassword: "",
   });
 
+
+  const [name, setName] = useState()
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+  const [confirmPassword, setConfirmPassword] = useState()
+
   const [passType, setPassType] = useState({
     first: "Password",
     second: "Password",
@@ -27,7 +33,7 @@ export default function UpdateUser() {
     try {
       let res = await axios.put(
         `http://localhost:8080/users/update/${user.userData._id}`,
-        addUser
+        name,email,password,confirmPassword
       );
 
       setIsLoading(false);
@@ -49,8 +55,8 @@ export default function UpdateUser() {
     
     } catch (error) {
       setIsLoading(false);
-      console.log("error: ", error.res);
-      toast.error(error.message);
+      console.log("error: ", error);
+      toast.error(error);
     }
   };
 
@@ -85,10 +91,10 @@ export default function UpdateUser() {
                       <input
                         type="text"
                         className="form-control"
-                        value={addUser.name}
+                        value={name}
                         onChange={(e) =>
-                          setAddUser({
-                            ...addUser, name: e.target.value,
+                          setName({
+                             name: e.target.value,
                           })
                         }
                       />
@@ -99,10 +105,10 @@ export default function UpdateUser() {
                       <input
                         type="text"
                         className="form-control"
-                        value={addUser.email}
+                        value={email}
                         onChange={(e) =>
-                          setAddUser({
-                            ...addUser, email: e.target.value,
+                          setEmail({
+                            email: e.target.value,
                           })
                         }
                       />
@@ -113,9 +119,9 @@ export default function UpdateUser() {
                       <input
                         type={passType?.first}
                         className="form-control"
-                        value={addUser.password}
+                        value={password}
                         onChange={(e) =>
-                          setAddUser({ ...addUser, password: e.target.value })
+                          setPassword({ password: e.target.value })
                         }
                         style={{ width: "90%" }}
                       />
@@ -141,9 +147,9 @@ export default function UpdateUser() {
                       <input
                         type={passType.second}
                         className="form-control"
-                        value={addUser.confirmPassword}
+                        value={confirmPassword}
                         onChange={(e) =>
-                          setAddUser({...addUser, confirmPassword: e.target.value})
+                          setConfirmPassword({confirmPassword: e.target.value})
                         }
                         style={{ width: "90%" }}
                       />

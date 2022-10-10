@@ -8,13 +8,13 @@ export default function ProjectInfo({ formData, setFormData }) {
         try {
             setFormData({ ...formData, SearchObject: e.target.value });
             const value = document.getElementById('searchObject').value;
-            console.log(value)
+            // console.log(value)
             const res = await axios.post(
               `http://localhost:8080/projects/findSearchObject`, {SearchObject : value}
             );
             console.log(res.data);
         }catch(error){
-        console.log(error);
+        // console.log(error);
     }
 }
 
