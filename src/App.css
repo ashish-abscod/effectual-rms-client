@@ -120,6 +120,12 @@ header.TUEFO {
   padding: unset!important;
   min-height: unset!important;
 }
+
+/* main project table styles */
+#home #cell-2-undefined, #home div[data-column-id="2"]{
+  min-width: 30vw;
+}
+
 .dqmQwT input, .cfdVEr input{
   width: 18px;
   height: 18px;
