@@ -114,7 +114,7 @@ export default function CreateProject() {
         break;
       case 3:
         returnvalue = (
-          <ReviewInformation formData={formData} setFormData={setFormData} />
+          <ReviewInformation formData={formData} fileNames={fileNames} />
         );
         break;
       default:
@@ -146,7 +146,6 @@ export default function CreateProject() {
           filesName: attachment?.filesName,
           uploadedBy: attachment?.uploadedBy,
         });
-        // console.log(info);
 
         let data = await axios.post(
           "http://localhost:8080/assigned/createUser",
@@ -162,10 +161,11 @@ export default function CreateProject() {
       } finally{
         setIsLoading(false);
         setIsDisabled(false);
+        //clear FormData Completely after creating project
+        // setFormData(null);
+        setFileNames([]);
       }
 
-      //clear FormData Completely after creating project
-      setFormData(null);
     } else if (projectId !== null) {
       try {
         setIsLoading(true);
@@ -188,6 +188,7 @@ export default function CreateProject() {
       }finally{
         setIsLoading(false);
         setIsDisabled(false);
+        setFileNames([]);
       }
     }
   };
