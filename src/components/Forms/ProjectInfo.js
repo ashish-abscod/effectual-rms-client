@@ -77,17 +77,17 @@ export default function ProjectInfo({ formData, setFormData, setIsDisabled, proj
                     <span className='d-none text-danger'>Error : Field Required</span>
                 </div>
                 <div className="input-field">
-                    <input type="text" className="form-control" required value={formData?.USIPRSpecial} onChange={(e) => setFormData({ ...formData, USIPRSpecial: e.target.value })} />
+                    <textarea type="text" className="form-control" rows="4" required value={formData?.USIPRSpecial} onChange={(e) => setFormData({ ...formData, USIPRSpecial: e.target.value })} />
                     <label> US IPR Special:</label>
                     <span className='d-none text-danger' >Error : Field Required</span>
                 </div>
                 <div className="input-field">
-                    <input type="text" className="form-control" required value={formData?.ImportantClaims} onChange={(e) => setFormData({ ...formData, ImportantClaims: e.target.value })} />
+                    <textarea type="text" className="form-control" rows="4" required value={formData?.ImportantClaims} onChange={(e) => setFormData({ ...formData, ImportantClaims: e.target.value })} />
                     <label>Importand Claims (max 5) :</label>
                     <span className='d-none text-danger'>Error : Field Required</span>
                 </div>
                 <div className="input-field">
-                    <input type="text" className="form-control" id="unimportant" required value={formData?.UnimportantClaims} onChange={(e) => setFormData({ ...formData, UnimportantClaims: e.target.value })} />
+                    <textarea type="text" className="form-control" rows="4" id="unimportant" required value={formData?.UnimportantClaims} onChange={(e) => setFormData({ ...formData, UnimportantClaims: e.target.value })} />
                     <label>Unimportant claims:</label>
                     <span className='d-none text-danger'>Error : Field Required</span>
                 </div>

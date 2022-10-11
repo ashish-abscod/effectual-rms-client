@@ -39,7 +39,7 @@ p,span{
   position: relative;
 }
 
-.input-field input,.input-field select {
+.input-field input,.input-field select, .input-field textarea {
   display: inline-block;
   border: thin solid #fafafa;
   border-bottom: solid medium #999;
@@ -54,6 +54,9 @@ p,span{
 .input-field input:focus,
 .input-field input:hover,
 .input-field input:valid,
+.input-field textarea:focus,
+.input-field textarea:hover,
+.input-field textarea:valid,
 .input-field select:focus,
 .input-field select:valid,
 .input-field select:hover{
@@ -65,6 +68,7 @@ p,span{
 
 .input-field input:valid,
 .input-field select:valid,
+.input-field textarea:valid,
 .input-field input:disabled{
   border: thin solid #49ca38 !important;
   border-bottom: solid medium #239f12c7 !important;
@@ -87,6 +91,7 @@ left: 35px;
 }
 .input-field select:valid~label,
 .input-field input:valid~label,
+.input-field textarea:valid~label,
 .input-field input:disabled~label{
   top: 8px;
   left: 35px;
