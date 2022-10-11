@@ -15,12 +15,6 @@ export default function UpdateUser() {
     confirmPassword: "",
   });
 
-
-  const [name, setName] = useState()
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
-  const [confirmPassword, setConfirmPassword] = useState()
-
   const [passType, setPassType] = useState({
     first: "Password",
     second: "Password",
@@ -29,29 +23,28 @@ export default function UpdateUser() {
 
   const handleUsersEdit = async () => {
     try {
+      console.log("calling...")
       let res = await axios.put(
-        `http://localhost:8080/users/update/${user.userData._id}`,
-        name,email,password,confirmPassword
+        `http://localhost:8080/users/update/${user?.userData?._id}`,addUser
       );
-      console.log(res)
-      toast.success(res?.msg);
-      console.log("response: ", res);
-      if (addUser.email || addUser.password) {
-        setUser({
-          ...user,
-          auth: false,
-          userData: "",
-          token: null,
-        });
-        localStorage.clear();
-        window.location.replace('/');
-        toast.success(res.message);
-        console.log("response: ", res);
+      if(res?.data?.status === "failed"){
+        toast.error(res?.data?.msg);
+      }else if(res?.data?.status === "success"){
+        toast.success(res?.data?.msg);
+        toast("Please login again as you have updated profile.");
+        setTimeout(() => {
+          window.location.replace('/');
+          setUser({
+            ...user,
+            auth: false,
+            userData: "",
+            token: null,
+          });
+          localStorage.clear();
+        }, 3000);
       }
 
-
     } catch (error) {
-      console.log(error);
       toast.error("Something went wrong.");
     }
   };
@@ -87,9 +80,9 @@ export default function UpdateUser() {
                       <input
                         type="text"
                         className="form-control"
-                        value={addUser.name}
+                        value={addUser?.name}
                         onChange={(e) =>
-                          setName({
+                          setAddUser({...addUser,
                              name: e.target.value,
                           })
                         }
@@ -101,9 +94,9 @@ export default function UpdateUser() {
                       <input
                         type="text"
                         className="form-control"
-                        value={addUser.email}
+                        value={addUser?.email}
                         onChange={(e) =>
-                          setEmail({
+                          setAddUser({...addUser,
                             email: e.target.value,
                           })
                         }
@@ -115,9 +108,9 @@ export default function UpdateUser() {
                       <input
                         type={passType?.first}
                         className="form-control"
-                        value={password}
+                        value={addUser?.password}
                         onChange={(e) =>
-                          setPassword({ password: e.target.value })
+                          setAddUser({...addUser, password: e.target.value })
                         }
                         style={{ width: "90%" }}
                       />
@@ -143,7 +136,7 @@ export default function UpdateUser() {
                       <input
                         type={passType.second}
                         className="form-control"
-                        value={confirmPassword}
+                        value={addUser?.confirmPassword}
                         onChange={(e) =>
                           setAddUser({ ...addUser, confirmPassword: e.target.value })
                         }
@@ -196,10 +189,10 @@ export default function UpdateUser() {
                   Clear
                 </button>
                 <button
-                  type="submit"
+                  type="button"
                   variant="btn btn-success w-100"
                   className="btn theme-bg text-white rounded-pill"
-                  onClick={handleUsersEdit}
+                  onClick={()=>handleUsersEdit()}
                 >
                   Update Profile
                 </button>
