@@ -9,8 +9,8 @@ import "react-toastify/dist/inject-style";
 export default function UpdateUser() {
   const { user, setUser } = useContext(UserContext);
   const [addUser, setAddUser] = useState({
-    name: "",
-    email: "",
+    name: user?.userData?.name,
+    email: user?.userData?.email,
     password: "",
     confirmPassword: "",
   });
