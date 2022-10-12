@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import axios from "axios";
 import {toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,23 +12,38 @@ export default function AddNewUser() {
     role: "Patent Expert", //default value for role
     status: true
   });
-
+  const [data, setData] = useState("");
+  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const submitData = async () => {
     try {
       setIsLoading(true);
       const response = await axios.post("http://localhost:8080/users", addUser);
-
       console.log(response.data);
       toast.success(response.data.msg);
+      if(response.data.status === "success"){
+        window.location.replace('/main')
+      }
+      
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong.")
+      toast.error(error.msg)
     }finally{
       setIsLoading(false);
     }
   };
+
+  useEffect(()=>{
+    if(addUser.passwordpassword !== addUser.confirmPassword){
+        setError("Both Password must be match!");
+    }else{
+        setError(null);
+    }
+
+},[addUser.password, addUser.confirmPassword]);
+
+
   return (
     <>
       <div
@@ -63,6 +78,8 @@ export default function AddNewUser() {
                       <input
                         type="text"
                         className="form-control"
+                        id="name"
+                        name="name"
                         required
                         value={addUser.name}
                         onChange={(e) =>
@@ -114,6 +131,9 @@ export default function AddNewUser() {
                       <label>Confirm Password:</label>
                       <span className="d-none">Error : Field Required</span>
                     </div>
+                    <span className='text-danger mt-2 d-block'>{error}</span>
+                        {data?.status === "success" ? <span className='text-success fw-bold fs-3 d-block'>{data?.mssg}</span>
+                         : data?.status === "failed" ? <span className='text-danger fw-bold d-block'>{data?.mssg}</span> : ""}
 
                     <div className="input-field">
                       <select className="form-select"

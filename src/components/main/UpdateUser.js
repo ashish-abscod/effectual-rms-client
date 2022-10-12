@@ -8,18 +8,10 @@ import "react-toastify/dist/inject-style";
 
 export default function UpdateUser() {
   const { user, setUser } = useContext(UserContext);
-  const [addUser, setAddUser] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-
-
-  const [name, setName] = useState()
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
-  const [confirmPassword, setConfirmPassword] = useState()
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
 
   const [passType, setPassType] = useState({
     first: "Password",
@@ -27,16 +19,35 @@ export default function UpdateUser() {
   });
 
 
+  const clearHandler = () => {
+    setName("")
+    setEmail("")
+    setPassword("")
+    setConfirmPassword("")
+  }
+
+
   const handleUsersEdit = async () => {
+
     try {
       let res = await axios.put(
         `http://localhost:8080/users/update/${user.userData._id}`,
-        name,email,password,confirmPassword
+
+        {
+          body: JSON.stringify({
+            name, email, password, confirmPassword
+          }),
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          }
+        }
+
       );
       console.log(res)
       toast.success(res?.msg);
       console.log("response: ", res);
-      if (addUser.email || addUser.password) {
+      if (email || password) {
         setUser({
           ...user,
           auth: false,
@@ -44,15 +55,14 @@ export default function UpdateUser() {
           token: null,
         });
         localStorage.clear();
-        window.location.replace('/');
-        toast.success(res.message);
-        console.log("response: ", res);
+        toast.success(res.msg);
+        window.location.replace('/')
       }
 
 
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong.");
+      toast.error(error.error);
     }
   };
 
@@ -65,6 +75,7 @@ export default function UpdateUser() {
         data-bs-keyboard="false"
         tabIndex="-1"
         aria-hidden="true"
+       
       >
         <div className="modal-dialog">
           <div className="modal-content">
@@ -87,12 +98,10 @@ export default function UpdateUser() {
                       <input
                         type="text"
                         className="form-control"
-                        value={addUser.name}
-                        onChange={(e) =>
-                          setName({
-                             name: e.target.value,
-                          })
-                        }
+                        value={name}
+                        name="name"
+                        id="name"
+                        onChange={(e) => setName(e.target.value)}
                       />
                       <label>Name:</label>
                       <span className="d-none">Error : Field Required</span>
@@ -101,12 +110,10 @@ export default function UpdateUser() {
                       <input
                         type="text"
                         className="form-control"
-                        value={addUser.email}
-                        onChange={(e) =>
-                          setEmail({
-                            email: e.target.value,
-                          })
-                        }
+                        name="email"
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                       />
                       <label>Email:</label>
                       <span className="d-none">Error : Field Required</span>
@@ -115,10 +122,10 @@ export default function UpdateUser() {
                       <input
                         type={passType?.first}
                         className="form-control"
+                        name="password"
+                        id="password"
                         value={password}
-                        onChange={(e) =>
-                          setPassword({ password: e.target.value })
-                        }
+                        onChange={(e) => setPassword(e.target.value)}
                         style={{ width: "90%" }}
                       />
                       {passType.first === "Password" ? (
@@ -143,10 +150,10 @@ export default function UpdateUser() {
                       <input
                         type={passType.second}
                         className="form-control"
+                        name="confirmPassword"
+                        id="confirmPassword"
                         value={confirmPassword}
-                        onChange={(e) =>
-                          setAddUser({ ...addUser, confirmPassword: e.target.value })
-                        }
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         style={{ width: "90%" }}
                       />
                       {passType.second === "Password" ? (
@@ -183,14 +190,8 @@ export default function UpdateUser() {
                 <button
                   type="button"
                   className="btn btn-secondary rounded-pill me-3"
-                  onClick={() =>
-                    setAddUser({
-                      ...addUser,
-                      name: "",
-                      email: "",
-                      password: "",
-                      confirmPassword: "",
-                    })
+                  onClick={(e) =>
+                    clearHandler(e.target.value)
                   }
                 >
                   Clear

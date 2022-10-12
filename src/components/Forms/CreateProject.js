@@ -7,7 +7,7 @@ import { ProjectContext } from "../contexts/ProjectContext";
 import axios from "axios";
 import { useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
-import {toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
 
 export default function CreateProject() {
@@ -135,9 +135,13 @@ export default function CreateProject() {
           formData
         );
 
-        if (res?.data?.status === "success") toast.success(res?.data?.msg)
-        else toast.error(res?.data?.msg);
-        
+        if (res?.data?.status === "success") {
+          toast.success(res?.data?.msg)
+          window.location.reload('/main')
+        }
+        else { toast.error(res?.data?.msg) };
+        console.log(res)
+
         setAttachment({ ...attachment, projectId: res?.data?.projectId });
 
         const info = await axios.post("http://localhost:8080/files/saveToDb", {
@@ -159,7 +163,7 @@ export default function CreateProject() {
       } catch (error) {
         console.log(error);
         toast.error("something went wrong.");
-      } finally{
+      } finally {
         setIsLoading(false);
         setIsDisabled(false);
       }
@@ -185,7 +189,7 @@ export default function CreateProject() {
       } catch (error) {
         toast("Something went wrong.");
         console.log(error.res);
-      }finally{
+      } finally {
         setIsLoading(false);
         setIsDisabled(false);
       }
@@ -232,10 +236,10 @@ export default function CreateProject() {
             </button>
             {isLoading && (
               <>
-              <div className="spinner-border text-primary" role="status">
-                <span className="sr-only"></span>
-              </div>
-              <span className="text-primary ms-2 mt-1">Please wait...</span>
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only"></span>
+                </div>
+                <span className="text-primary ms-2 mt-1">Please wait...</span>
               </>
             )}
             <button
