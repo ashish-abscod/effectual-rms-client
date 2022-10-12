@@ -177,14 +177,14 @@ export default function WriteComment() {
               </Link>
               {replyTo?.commentId}
               {replyTo?.commentId ? (
-                <h6 className="text-center d-inline text-primary fw-bold">
+                <h5 className="text-center d-inline text-primary fw-bold">
                   Replying to {replyTo?.userName} for comment on{" "}
                   <Moment format="DD/MM/YYYY HH:mm">{replyTo?.time}</Moment>
-                </h6>
+                </h5>
               ) : (
-                <h6 className="text-center d-inline text-primary fw-bold">
+                <h5 className="text-center d-inline text-primary fw-bold">
                   Writing Comment on Project - {projectId}
-                </h6>
+                </h5>
               )}
             </div>
 
