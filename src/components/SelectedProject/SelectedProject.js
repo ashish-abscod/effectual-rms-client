@@ -10,7 +10,7 @@ import { ToastContainer } from 'react-toastify';
 
 export default function SelectedProject() {
   const {projectId,setProjectId} = useContext(ProjectContext);
-  setProjectId(window?.localStorage?.getItem('projectId'))
+  if(!projectId) setProjectId(window?.localStorage?.getItem('projectId'));
 
   return (
     <>
