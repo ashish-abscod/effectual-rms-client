@@ -41,9 +41,6 @@ export default function CreateProject() {
     uploadedBy: user?.userData?.name,
   });
 
-  const selectedProjectId = window.localStorage.getItem('projectId');
-
-
   const getProject = async (projectId) => {
     try {
       const res = await axios.get(
