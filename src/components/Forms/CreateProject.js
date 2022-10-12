@@ -39,6 +39,7 @@ export default function CreateProject() {
     files: [],
     filesName: [],
     uploadedBy: user?.userData?.name,
+    role:user?.userData?.role
   });
 
   const selectedProjectId = window.localStorage.getItem('projectId');
@@ -147,6 +148,7 @@ export default function CreateProject() {
         const info = await axios.post("http://localhost:8080/files/saveToDb", {
           projectId: res?.data?.projectId,
           files: attachment?.files,
+          role: attachment?.role,
           filesName: attachment?.filesName,
           uploadedBy: attachment?.uploadedBy,
         });
@@ -162,7 +164,7 @@ export default function CreateProject() {
         );
       } catch (error) {
         console.log(error);
-        toast.error("something went wrong.");
+        toast.error(error.msg);
       } finally {
         setIsLoading(false);
         setIsDisabled(false);

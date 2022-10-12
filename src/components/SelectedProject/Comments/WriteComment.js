@@ -59,6 +59,7 @@ export default function WriteComment() {
     files: [],
     fileNames: [],
     uploadedBy: user?.userData?.name,
+    role: user?.userData?.role
   });
 
   const addData = async () => {
@@ -76,21 +77,23 @@ export default function WriteComment() {
           {
             projectId: projectId,
             commentId: response?.data?.commentId,
+            role:attachment?.role,
             files: attachment?.files,
             filesName: attachment?.fileNames,
             uploadedBy: attachment?.uploadedBy,
           }
         );
+        console.log( response?.data?.role)
         setIsLoading(false);
-        toast.success("you have added data successfully!");
+        toast.success(response.msg);
         window.location.replace('/project')
         console.log(response);
 
         console.log(info);
       } catch (error) {
         setIsLoading(false);
-        console.log("error: ", error.response);
-        toast("We are unable to add your data");
+        console.log(error);
+        toast.error(error);
       }
     } else if (replyTo?.commentId) {
       try {
@@ -103,15 +106,22 @@ export default function WriteComment() {
             projectId: projectId,
             replieId: response?.data?.replieId,
             files: attachment?.files,
+            role:attachment?.role,
             filesName: attachment?.fileNames,
             uploadedBy: attachment?.uploadedBy,
           }
         );
+        console.log( response?.data?.role)
+
+        setIsLoading(false);
+        toast.success(response.msg);
+        window.location.replace('/project')
         console.log(response);
-        console.log(replyTo?.commentId);
-        console.log(info);
+
       } catch (error) {
-        console.log("error: ", error);
+        setIsLoading(false);
+        console.log(error);
+        toast.error(error);
       }
     }
   };
