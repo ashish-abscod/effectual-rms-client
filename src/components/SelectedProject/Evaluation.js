@@ -14,7 +14,6 @@ export default function Evaluation() {
   const [isHistoryHovering, setIsHistoryHovering] = useState(false);
   const [isDataHovering, setIsDataHovering] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(projectId);
 
   if (!projectId) {
     setProjectId(window?.localStorage?.getItem('projectId'))
@@ -94,6 +93,7 @@ export default function Evaluation() {
 
   useEffect(() => {
     getEvaluationData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId]);
 
   const submitData = async () => {

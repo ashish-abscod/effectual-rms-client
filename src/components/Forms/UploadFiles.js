@@ -47,6 +47,7 @@ export default function UploadFiles({ formData, setFormData, attachment,fileName
     if (resource?.file !== "") {
       uploadFile();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resource]
   )
 

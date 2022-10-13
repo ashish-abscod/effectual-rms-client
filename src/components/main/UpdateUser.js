@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext} from "react";
 import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
 import { FaEyeSlash, FaEye } from "react-icons/fa";

@@ -9,7 +9,6 @@ export default function ManageUser() {
   const [status] = useState(true);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [search, setSearch] = useState("");
-  const [searchUser,setSearchUser] = useState([])
 
   const target = useRef(null);
 
@@ -20,19 +19,16 @@ export default function ManageUser() {
   const getUserData = async () => {
     await fetch("http://localhost:8080/users")
       .then((res) => res.json())
-      .then((data) => (setUserData(data),setFilteredUsers(data)));
+      .then((data) => {setUserData(data);setFilteredUsers(data)});
   };
 
 
   useEffect(() => {
-    console.log(search)
     const filters = userData.filter(user => JSON.stringify(user)
         .toLowerCase()
         .indexOf(search.toLowerCase()) !== -1);
-        console.log(filters)
-
     setFilteredUsers(filters);
-}, [search])
+}, [search,userData])
 
  
   const handleUsersDelete = async (id, name) => {

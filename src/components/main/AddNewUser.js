@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {toast } from "react-toastify";
+import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function AddNewUser() {
   const [addUser, setAddUser] = useState({
@@ -12,23 +13,36 @@ export default function AddNewUser() {
     role: "Patent Expert", //default value for role
     status: true
   });
-
+  const [error, setError] = useState({ name: "", email: "", password: "", confirmPassword: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const submitData = async () => {
-    try {
-      setIsLoading(true);
-      const response = await axios.post("http://localhost:8080/users", addUser);
-
-      console.log(response.data);
-      toast.success(response.data.msg);
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong.")
-    }finally{
-      setIsLoading(false);
+    if (error?.confirmPassword === "") {
+      try {
+        setIsLoading(true);
+        const response = await axios.post("http://localhost:8080/users", addUser);
+        if (response?.data?.status === "success") {
+          toast.success(response?.data?.msg);
+          navigate('/main')
+        } else toast.error(response?.data?.msg);
+      } catch (error) {
+        toast.error("Something went wrong.")
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
+
+  useEffect(() => {
+    if (addUser?.password !== addUser?.confirmPassword) {
+      setError({ ...error, confirmPassword: "Both Password must be match!" });
+    } else {
+      setError({ ...error, confirmPassword: "" });
+    }
+  }, [addUser, error]);
+
+
   return (
     <>
       <div
@@ -63,6 +77,8 @@ export default function AddNewUser() {
                       <input
                         type="text"
                         className="form-control"
+                        id="name"
+                        name="name"
                         required
                         value={addUser.name}
                         onChange={(e) =>
@@ -70,7 +86,7 @@ export default function AddNewUser() {
                         }
                       />
                       <label>Name:</label>
-                      <span className="d-none">Error : Field Required</span>
+                      <span className="d-none text-danger mt-2"></span>
                     </div>
                     <div className="input-field">
                       <input
@@ -107,13 +123,14 @@ export default function AddNewUser() {
                         onChange={(e) =>
                           setAddUser({
                             ...addUser,
-                            confirmPassword: setAddUser({ ...addUser, password: e.target.value }),
+                            confirmPassword: e.target.value
                           })
                         }
                       />
                       <label>Confirm Password:</label>
                       <span className="d-none">Error : Field Required</span>
                     </div>
+                    <span className='text-danger mt-2 d-block'>{error?.confirmPassword}</span>
 
                     <div className="input-field">
                       <select className="form-select"
@@ -129,7 +146,7 @@ export default function AddNewUser() {
                         }}
                       >
                         <option value="Manager">Manager</option>
-                        <option value="Patent Expert" selected={true}>Patent Expert</option>
+                        <option value="Patent Expert">Patent Expert</option>
                         <option value="Searcher">Searcher</option>
                         <option value="Client Admin">Client Admin</option>
                         <option value="Effectual Admin">Effectual Admin</option>
@@ -177,10 +194,10 @@ export default function AddNewUser() {
                 >
                   Add User
                   {isLoading && (
-                                    <div className="spinner-border" role="status">
-                                        <span className="sr-only"></span>
-                                    </div>
-                   )}
+                    <div className="spinner-border" role="status">
+                      <span className="sr-only"></span>
+                    </div>
+                  )}
                 </button>
               </div>
             </div>

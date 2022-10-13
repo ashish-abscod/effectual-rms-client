@@ -1,6 +1,7 @@
 import React from 'react'
 import logo from '../../Assets/img/effectual-logo.png'
-import {BiChevronRight} from 'react-icons/bi'
+
+
 export default function Footer() {
   return (
     <>

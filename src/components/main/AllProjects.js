@@ -12,26 +12,28 @@ export default function AllProjects() {
     const [projects, setProjects] = useState([]);
     const [filteredProjects, setFilteredProjects] = useState([]);
     const [selectedProjects, setSelectedProjects] = useState([]);
-    const { setProjectId , projectId} = useContext(ProjectContext);
+    const { setProjectId } = useContext(ProjectContext);
     const [loading, setLoading] = useState(false);
     const location = useLocation();
 
-    
+
     //setProjectId null when user press back button to main panel, 
     // which helps to create new project instead to update selected project.
-    if(location.pathname === "/main") {setProjectId(null);}; 
-    
+    useEffect(() => {
+        if (location.pathname === "/main") { setProjectId(null); };
+    }, [location.pathname, setProjectId]);
+
     // settingProject id in state as well as local storage so that we can persist our 
     // state after refreshing in selected project components 
     const navigate = useNavigate();
-    const setProjectIdHandler = (projectId) =>{
+    const setProjectIdHandler = (projectId) => {
         setProjectId(projectId);
-        window.localStorage.setItem('projectId',`${projectId}`);
+        window.localStorage.setItem('projectId', `${projectId}`);
         navigate('/project');
     }
-    
 
-    
+
+
     //fetching data from endpoint
     const getProjects = async () => {
         try {
@@ -51,7 +53,7 @@ export default function AllProjects() {
         getProjects();
     }, []);
 
-    
+
     //multiple fields search based on search key
     useEffect(() => {
         const filters = projects.filter(project => JSON.stringify(project)
@@ -61,7 +63,7 @@ export default function AllProjects() {
         setFilteredProjects(filters);
     }, [projects, search]);
 
-    
+
 
 
     const columns = [
@@ -113,10 +115,10 @@ export default function AllProjects() {
         {
             when: row => row?.status?.includes("2"),
             style: {
-              backgroundColor: '#04ff1857',
-              color: 'black'
+                backgroundColor: '#04ff1857',
+                color: 'black'
             },
-          }
+        }
     ]
 
     return (
@@ -130,14 +132,13 @@ export default function AllProjects() {
                     conditionalRowStyles={conditionalRowStyles}
                     progressComponent={
                         <div className='d-flex align-items-center p-5'>
-                        <div className="spinner-border text-primary" style={{width: "3rem",height: "3rem"}} role="status">
-                            <span className="sr-only mt-5"></span>
-                        </div>
-                        <h5 className='color text-secondary ms-3'>Loading Projects...</h5>
+                            <div className="spinner-border text-primary" style={{ width: "3rem", height: "3rem" }} role="status">
+                                <span className="sr-only mt-5"></span>
+                            </div>
+                            <h5 className='color text-secondary ms-3'>Loading Projects...</h5>
                         </div>
                     }
                 />
-
             </div>
         </>
     )

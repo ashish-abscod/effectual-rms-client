@@ -7,18 +7,24 @@ import axios from "axios";
 import { UserContext } from "../../contexts/UserContext";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
-import {toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
-
+import { useEffect } from "react";
+import { BsCheckCircleFill } from "react-icons/bs";
+import {useNavigate} from 'react-router-dom';
 
 export default function WriteComment() {
   const { user } = useContext(UserContext);
-  let { projectId, replyTo } = useContext(ProjectContext);
+  let { projectId, replyTo, setProjectId } = useContext(ProjectContext);
   const [isDisabled, setDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [chooseFile, setChooseFile] = useState({ file: "" });
-  const [file, setFile] = useState();
-  const [fileName, setFileName] = useState("");
+  const [resource, setChooseFile] = useState({ file: "" });
+  const [selectedFile, setSelectedFile] = useState('');
+  const [fileNames, setFileNames] = useState([]);
+  if(!projectId) setProjectId(window?.localStorage?.getItem('projectId'));
+
+  const navigate = useNavigate();
+
   const getFormatedToday = () => {
     var date = new Date();
     var str =
@@ -36,8 +42,8 @@ export default function WriteComment() {
     return str;
   };
 
-
-
+  
+  
   const [body, setBody] = useState({
     projectId: projectId,
     commentId: replyTo?.commentId,
@@ -47,7 +53,7 @@ export default function WriteComment() {
     userRole: user?.userData?.role,
   });
 
-  const [attachment, setAttachment] = useState({
+  const [attachment] = useState({
     files: [],
     fileNames: [],
     uploadedBy: user?.userData?.name,
@@ -56,112 +62,125 @@ export default function WriteComment() {
   const addData = async () => {
     setDisabled(true);
     if (!replyTo?.commentId) {
-    setIsLoading(true);
+      setIsLoading(true);
       try {
         const response = await axios.post(
           "http://localhost:8080/comment",
           body
-        );
+          );
 
-        const info = await axios.post(
+        await axios.post(
           "http://localhost:8080/commentFiles/saveToDb",
           {
             projectId: projectId,
             commentId: response?.data?.commentId,
             files: attachment?.files,
-            fileNames: attachment?.fileNames,
+            filesName: attachment?.fileNames,
             uploadedBy: attachment?.uploadedBy,
           }
         );
         setIsLoading(false);
-        toast("you have added data successfully!");
-        console.log(response);
-
-        console.log(info);
+        if(response?.data?.status === "success"){
+          toast.success(response?.data?.msg);
+          navigate("/project");
+        }
       } catch (error) {
         setIsLoading(false);
-      console.log("error: ", error.response);
-      toast("We are unable to add your data");
+        toast.error("Something went wrong.");
       }
     } else if (replyTo?.commentId) {
       try {
         const response = await axios.post("http://localhost:8080/replie", body);
-        console.log(response);
 
-        const info = await axios.post(
+        await axios.post(
           "http://localhost:8080/replyFiles/saveToDb",
           {
             projectId: projectId,
             replieId: response?.data?.replieId,
             files: attachment?.files,
-            fileNames: attachment?.fileNames,
+            filesName: attachment?.fileNames,
             uploadedBy: attachment?.uploadedBy,
           }
         );
-        console.log(response);
-        console.log(replyTo?.commentId);
-        console.log(info);
+        if(response?.data?.status === "success"){
+          toast.success(response?.data?.msg);
+          navigate("/project");
+        }
       } catch (error) {
-        console.log("error: ", error);
+        toast.error("Something went wrong.");
       }
     }
   };
 
-  const uploaadSingleFile = async (e) => {
+  const uploadSingleFile = (e) => {
     if (e.target.files[0]) {
-      //   console.log("e.target.files[0]: ", e.target.files[0]);
+      setSelectedFile(e.target.files[0].name);
       const reader = new FileReader();
-      setFile(URL.createObjectURL(e.target.files[0]));
       reader.readAsDataURL(e.target.files[0]);
       reader.onloadend = () => {
-        // console.log("reader.result: ", reader.result);
-        setChooseFile({ ...chooseFile, file: reader.result });
-        setFileName(e.target.files[0].name);
-        setFile(reader.result);
+        setChooseFile({ ...resource, file: reader.result });
       };
     }
   };
 
-
+  
+  
   const uploadFile = async (e) => {
     if (!replyTo?.commentId) {
       setIsLoading(true);
       try {
-        const response = await axios.post(
+        const result = await axios.post(
           "http://localhost:8080/commentFiles",
-          chooseFile
-        );
-        console.log(response?.data)
-        attachment.files.push(response.data.data);
-        attachment.fileNames.push(fileName)
-        setIsLoading(false);
-        toast.success("your file uploadation is successfull!");
+          resource
+          );
+          attachment.files.push(result?.data?.url);
+        if (result?.data?.status === "success") {
+          toast.success(result?.data?.msg);
+          setFileNames([...fileNames, selectedFile]);
+        }
+        else {
+          toast.error(result?.data?.msg);
+        }
       } catch (error) {
-      setIsLoading(false);
-      console.log("error: ", error.response);
-      toast("your file uploadation is unsuccessfull");
+        toast.error("Something went wrong.")
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+        setChooseFile({ ...resource, file: "" })
       }
     } else if (replyTo?.commentId) {
       setIsLoading(true);
       try {
-        const response = await axios.post(
+        const result = await axios.post(
           "http://localhost:8080/replyFiles",
-          chooseFile
-        );
-        
-        attachment.files.push(response.data.data);
-        attachment.fileNames.push(fileName)
+          resource
+          );
+          attachment.files.push(result?.data?.url);
+          if (result?.data?.status === "success") {
+            toast.success(result?.data?.msg);
+            setFileNames([...fileNames, selectedFile]);
+          }
+          else {
+            toast.error(result?.data?.msg);
+          }
+        } catch (error) {
+          toast.error("Something went wrong.")
+        console.log(error);
+      } finally {
         setIsLoading(false);
-        toast.success("your file uploadation is successfull!");
-      } catch (error) {
-        setIsLoading(false);
-        console.log("error: ", error.response);
-        toast.error("your file uploadation is unsuccessfull");
+        setChooseFile({ ...resource, file: "" })
       }
     }
   };
-
-  console.log(attachment?.fileNames)
+  
+  useEffect(() => {
+    if (resource?.file !== "") {
+      uploadFile();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resource]
+  )
+  
   return (
     <>
       <Header />
@@ -175,7 +194,6 @@ export default function WriteComment() {
               >
                 Back
               </Link>
-              {replyTo?.commentId}
               {replyTo?.commentId ? (
                 <h5 className="text-center d-inline text-primary fw-bold">
                   Replying to {replyTo?.userName} for comment on{" "}
@@ -190,34 +208,45 @@ export default function WriteComment() {
 
             <RichTextEditor setBody={setBody} body={body} />
 
-              <button
-                type="button"
-                disabled={isDisabled}
-                className="btn bg-success rounded-pill text-white px-2 mt-3 float-end"
-                onClick={addData}
-              >
-                <i className="bi bi-plus-circle me-1"></i>Add Comment
-              </button>
+            <button
+              type="button"
+              disabled={isDisabled}
+              className="btn bg-success rounded-pill text-white px-2 mt-3 float-end"
+              onClick={addData}
+            >
+              <i className="bi bi-plus-circle me-1"></i>Add Comment
+            </button>
           </div>
 
-          <div className="col-4 pt-3 bg-light border-2" style={{marginTop:"5vh",height:"68vh"}}>
+          <div className="col-4 pt-3 bg-light border-2" style={{ marginTop: "5vh", height: "68vh" }}>
             <div className="d-flex justify-content-center pb-2">
-              <input type="file" name="file" onChange={uploaadSingleFile} />
-
-              <button
-                type="button"
-                disabled={isDisabled}
-                className="btn theme-bg rounded-pill text-white px-2 "
-                onClick={uploadFile}
-              >
-                Upload Fille
+              <label className="text-primary fw-bold d-flex align-items-center">
+                Upload File:
                 {isLoading && (
-                    <div className="spinner-border">
+                  <>
+                    <div className="spinner-border text-secondary ms-3 me-2" role="status">
                       <span className="sr-only"></span>
                     </div>
-                  )}
-              </button>
+                    <span className="text-secondary">Uploading...</span>
+                  </>
+                )}
+              </label>
+              <input
+                type="file"
+                className="form-control mt-2"
+                onChange={(e) => uploadSingleFile(e)}
+              />
+
             </div>
+            <div className="mt-3 overflow-auto" style={{ maxHeight: "50vh" }}>
+              {
+                fileNames?.map((fileName, i) =>
+                  <li key={i} className="text-success list-unstyled d-flex text-truncate" 
+                  style={{ maxWidth: "20rem" }}><BsCheckCircleFill color="green" /> <span className="">{fileName}</span></li>
+                )
+              }
+            </div>
+
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import profile from "../../Assets/Effectual.jpg";
+import userProfile from "../../Assets/img/userProfile.png";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import UpdateUser from "./UpdateUser";
@@ -27,7 +27,7 @@ export default function Header() {
             aria-label="Toggle navigation"
           >
             <img
-              src={profile}
+              src={userProfile}
               style={{ width: "2em", height: "2em" }}
               title="Profile"
               alt="Profile"
@@ -76,7 +76,7 @@ export default function Header() {
                 aria-expanded="false"
               >
                 <img
-                  src={profile}
+                  src={userProfile}
                   style={{ width: "2em", height: "2em" }}
                   title="Profile"
                   alt="Profile"
