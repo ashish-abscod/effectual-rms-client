@@ -65,12 +65,12 @@ export default function WriteComment() {
       setIsLoading(true);
       try {
         const response = await axios.post(
-          "http://localhost:8080/comment",
+          `${process.env.REACT_APP_API_URL}/comment`,
           body
           );
 
         await axios.post(
-          "http://localhost:8080/commentFiles/saveToDb",
+          `${process.env.REACT_APP_API_URL}/commentFiles/saveToDb`,
           {
             projectId: projectId,
             commentId: response?.data?.commentId,
@@ -90,10 +90,10 @@ export default function WriteComment() {
       }
     } else if (replyTo?.commentId) {
       try {
-        const response = await axios.post("http://localhost:8080/replie", body);
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/replie`, body);
 
         await axios.post(
-          "http://localhost:8080/replyFiles/saveToDb",
+          `${process.env.REACT_APP_API_URL}/replyFiles/saveToDb`,
           {
             projectId: projectId,
             replieId: response?.data?.replieId,
@@ -130,7 +130,7 @@ export default function WriteComment() {
       setIsLoading(true);
       try {
         const result = await axios.post(
-          "http://localhost:8080/commentFiles",
+          `${process.env.REACT_APP_API_URL}/commentFiles`,
           resource
           );
           attachment.files.push(result?.data?.url);
@@ -152,7 +152,7 @@ export default function WriteComment() {
       setIsLoading(true);
       try {
         const result = await axios.post(
-          "http://localhost:8080/replyFiles",
+          `${process.env.REACT_APP_API_URL}/replyFiles`,
           resource
           );
           attachment.files.push(result?.data?.url);

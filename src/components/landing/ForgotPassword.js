@@ -12,7 +12,7 @@ export default function ForgotPassword() {
             setIsDisabled(true);
             setInProgress(true);
             const res = await axios.post(
-                "http://localhost:8080/password/reset_request/",
+                `${process.env.REACT_APP_API_URL}/password/reset_request/`,
                 { email: email }
             );
             setData(res?.data);

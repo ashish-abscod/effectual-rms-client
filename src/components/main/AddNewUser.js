@@ -21,7 +21,7 @@ export default function AddNewUser() {
     if (error?.confirmPassword === "") {
       try {
         setIsLoading(true);
-        const response = await axios.post("http://localhost:8080/users", addUser);
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/users`, addUser);
         if (response?.data?.status === "success") {
           toast.success(response?.data?.msg);
           navigate('/main')

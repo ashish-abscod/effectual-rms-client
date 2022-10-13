@@ -21,7 +21,7 @@ export default function Feedback() {
   const submitData = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8080/feedback/",
+        `${process.env.REACT_APP_API_URL}/feedback/`,
         addFeedback
       );
       if(res?.data?.status === "success"){

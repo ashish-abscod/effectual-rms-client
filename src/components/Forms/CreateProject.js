@@ -129,7 +129,7 @@ export default function CreateProject() {
       setIsDisabled(true);
       try {
         const res = await axios.post(
-          "http://localhost:8080/projects/create",
+          `${process.env.REACT_APP_API_URL}/projects/create`,
           formData
         );
 
@@ -138,7 +138,7 @@ export default function CreateProject() {
         
         setAttachment({ ...attachment, projectId: res?.data?.projectId });
 
-        await axios.post("http://localhost:8080/files/saveToDb", {
+        await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
           projectId: res?.data?.projectId,
           files: attachment?.files,
           filesName: attachment?.filesName,
@@ -146,7 +146,7 @@ export default function CreateProject() {
         });
 
         await axios.post(
-          "http://localhost:8080/assigned/createUser",
+          `${process.env.REACT_APP_API_URL}/assigned/createUser`,
           {
             userId: formData?.assignedUsers,
             projectId: res?.data?.projectId,
@@ -169,12 +169,12 @@ export default function CreateProject() {
         setIsLoading(true);
         setIsDisabled(true);
         const res = await axios.put(
-          `http://localhost:8080/projects/update/${projectId}`,
+          `${process.env.REACT_APP_API_URL}/projects/update/${projectId}`,
           formData
         );
 
         await axios.post(
-          `http://localhost:8080/assigned/updateUser/${projectId}`,
+          `${process.env.REACT_APP_API_URL}/assigned/updateUser/${projectId}`,
           formData?.assignedUsers
         );
         // clear assignedUsers from formdata after updation complete

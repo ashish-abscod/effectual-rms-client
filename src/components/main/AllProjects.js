@@ -38,7 +38,7 @@ export default function AllProjects() {
     const getProjects = async () => {
         try {
             setLoading(true);
-            const response = await axios.get("http://localhost:8080/projects");
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/projects`);
             setProjects(response.data);
             setFilteredProjects(response.data);
         } catch (error) {

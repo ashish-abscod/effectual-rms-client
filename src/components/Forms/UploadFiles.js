@@ -25,7 +25,7 @@ export default function UploadFiles({ formData, setFormData, attachment,fileName
   const uploadFile = async () => {
     setIsLoading(true);
     try {
-      const result = await axios.post("http://localhost:8080/files", resource);
+      const result = await axios.post(`${process.env.REACT_APP_API_URL}/files`, resource);
       attachment.files.push(result?.data?.url);
       if (result?.data?.status === "success") {
         toast.success(result?.data?.msg);

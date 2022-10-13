@@ -17,7 +17,7 @@ export default function ManageUser() {
   }, []);
 
   const getUserData = async () => {
-    await fetch("http://localhost:8080/users")
+    await fetch(`${process.env.REACT_APP_API_URL}/users`)
       .then((res) => res.json())
       .then((data) => {setUserData(data);setFilteredUsers(data)});
   };
