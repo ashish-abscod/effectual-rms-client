@@ -77,6 +77,7 @@ export default function CreateProject() {
   //getting project based on id
   useEffect(() => {
     getProject(projectId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId]);
 
   const FormTitles = [
@@ -137,14 +138,14 @@ export default function CreateProject() {
         
         setAttachment({ ...attachment, projectId: res?.data?.projectId });
 
-        const info = await axios.post("http://localhost:8080/files/saveToDb", {
+        await axios.post("http://localhost:8080/files/saveToDb", {
           projectId: res?.data?.projectId,
           files: attachment?.files,
           filesName: attachment?.filesName,
           uploadedBy: attachment?.uploadedBy,
         });
 
-        let data = await axios.post(
+        await axios.post(
           "http://localhost:8080/assigned/createUser",
           {
             userId: formData?.assignedUsers,
@@ -172,7 +173,7 @@ export default function CreateProject() {
           formData
         );
 
-        const resp = await axios.post(
+        await axios.post(
           `http://localhost:8080/assigned/updateUser/${projectId}`,
           formData?.assignedUsers
         );
