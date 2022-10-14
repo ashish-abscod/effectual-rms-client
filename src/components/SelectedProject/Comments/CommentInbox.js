@@ -25,7 +25,7 @@ export default function CommentInbox() {
                 setData(response.data);
             } catch (error) {
                 console.log(error);
-            }finally{
+            } finally {
                 setLoading(false);
             }
         }
@@ -38,7 +38,7 @@ export default function CommentInbox() {
         <>
             <h5 className='theme3-color fw-bold d-inline-block ms-3 mt-2'>Discussion Inbox</h5>
             <Link to={"/comment"} className="btn btn-sm btn-primary my-1 py-2 px-4 float-end me-3 fw-bold" onClick={() => setReplyTo(null)}> <BiCommentDetail className="fs-5 fw-bold" /> Add Comment </Link>
-            <section className='container commentInbox h-100 overflow-auto'>
+            <section className='container commentInbox overflow-auto' style={{height:"73vh"}}>
 
 
                 {data?.map((items, i) =>
@@ -47,7 +47,7 @@ export default function CommentInbox() {
                         <div className='parent-profile-info' style={{ fontSize: "14px", left: "4em" }}>
                             <span className='name text-primary fw-bold'>{items?.userName} </span>
                             <span className='designation text-secondary fw-bold'>({items?.userRole})</span>
-                            <span className='fw-normal'>: <Moment format='DD-MMM-YYYY hh:mm a' className='fw-bold'>{items?.time}</Moment> </span>
+                            <span className='fw-normal'>: <Moment format='DD-MMM-YYYY HH:mm a' className='fw-bold'>{items?.time}</Moment></span>
                             <button type="button" className='btn btn-outline-primary rounded-pill ps-1 pe-2 py-1 float-end' onClick={() => { setReplyTo({ userName: items.userName, time: items.time, commentId: items.commentId }); navigate('/comment') }}><BsReplyAllFill className='fs-4 pb-1' /> Reply</button>
                         </div>
 
@@ -58,10 +58,10 @@ export default function CommentInbox() {
                                     </div>
                                     <div className='comment-footer row justify-content-between align-items-center mb-2'>
                                         <div className='files mt-3 col-lg-10'>
-                                            <span className='fw-bold'>Attached Files: </span>
+                                            {items?.attachments?.[0]?.files.length > 0 ? <span className='fw-bold'>Attached Files: </span> : ""}
                                             {
                                                 items?.attachments?.[0]?.files?.map((item, i) =>
-                                                    <a href={item} className="me-3">Document {i + 1}</a>
+                                                    <a href={item} className="me-3" key={i}>Document {i + 1}</a>
                                                 )
                                             }
                                         </div>
@@ -84,7 +84,9 @@ export default function CommentInbox() {
                                                 <div className='replie-txt mt-2' dangerouslySetInnerHTML={{ __html: item?.replie }}>
                                                 </div>
                                                 <div className='files mt-3'>
-                                                    <span className='fw-bold'>Attached Files: </span>
+                                                    {item?.attachments?.[0]?.files.length > 0 ?
+                                                        <span className='fw-bold'>Attached Files: </span> : ""
+                                                    }
                                                     {
                                                         item?.attachments?.[0]?.files?.map((url, i) =>
                                                             <a href={url} className="me-3" key={i}>Document {i + 1}</a>
@@ -100,11 +102,11 @@ export default function CommentInbox() {
                     </div>
                 )}
                 {loading ? <div className='d-flex align-items-center justify-content-center p-5'>
-                        <div className="spinner-border text-primary" style={{width: "3rem",height: "3rem"}} role="status">
-                            <span className="sr-only mt-5"></span>
-                        </div>
-                        <h5 className='color text-secondary ms-3'>Loading Comments...</h5>
-                        </div> : ""}
+                    <div className="spinner-border text-primary" style={{ width: "3rem", height: "3rem" }} role="status">
+                        <span className="sr-only mt-5"></span>
+                    </div>
+                    <h5 className='color text-secondary ms-3'>Loading Comments...</h5>
+                </div> : ""}
                 {data?.length === 0 ? <h5 className='text-danger text-center mt-5'>No Comments and Replies</h5> : ""}
             </section>
         </>
