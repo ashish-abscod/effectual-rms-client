@@ -4,10 +4,14 @@ import { useState } from "react";
 import { ProjectContext } from "../contexts/ProjectContext";
 import { UserContext } from "../contexts/UserContext";
 import { useContext } from "react";
+import { toast } from "react-toastify";
 
 export default function Feedback() {
-  const { projectId } = useContext(ProjectContext);
+  const { projectId,setProjectId } = useContext(ProjectContext);
   const { user } = useContext(UserContext);
+  if (!projectId) {
+    setProjectId(window?.localStorage?.getItem('projectId'))
+  }
   const [addFeedback, setAddFeedback] = useState({
     feedback: "",
     projectId: projectId,
@@ -16,15 +20,19 @@ export default function Feedback() {
 
   const submitData = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:8080/feedback/",
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/feedback/`,
         addFeedback
       );
+      if(res?.data?.status === "success"){
+        toast.success(res?.data?.msg);
+      }else{
+        toast.error(res?.data?.msg);
+      }
 
-      console.log("addresponse: ", response);
-      console.log(addFeedback);
     } catch (error) {
-      console.log("error: ", error);
+      toast.error("Something went wrong.");
+      console.log(error);
     }
   };
   return (
@@ -33,7 +41,7 @@ export default function Feedback() {
         <div className="row">
           <div className="col-12 mt-3">
             <textarea
-              rows="18"
+              rows="15"
               className="w-100 border border-primary rounded p-3"
               placeholder="Please provide your valuable feedback..."
               value={addFeedback.name}
@@ -46,9 +54,9 @@ export default function Feedback() {
             <button
               type="submit"
               className="btn btn-lg btn-outline-success rounded-pill"
-              onClick={submitData}
+              onClick={()=>submitData()}
             >
-              Submit
+              Send Feedback
             </button>
           </div>
         </div>

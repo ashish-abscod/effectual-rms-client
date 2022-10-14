@@ -25,7 +25,7 @@ export default function UploadFiles({ formData, setFormData, attachment,fileName
   const uploadFile = async () => {
     setIsLoading(true);
     try {
-      const result = await axios.post("http://localhost:8080/files", resource);
+      const result = await axios.post(`${process.env.REACT_APP_API_URL}/files`, resource);
       attachment.files.push(result?.data?.url);
       if (result?.data?.status === "success") {
         toast.success(result?.data?.msg);
@@ -47,6 +47,7 @@ export default function UploadFiles({ formData, setFormData, attachment,fileName
     if (resource?.file !== "") {
       uploadFile();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resource]
   )
 
@@ -75,7 +76,7 @@ export default function UploadFiles({ formData, setFormData, attachment,fileName
             <div className="mt-3 overflow-auto" style={{maxHeight:"50vh"}}>
               {
                 fileNames?.map((fileName, i) =>
-                  <li key={i} className="text-success list-unstyled d-flex text-truncate" style={{maxWidth:"20rem"}}><BsCheckCircleFill color="green"/> <span className="">{fileName}</span></li>
+                  <li key={i} className="text-success list-unstyled d-inline-block text-truncate" style={{maxWidth:"20rem"}}><BsCheckCircleFill color="green"/> <span className="">{fileName}</span></li>
                 )
               }
             </div>

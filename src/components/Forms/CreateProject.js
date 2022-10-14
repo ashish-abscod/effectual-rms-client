@@ -7,7 +7,7 @@ import { ProjectContext } from "../contexts/ProjectContext";
 import axios from "axios";
 import { useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { toast } from "react-toastify";
+import {toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
 
 export default function CreateProject() {
@@ -39,11 +39,7 @@ export default function CreateProject() {
     files: [],
     filesName: [],
     uploadedBy: user?.userData?.name,
-    role:user?.userData?.role
   });
-
-  const selectedProjectId = window.localStorage.getItem('projectId');
-
 
   const getProject = async (projectId) => {
     try {
@@ -81,6 +77,7 @@ export default function CreateProject() {
   //getting project based on id
   useEffect(() => {
     getProject(projectId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId]);
 
   const FormTitles = [
@@ -115,7 +112,7 @@ export default function CreateProject() {
         break;
       case 3:
         returnvalue = (
-          <ReviewInformation formData={formData} setFormData={setFormData} />
+          <ReviewInformation formData={formData} fileNames={fileNames} />
         );
         break;
       default:
@@ -132,30 +129,24 @@ export default function CreateProject() {
       setIsDisabled(true);
       try {
         const res = await axios.post(
-          "http://localhost:8080/projects/create",
+          `${process.env.REACT_APP_API_URL}/projects/create`,
           formData
         );
 
-        if (res?.data?.status === "success") {
-          toast.success(res?.data?.msg)
-          window.location.reload('/main')
-        }
-        else { toast.error(res?.data?.msg) };
-        console.log(res)
-
+        if (res?.data?.status === "success") toast.success(res?.data?.msg)
+        else toast.error(res?.data?.msg);
+        
         setAttachment({ ...attachment, projectId: res?.data?.projectId });
 
-        const info = await axios.post("http://localhost:8080/files/saveToDb", {
+        await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
           projectId: res?.data?.projectId,
           files: attachment?.files,
-          role: attachment?.role,
           filesName: attachment?.filesName,
           uploadedBy: attachment?.uploadedBy,
         });
-        // console.log(info);
 
-        let data = await axios.post(
-          "http://localhost:8080/assigned/createUser",
+        await axios.post(
+          `${process.env.REACT_APP_API_URL}/assigned/createUser`,
           {
             userId: formData?.assignedUsers,
             projectId: res?.data?.projectId,
@@ -164,46 +155,38 @@ export default function CreateProject() {
         );
       } catch (error) {
         console.log(error);
-        toast.error(error.msg);
-      } finally {
+        toast.error("something went wrong.");
+      } finally{
         setIsLoading(false);
         setIsDisabled(false);
+        //clear FormData Completely after creating project
+        // setFormData(null);
+        setFileNames([]);
       }
 
-      //clear FormData Completely after creating project
-      setFormData(null);
     } else if (projectId !== null) {
       try {
         setIsLoading(true);
         setIsDisabled(true);
         const res = await axios.put(
-          `http://localhost:8080/projects/update/${projectId}`,
+          `${process.env.REACT_APP_API_URL}/projects/update/${projectId}`,
           formData
         );
-        console.log(res?.data)
 
-        const resp = await axios.post(
-          `http://localhost:8080/assigned/updateUser/${projectId}`,
+        await axios.post(
+          `${process.env.REACT_APP_API_URL}/assigned/updateUser/${projectId}`,
           formData?.assignedUsers
         );
-
-        const info = await axios.post("http://localhost:8080/files/saveToDb", {
-          projectId: res?.data?.result?.projectId,
-          files: attachment?.files,
-          role: attachment?.role,
-          filesName: attachment?.filesName,
-          uploadedBy: attachment?.uploadedBy,
-        });
-
         // clear assignedUsers from formdata after updation complete
         setFormData({ ...formData, assignedUsers: [] });
         toast.success(res?.data?.msg);
       } catch (error) {
         toast("Something went wrong.");
         console.log(error.res);
-      } finally {
+      }finally{
         setIsLoading(false);
         setIsDisabled(false);
+        setFileNames([]);
       }
     }
   };
@@ -248,10 +231,10 @@ export default function CreateProject() {
             </button>
             {isLoading && (
               <>
-                <div className="spinner-border text-primary" role="status">
-                  <span className="sr-only"></span>
-                </div>
-                <span className="text-primary ms-2 mt-1">Please wait...</span>
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only"></span>
+              </div>
+              <span className="text-primary ms-2 mt-1">Please wait...</span>
               </>
             )}
             <button

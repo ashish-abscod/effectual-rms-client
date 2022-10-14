@@ -30,7 +30,7 @@ function App() {
         token: JSON.parse(localStorage.getItem("token")),
       });
     }
-  }, []);
+  }, [user]);
 
   return (
     <BrowserRouter>

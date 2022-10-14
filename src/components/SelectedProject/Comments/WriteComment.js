@@ -11,15 +11,19 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
 import { useEffect } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
+import {useNavigate} from 'react-router-dom';
 
 export default function WriteComment() {
   const { user } = useContext(UserContext);
-  let { projectId, replyTo } = useContext(ProjectContext);
+  let { projectId, replyTo, setProjectId } = useContext(ProjectContext);
   const [isDisabled, setDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [resource, setChooseFile] = useState({ file: "" });
   const [selectedFile, setSelectedFile] = useState('');
   const [fileNames, setFileNames] = useState([]);
+  if(!projectId) setProjectId(window?.localStorage?.getItem('projectId'));
+
+  const navigate = useNavigate();
 
   const getFormatedToday = () => {
     var date = new Date();
@@ -38,14 +42,8 @@ export default function WriteComment() {
     return str;
   };
 
-  useEffect(() => {
-    if (resource?.file !== "") {
-      uploadFile();
-    }
-  }, [resource]
-  )
-
-
+  
+  
   const [body, setBody] = useState({
     projectId: projectId,
     commentId: replyTo?.commentId,
@@ -55,7 +53,7 @@ export default function WriteComment() {
     userRole: user?.userData?.role,
   });
 
-  const [attachment, setAttachment] = useState({
+  const [attachment] = useState({
     files: [],
     fileNames: [],
     uploadedBy: user?.userData?.name,
@@ -68,12 +66,12 @@ export default function WriteComment() {
       setIsLoading(true);
       try {
         const response = await axios.post(
-          "http://localhost:8080/comment",
+          `${process.env.REACT_APP_API_URL}/comment`,
           body
-        );
+          );
 
-        const info = await axios.post(
-          "http://localhost:8080/commentFiles/saveToDb",
+        await axios.post(
+          `${process.env.REACT_APP_API_URL}/commentFiles/saveToDb`,
           {
             projectId: projectId,
             commentId: response?.data?.commentId,
@@ -85,23 +83,20 @@ export default function WriteComment() {
         );
         console.log( response?.data?.role)
         setIsLoading(false);
-        toast.success(response.msg);
-        window.location.replace('/project')
-        console.log(response);
-
-        console.log(info);
+        if(response?.data?.status === "success"){
+          toast.success(response?.data?.msg);
+          navigate("/project");
+        }
       } catch (error) {
         setIsLoading(false);
-        console.log(error);
-        toast.error(error);
+        toast.error("Something went wrong.");
       }
     } else if (replyTo?.commentId) {
       try {
-        const response = await axios.post("http://localhost:8080/replie", body);
-        console.log(response);
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/replie`, body);
 
-        const info = await axios.post(
-          "http://localhost:8080/replyFiles/saveToDb",
+        await axios.post(
+          `${process.env.REACT_APP_API_URL}/replyFiles/saveToDb`,
           {
             projectId: projectId,
             replieId: response?.data?.replieId,
@@ -111,17 +106,12 @@ export default function WriteComment() {
             uploadedBy: attachment?.uploadedBy,
           }
         );
-        console.log( response?.data?.role)
-
-        setIsLoading(false);
-        toast.success(response.msg);
-        window.location.replace('/project')
-        console.log(response);
-
+        if(response?.data?.status === "success"){
+          toast.success(response?.data?.msg);
+          navigate("/project");
+        }
       } catch (error) {
-        setIsLoading(false);
-        console.log(error);
-        toast.error(error);
+        toast.error("Something went wrong.");
       }
     }
   };
@@ -137,17 +127,17 @@ export default function WriteComment() {
     }
   };
 
-
-
+  
+  
   const uploadFile = async (e) => {
     if (!replyTo?.commentId) {
       setIsLoading(true);
       try {
         const result = await axios.post(
-          "http://localhost:8080/commentFiles",
+          `${process.env.REACT_APP_API_URL}/commentFiles`,
           resource
-        );
-        attachment.files.push(result?.data?.url);
+          );
+          attachment.files.push(result?.data?.url);
         if (result?.data?.status === "success") {
           toast.success(result?.data?.msg);
           setFileNames([...fileNames, selectedFile]);
@@ -166,19 +156,19 @@ export default function WriteComment() {
       setIsLoading(true);
       try {
         const result = await axios.post(
-          "http://localhost:8080/replyFiles",
+          `${process.env.REACT_APP_API_URL}/replyFiles`,
           resource
-        );
-        attachment.files.push(result?.data?.url);
-        if (result?.data?.status === "success") {
-          toast.success(result?.data?.msg);
-          setFileNames([...fileNames, selectedFile]);
-        }
-        else {
-          toast.error(result?.data?.msg);
-        }
-      } catch (error) {
-        toast.error("Something went wrong.")
+          );
+          attachment.files.push(result?.data?.url);
+          if (result?.data?.status === "success") {
+            toast.success(result?.data?.msg);
+            setFileNames([...fileNames, selectedFile]);
+          }
+          else {
+            toast.error(result?.data?.msg);
+          }
+        } catch (error) {
+          toast.error("Something went wrong.")
         console.log(error);
       } finally {
         setIsLoading(false);
@@ -186,7 +176,14 @@ export default function WriteComment() {
       }
     }
   };
-
+  
+  useEffect(() => {
+    if (resource?.file !== "") {
+      uploadFile();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resource]
+  )
   
   return (
     <>
@@ -201,16 +198,15 @@ export default function WriteComment() {
               >
                 Back
               </Link>
-              {replyTo?.commentId}
               {replyTo?.commentId ? (
-                <h6 className="text-center d-inline text-primary fw-bold">
+                <h5 className="text-center d-inline text-primary fw-bold">
                   Replying to {replyTo?.userName} for comment on{" "}
                   <Moment format="DD/MM/YYYY HH:mm">{replyTo?.time}</Moment>
-                </h6>
+                </h5>
               ) : (
-                <h6 className="text-center d-inline text-primary fw-bold">
+                <h5 className="text-center d-inline text-primary fw-bold">
                   Writing Comment on Project - {projectId}
-                </h6>
+                </h5>
               )}
             </div>
 

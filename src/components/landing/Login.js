@@ -20,7 +20,7 @@ export default function Login() {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:8080/signin",
+        `${process.env.REACT_APP_API_URL}/signin`,
         userDetails
       );
 

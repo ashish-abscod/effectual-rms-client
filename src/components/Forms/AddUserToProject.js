@@ -1,25 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
 import DataTable from "react-data-table-component";
 import { ProjectContext } from "../contexts/ProjectContext";
-import { UserContext } from "../contexts/UserContext";
 import { MdDelete } from "react-icons/md";
 import { AiOutlineClose } from "react-icons/ai";
 
 export default function AddUserToProject({ formData, setFormData }) {
-  const [userData, setUserData] = useState([]);
-  const [search, setSearch] = useState("");
+  const [userData] = useState([]);
+  const [search] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
 
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const { projectId } = useContext(ProjectContext);
   const [alreadyAssignedUsers, setAlreadyAssignedUsers] = useState(null);
 
-  useEffect(() => {
-    // getUserData();
-    if (projectId) {
-      getAssignmentData();
-    }
-  }, [projectId]);
+
 
   const getUserData = async (event) => {
     let key = event.target.value;
@@ -34,11 +28,17 @@ export default function AddUserToProject({ formData, setFormData }) {
     }
   };
   const getAssignmentData = async () => {
-    // appointmentData.patientID = patientId;
     await fetch(`http://localhost:8080/assigned/getUserById/${projectId}`)
       .then((res) => res.json())
       .then((data) => setAlreadyAssignedUsers(data));
   };
+
+  useEffect(() => {
+    if (projectId) {
+      getAssignmentData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [projectId]);
 
   const handleAssignedUserDelete = async (id, userId) => {
     let res = await fetch(
@@ -63,8 +63,6 @@ export default function AddUserToProject({ formData, setFormData }) {
   }, [userData, search]);
 
   const handleRemove = async (id) => {
-    // console.log(id);
-    // console.log(formData.assignedUsers);
     const filteredUsers = formData?.assignedUsers?.filter(
       (obj) => obj._id !== id
     );
@@ -76,8 +74,8 @@ export default function AddUserToProject({ formData, setFormData }) {
     formData?.assignedUsers.push(row);
     setFilteredUsers([]);
     document.getElementById("searchUser").value = "";
-  } 
-  
+  }
+
   const columns = [
     {
       name: "Name",

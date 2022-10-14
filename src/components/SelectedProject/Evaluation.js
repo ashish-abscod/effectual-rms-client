@@ -8,13 +8,16 @@ import "react-toastify/dist/inject-style";
 
 export default function Evaluation() {
   const { user } = useContext(UserContext);
-  const { projectId } = useContext(ProjectContext);
+  const { projectId, setProjectId } = useContext(ProjectContext);
   const [isHovering, setIsHovering] = useState(false);
   const [isClaimHovering, setIsClaimHovering] = useState(false);
   const [isHistoryHovering, setIsHistoryHovering] = useState(false);
   const [isDataHovering, setIsDataHovering] = useState(false);
-  // const [isUpdated, setIsUpdated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  if (!projectId) {
+    setProjectId(window?.localStorage?.getItem('projectId'))
+  }
 
   const claimMouseOver = () => {
     setIsClaimHovering(true);
@@ -22,7 +25,6 @@ export default function Evaluation() {
   const claimMouseOut = () => {
     setIsClaimHovering(false);
   };
-
   const handleMouseOver = () => {
     setIsHovering(true);
   };
@@ -41,9 +43,16 @@ export default function Evaluation() {
   const historyMouseOut = () => {
     setIsHistoryHovering(false);
   };
+
+  const getFormatedToday = () => {
+    var date = new Date();
+    var str = date.getFullYear() + "-" + (date.getMonth() < 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1) + "-" + (date.getDate() < 10 ? `0${date.getDate()}` : date.getDate());
+    return str;
+  }
+
   const [evaluationData, setevaluationData] = useState({
     projectId: projectId,
-    modification: "",
+    modification: getFormatedToday(),
     searchscore: 0,
     claimscore: 0,
     historyscore: 0,
@@ -52,37 +61,30 @@ export default function Evaluation() {
     category: "",
     comment: "",
     appSerachResult: "",
-    editedby: user?.userData?.name,
+    editedby: user?.userData?.name
   });
 
-  const getFormatedToday = () => {
-    var date = new Date();
-    var str = date.getFullYear() + "-" + (date.getMonth() < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1) + "-" + (date.getDate() < 10 ? `0${date.getDate()}` : date.getDate());
-    return str;
-  }
 
   const getEvaluationData = async () => {
 
     try {
-      console.log(projectId);
       const res = await axios.get(
         `http://localhost:8080/evaluation/getById/${projectId}`
       );
-      console.log(res.data)
-      setevaluationData({
-        ...evaluationData,
-        modification: res?.data?.modification,
-        searchscore: res.data.searchscore,
-        claimscore: res.data.claimscore,
-        historyscore: res.data.historyscore,
-        datacoverage: res.data.datacoverage,
-        category: res.data.category,
-        comment: res.data.comment,
-        appSerachResult: res.data.appSerachResult,
-        editedby: res.data.editedby,
-      });
-      if (res?.data?.claimscore) {
-        // setIsUpdated(true);
+      const { modification, appSerachResult, claimscore, comment, datacoverage, historyscore, searchscore, editedby,category} = { ...res?.data?.result };
+      if (res?.data?.result) {
+        setevaluationData({
+          ...evaluationData,
+          modification: modification,
+          searchscore: searchscore,
+          claimscore: claimscore,
+          historyscore: historyscore,
+          datacoverage: datacoverage,
+          category: category,
+          comment: comment,
+          appSerachResult: appSerachResult,
+          editedby: editedby,
+        });
       }
     } catch (error) {
       console.log(error);
@@ -91,7 +93,8 @@ export default function Evaluation() {
 
   useEffect(() => {
     getEvaluationData();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [projectId]);
 
   const submitData = async () => {
     setIsLoading(true);
@@ -131,11 +134,7 @@ export default function Evaluation() {
             <input
               type="text"
               className="form-control"
-              value={
-                evaluationData?.editedby
-                  ? evaluationData?.editedby
-                  : user?.userData?.name
-              }
+              value={evaluationData?.editedby}
               disabled
               readOnly
             />
@@ -463,8 +462,9 @@ export default function Evaluation() {
           ></textarea>
           <button
             type="button"
+            disabled={isLoading ? true : false}
             className="btn btn-success w-100 rounded-pill mt-3"
-            onClick={submitData}
+            onClick={() => submitData()}
           >
             Evaluate
 

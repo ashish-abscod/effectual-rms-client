@@ -1,6 +1,7 @@
 import React from 'react'
 import hero_img from '../../Assets/img/hero_img.png';
 import {HiArrowRight} from 'react-icons/hi'
+
 export default function Section1() {
     return (
         <>

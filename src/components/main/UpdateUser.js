@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext} from "react";
 import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
@@ -8,10 +8,12 @@ import "react-toastify/dist/inject-style";
 
 export default function UpdateUser() {
   const { user, setUser } = useContext(UserContext);
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
+  const [addUser, setAddUser] = useState({
+    name: user?.userData?.name,
+    email: user?.userData?.email,
+    password: "",
+    confirmPassword: "",
+  });
 
   const [passType, setPassType] = useState({
     first: "Password",
@@ -19,50 +21,31 @@ export default function UpdateUser() {
   });
 
 
-  const clearHandler = () => {
-    setName("")
-    setEmail("")
-    setPassword("")
-    setConfirmPassword("")
-  }
-
-
   const handleUsersEdit = async () => {
-
     try {
+      console.log("calling...")
       let res = await axios.put(
-        `http://localhost:8080/users/update/${user.userData._id}`,
-
-        {
-          body: JSON.stringify({
-            name, email, password, confirmPassword
-          }),
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          }
-        }
-
+        `http://localhost:8080/users/update/${user?.userData?._id}`,addUser
       );
-      console.log(res)
-      toast.success(res?.msg);
-      console.log("response: ", res);
-      if (email || password) {
-        setUser({
-          ...user,
-          auth: false,
-          userData: "",
-          token: null,
-        });
-        localStorage.clear();
-        toast.success(res.msg);
-        window.location.replace('/')
+      if(res?.data?.status === "failed"){
+        toast.error(res?.data?.msg);
+      }else if(res?.data?.status === "success"){
+        toast.success(res?.data?.msg);
+        toast("Please login again as you have updated profile.");
+        setTimeout(() => {
+          window.location.replace('/');
+          setUser({
+            ...user,
+            auth: false,
+            userData: "",
+            token: null,
+          });
+          localStorage.clear();
+        }, 3000);
       }
 
-
     } catch (error) {
-      console.log(error);
-      toast.error(error.error);
+      toast.error("Something went wrong.");
     }
   };
 
@@ -75,7 +58,6 @@ export default function UpdateUser() {
         data-bs-keyboard="false"
         tabIndex="-1"
         aria-hidden="true"
-       
       >
         <div className="modal-dialog">
           <div className="modal-content">
@@ -98,10 +80,12 @@ export default function UpdateUser() {
                       <input
                         type="text"
                         className="form-control"
-                        value={name}
-                        name="name"
-                        id="name"
-                        onChange={(e) => setName(e.target.value)}
+                        value={addUser?.name}
+                        onChange={(e) =>
+                          setAddUser({...addUser,
+                             name: e.target.value,
+                          })
+                        }
                       />
                       <label>Name:</label>
                       <span className="d-none">Error : Field Required</span>
@@ -110,10 +94,12 @@ export default function UpdateUser() {
                       <input
                         type="text"
                         className="form-control"
-                        name="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={addUser?.email}
+                        onChange={(e) =>
+                          setAddUser({...addUser,
+                            email: e.target.value,
+                          })
+                        }
                       />
                       <label>Email:</label>
                       <span className="d-none">Error : Field Required</span>
@@ -122,10 +108,10 @@ export default function UpdateUser() {
                       <input
                         type={passType?.first}
                         className="form-control"
-                        name="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={addUser?.password}
+                        onChange={(e) =>
+                          setAddUser({...addUser, password: e.target.value })
+                        }
                         style={{ width: "90%" }}
                       />
                       {passType.first === "Password" ? (
@@ -150,10 +136,10 @@ export default function UpdateUser() {
                       <input
                         type={passType.second}
                         className="form-control"
-                        name="confirmPassword"
-                        id="confirmPassword"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        value={addUser?.confirmPassword}
+                        onChange={(e) =>
+                          setAddUser({ ...addUser, confirmPassword: e.target.value })
+                        }
                         style={{ width: "90%" }}
                       />
                       {passType.second === "Password" ? (
@@ -190,17 +176,23 @@ export default function UpdateUser() {
                 <button
                   type="button"
                   className="btn btn-secondary rounded-pill me-3"
-                  onClick={(e) =>
-                    clearHandler(e.target.value)
+                  onClick={() =>
+                    setAddUser({
+                      ...addUser,
+                      name: "",
+                      email: "",
+                      password: "",
+                      confirmPassword: "",
+                    })
                   }
                 >
                   Clear
                 </button>
                 <button
-                  type="submit"
+                  type="button"
                   variant="btn btn-success w-100"
                   className="btn theme-bg text-white rounded-pill"
-                  onClick={handleUsersEdit}
+                  onClick={()=>handleUsersEdit()}
                 >
                   Update Profile
                 </button>
