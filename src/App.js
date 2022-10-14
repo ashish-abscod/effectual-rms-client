@@ -16,21 +16,21 @@ function App() {
 
   useEffect(() => {
     if (user?.auth) {
-      setUser({
+      setUser(user => ({
         ...user,
         auth: true,
         userData: JSON.parse(localStorage.getItem("userData")),
         token: JSON.parse(localStorage.getItem("token")),
-      });
+      }));
     } else if (localStorage.getItem("userData")) {
-      setUser({
+      setUser(user => ({
         ...user,
         auth: true,
         userData: JSON.parse(localStorage.getItem("userData")),
         token: JSON.parse(localStorage.getItem("token")),
-      });
+      }));
     }
-  }, [user]);
+  }, [user?.auth]);
 
   return (
     <BrowserRouter>

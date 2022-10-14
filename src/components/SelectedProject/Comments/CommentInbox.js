@@ -87,7 +87,7 @@ export default function CommentInbox() {
                                                     <span className='fw-bold'>Attached Files: </span>
                                                     {
                                                         item?.attachments?.[0]?.files?.map((url, i) =>
-                                                            <a href={url} className="me-3">Document {i + 1}</a>
+                                                            <a href={url} className="me-3" key={i}>Document {i + 1}</a>
                                                         )
                                                     }
                                                 </div>

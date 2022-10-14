@@ -120,7 +120,7 @@ export default function AllProjects() {
             },
         }
     ]
-
+    
     return (
         <>
             <div className='d-flex flex-column align-items-center'>
