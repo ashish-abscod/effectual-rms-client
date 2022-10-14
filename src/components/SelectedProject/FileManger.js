@@ -5,7 +5,7 @@ import { ProjectContext } from '../contexts/ProjectContext';
 import axios from "axios"
 
 export default function FileManger() {
-const { user } = useContext(UserContext);
+
 const [effectualReports,setEffectualReports] = useState([])
 const [clientReports,setClientReports] = useState([])
 const { setProjectId , projectId} = useContext(ProjectContext);

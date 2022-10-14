@@ -36,11 +36,11 @@ export default function AddNewUser() {
 
   useEffect(() => {
     if (addUser?.password !== addUser?.confirmPassword) {
-      setError({ ...error, confirmPassword: "Both Password must be match!" });
+      setError(error => ({...error, confirmPassword: "Both Password must be match!" }));
     } else {
-      setError({ ...error, confirmPassword: "" });
+      setError(error => ({ ...error, confirmPassword: "" }));
     }
-  }, [addUser, error]);
+  }, [addUser?.confirmPassword, addUser?.password]);
 
 
   return (
