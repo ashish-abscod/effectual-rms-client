@@ -95,31 +95,26 @@ useEffect(() => {
                         <table className="table table-bordered table-striped">
                             <thead className='table-dark'>
                                 <tr>
-                                    <th>File</th>
+                                    <th>Serial</th>
                                     <th>Uploaded By</th>
                                     <th>Uploaded On</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th>1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <th>2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <th>3</th>
-                                    <td>Larry the Bird</td>
-                                    <td>Larry the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
+                            {effectualReports?.map?.((items, i)=>{
+                                    console.log(items?.files);
+                                    return(
+                                        <tr>
+                                        <th>{i+1}</th>
+                                        <td>{items.uploadedBy}</td>
+                                        <td>{items.createdAt}</td>
+                                        {/* <td><a href={items?.files}>Document</a></td> */}
+                                    </tr>
+                                    )
+                                   
+                                })}
+                                
                             </tbody>
                         </table>
                         </div>
