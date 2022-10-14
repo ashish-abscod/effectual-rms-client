@@ -5,13 +5,16 @@ import { ProjectContext } from "../contexts/ProjectContext";
 import { UserContext } from "../contexts/UserContext";
 import { useContext } from "react";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 export default function Feedback() {
   const { projectId,setProjectId } = useContext(ProjectContext);
   const { user } = useContext(UserContext);
-  if (!projectId) {
-    setProjectId(window?.localStorage?.getItem('projectId'))
-  }
+
+  useEffect(() => {
+    if (!projectId) setProjectId(window?.localStorage?.getItem('projectId'));
+  }, [projectId,setProjectId])
+
   const [addFeedback, setAddFeedback] = useState({
     feedback: "",
     projectId: projectId,

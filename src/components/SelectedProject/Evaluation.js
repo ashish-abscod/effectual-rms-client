@@ -15,9 +15,9 @@ export default function Evaluation() {
   const [isDataHovering, setIsDataHovering] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  if (!projectId) {
-    setProjectId(window?.localStorage?.getItem('projectId'))
-  }
+  useEffect(() => {
+    if (!projectId) setProjectId(window?.localStorage?.getItem('projectId'));
+  }, [projectId,setProjectId])
 
   const claimMouseOver = () => {
     setIsClaimHovering(true);
@@ -44,15 +44,9 @@ export default function Evaluation() {
     setIsHistoryHovering(false);
   };
 
-  const getFormatedToday = () => {
-    var date = new Date();
-    var str = date.getFullYear() + "-" + (date.getMonth() < 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1) + "-" + (date.getDate() < 10 ? `0${date.getDate()}` : date.getDate());
-    return str;
-  }
-
   const [evaluationData, setevaluationData] = useState({
     projectId: projectId,
-    modification: getFormatedToday(),
+    modification: "",
     searchscore: 0,
     claimscore: 0,
     historyscore: 0,
@@ -61,7 +55,7 @@ export default function Evaluation() {
     category: "",
     comment: "",
     appSerachResult: "",
-    editedby: user?.userData?.name
+    editedby: ""
   });
 
 
@@ -101,7 +95,9 @@ export default function Evaluation() {
     try {
       const res = await axios.post(
         `http://localhost:8080/evaluation/${projectId}`,
-        evaluationData
+        {
+          ...evaluationData, editedby: user?.userData?.name
+        }
       );
       if (res?.data?.status === "success") toast.success(res?.data?.msg);
       else toast.error(res?.data?.msg);
@@ -122,7 +118,7 @@ export default function Evaluation() {
               type="date"
               disabled
               className="form-control"
-              value={getFormatedToday()}
+              value={evaluationData?.modification}
               readOnly
             />
             <label>Modified Date:</label>
