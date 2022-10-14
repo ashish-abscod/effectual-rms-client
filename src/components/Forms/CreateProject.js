@@ -180,11 +180,21 @@ export default function CreateProject() {
           `http://localhost:8080/projects/update/${projectId}`,
           formData
         );
+        console.log(res?.data)
 
         const resp = await axios.post(
           `http://localhost:8080/assigned/updateUser/${projectId}`,
           formData?.assignedUsers
         );
+
+        const info = await axios.post("http://localhost:8080/files/saveToDb", {
+          projectId: res?.data?.result?.projectId,
+          files: attachment?.files,
+          role: attachment?.role,
+          filesName: attachment?.filesName,
+          uploadedBy: attachment?.uploadedBy,
+        });
+
         // clear assignedUsers from formdata after updation complete
         setFormData({ ...formData, assignedUsers: [] });
         toast.success(res?.data?.msg);
