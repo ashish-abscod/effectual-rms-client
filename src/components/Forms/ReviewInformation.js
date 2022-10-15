@@ -94,11 +94,13 @@ export default function ReviewInformation({ formData,fileNames }) {
               <div className="ms-2 me-auto">
                 <div className='fw-bold theme3-color'>Uploaded Files</div>
                 <div className="mt-3 overflow-auto" style={{ maxHeight: "50vh" }}>
+                  <ul className='p-0'> 
                   {
                     fileNames?.map((fileName, i) =>
-                      <li key={i} className="text-success list-unstyled d-inline-block text-truncate" style={{ maxWidth: "20rem" }}><BsCheckCircleFill color="green" /> <span className="">{fileName}</span></li>
+                      <li key={i} className="text-success list-unstyled d-inline-block text-truncate" style={{ maxWidth: "20rem" }} ><BsCheckCircleFill color="green" /> <span className="">{fileName}</span></li>
                     )
                   }
+                  </ul>
                 </div>
               </div>
             </li>
@@ -126,9 +128,9 @@ export default function ReviewInformation({ formData,fileNames }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {formData?.assignedUsers?.map((item) => {
+                  {formData?.assignedUsers?.map((item, i) => {
                     return (
-                      <tr className="mb-2" >
+                      <tr className="mb-2" key={i}>
                         <td>{item.name}</td>
                         <td>{item.email}</td>
                         <td>{item.role}</td>
