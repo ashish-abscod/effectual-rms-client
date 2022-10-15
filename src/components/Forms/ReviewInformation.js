@@ -126,9 +126,9 @@ export default function ReviewInformation({ formData,fileNames }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {formData?.assignedUsers?.map((item) => {
+                  {formData?.assignedUsers?.map((item, i) => {
                     return (
-                      <tr className="mb-2" >
+                      <tr className="mb-2" key={i}>
                         <td>{item.name}</td>
                         <td>{item.email}</td>
                         <td>{item.role}</td>
