@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
 import { useEffect } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function WriteComment() {
   const { user } = useContext(UserContext);
@@ -21,34 +21,15 @@ export default function WriteComment() {
   const [resource, setChooseFile] = useState({ file: "" });
   const [selectedFile, setSelectedFile] = useState('');
   const [fileNames, setFileNames] = useState([]);
-  if(!projectId) setProjectId(window?.localStorage?.getItem('projectId'));
+  if (!projectId) setProjectId(window?.localStorage?.getItem('projectId'));
 
   const navigate = useNavigate();
 
-  const getFormatedToday = () => {
-    var date = new Date();
-    var str =
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1) +
-      "-" +
-      date.getDate() +
-      " " +
-      date.getHours() +
-      ":" +
-      date.getMinutes() +
-      ":" +
-      date.getSeconds();
-    return str;
-  };
-
-  
-  
   const [body, setBody] = useState({
     projectId: projectId,
     commentId: replyTo?.commentId,
     content: "",
-    time: `${getFormatedToday()}`,
+    time: "",
     userName: user?.userData?.name,
     userRole: user?.userData?.role,
   });
@@ -63,12 +44,12 @@ export default function WriteComment() {
   const addData = async () => {
     setDisabled(true);
     if (!replyTo?.commentId) {
-      setIsLoading(true);
       try {
+        setIsLoading(true);
         const response = await axios.post(
           `${process.env.REACT_APP_API_URL}/comment`,
           body
-          );
+        );
 
         await axios.post(
           `${process.env.REACT_APP_API_URL}/commentFiles/saveToDb`,
@@ -81,19 +62,19 @@ export default function WriteComment() {
             uploadedBy: attachment?.uploadedBy,
           }
         );
-        console.log(response?.data?.commentId)
-        console.log( response?.data?.role)
-        setIsLoading(false);
-        if(response?.data?.status === "success"){
+        if (response?.data?.status === "success") {
           toast.success(response?.data?.msg);
           navigate("/project");
         }
       } catch (error) {
-        setIsLoading(false);
         toast.error("Something went wrong.");
+      }
+      finally {
+        setIsLoading(false);
       }
     } else if (replyTo?.commentId) {
       try {
+        setIsLoading(true);
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/replie`, body);
 
         await axios.post(
@@ -107,12 +88,16 @@ export default function WriteComment() {
             uploadedBy: attachment?.uploadedBy,
           }
         );
-        if(response?.data?.status === "success"){
+
+        if (response?.data?.status === "success") {
           toast.success(response?.data?.msg);
           navigate("/project");
         }
       } catch (error) {
         toast.error("Something went wrong.");
+      }
+      finally {
+        setIsLoading(false);
       }
     }
   };
@@ -128,8 +113,8 @@ export default function WriteComment() {
     }
   };
 
-  
-  
+
+
   const uploadFile = async (e) => {
     if (!replyTo?.commentId) {
       setIsLoading(true);
@@ -137,8 +122,8 @@ export default function WriteComment() {
         const result = await axios.post(
           `${process.env.REACT_APP_API_URL}/commentFiles`,
           resource
-          );
-          attachment.files.push(result?.data?.url);
+        );
+        attachment.files.push(result?.data?.url);
         if (result?.data?.status === "success") {
           toast.success(result?.data?.msg);
           setFileNames([...fileNames, selectedFile]);
@@ -159,17 +144,17 @@ export default function WriteComment() {
         const result = await axios.post(
           `${process.env.REACT_APP_API_URL}/replyFiles`,
           resource
-          );
-          attachment.files.push(result?.data?.url);
-          if (result?.data?.status === "success") {
-            toast.success(result?.data?.msg);
-            setFileNames([...fileNames, selectedFile]);
-          }
-          else {
-            toast.error(result?.data?.msg);
-          }
-        } catch (error) {
-          toast.error("Something went wrong.")
+        );
+        attachment.files.push(result?.data?.url);
+        if (result?.data?.status === "success") {
+          toast.success(result?.data?.msg);
+          setFileNames([...fileNames, selectedFile]);
+        }
+        else {
+          toast.error(result?.data?.msg);
+        }
+      } catch (error) {
+        toast.error("Something went wrong.")
         console.log(error);
       } finally {
         setIsLoading(false);
@@ -177,7 +162,7 @@ export default function WriteComment() {
       }
     }
   };
-  
+
   useEffect(() => {
     if (resource?.file !== "") {
       uploadFile();
@@ -185,7 +170,7 @@ export default function WriteComment() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resource]
   )
-  
+
   return (
     <>
       <Header />
@@ -246,8 +231,8 @@ export default function WriteComment() {
             <div className="mt-3 overflow-auto" style={{ maxHeight: "50vh" }}>
               {
                 fileNames?.map((fileName, i) =>
-                  <li key={i} className="text-success list-unstyled d-flex text-truncate" 
-                  style={{ maxWidth: "20rem" }}><BsCheckCircleFill color="green" /> <span className="">{fileName}</span></li>
+                  <li key={i} className="text-success list-unstyled d-flex text-truncate"
+                    style={{ maxWidth: "20rem" }}><BsCheckCircleFill color="green" /> <span className="">{fileName}</span></li>
                 )
               }
             </div>

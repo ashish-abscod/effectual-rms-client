@@ -12,7 +12,8 @@ export default function RichTextEditor({ body, setBody }) {
             removeButtons: ["file", "image", "video", "print", "source", "copyformat", "about"],
             askBeforePasteHTML: false,
             askBeforePasteFromWord: false,
-            defaultActionOnPaste: "insert_clear_html"
+            defaultActionOnPaste: "insert_clear_html",
+            toolbarAdaptive: false
         }),
         []
     );
