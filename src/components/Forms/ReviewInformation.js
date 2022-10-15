@@ -94,11 +94,13 @@ export default function ReviewInformation({ formData,fileNames }) {
               <div className="ms-2 me-auto">
                 <div className='fw-bold theme3-color'>Uploaded Files</div>
                 <div className="mt-3 overflow-auto" style={{ maxHeight: "50vh" }}>
+                  <ul className='p-0'> 
                   {
                     fileNames?.map((fileName, i) =>
-                      <li key={i} className="text-success list-unstyled d-inline-block text-truncate" style={{ maxWidth: "20rem" }}><BsCheckCircleFill color="green" /> <span className="">{fileName}</span></li>
+                      <li key={i} className="text-success list-unstyled d-inline-block text-truncate" style={{ maxWidth: "20rem" }} ><BsCheckCircleFill color="green" /> <span className="">{fileName}</span></li>
                     )
                   }
+                  </ul>
                 </div>
               </div>
             </li>
