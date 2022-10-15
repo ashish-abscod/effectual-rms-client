@@ -33,7 +33,6 @@ export default function AllProjects() {
     }
 
 
-
     //fetching data from endpoint
     const getProjects = async () => {
         try {
