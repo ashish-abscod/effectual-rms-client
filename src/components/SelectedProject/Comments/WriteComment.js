@@ -81,6 +81,7 @@ export default function WriteComment() {
             uploadedBy: attachment?.uploadedBy,
           }
         );
+        console.log(response?.data?.commentId)
         console.log( response?.data?.role)
         setIsLoading(false);
         if(response?.data?.status === "success"){

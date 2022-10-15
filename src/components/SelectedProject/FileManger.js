@@ -1,53 +1,42 @@
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useContext } from 'react';
-import { UserContext } from "../contexts/UserContext";
 import { ProjectContext } from '../contexts/ProjectContext';
 import axios from "axios"
+import { BiDownload } from "react-icons/bi"
 
 export default function FileManger() {
 
-const [effectualReports,setEffectualReports] = useState([])
-const [clientReports,setClientReports] = useState([])
-const { setProjectId , projectId} = useContext(ProjectContext);
-const [loading, setLoading] = useState(false);
+    const [effectualReports, setEffectualReports] = useState([])
+    const [clientReports, setClientReports] = useState([])
+    const { setProjectId, projectId } = useContext(ProjectContext);
+    if (!projectId) setProjectId(window?.localStorage?.getItem('projectId'));
 
-const getEffectualReports = async () => {
-    try {
-        setLoading(true);
-        const info = await axios.get(`http://localhost:8080/commentFiles/${projectId}`)
-        setEffectualReports(info);
-        console.log(effectualReports)
-        
-    } catch (error) {
-        console.log(error);
-    } finally {
-        setLoading(false);
-    }
-}
-
-useEffect(() => {
-    getEffectualReports()
-}, [])
+    useEffect(() => {
+        const getEffectualReports = async () => {
+            try {
+                const info = await axios.get(`http://localhost:8080/commentFiles/${projectId}`)
+                setEffectualReports(info?.data?.result);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getEffectualReports()
+    }, [projectId])
 
 
-const getClientReports = async () => {
-    try {
-        setLoading(true);
-        const info = await axios.get(`http://localhost:8080/commentFiles/client/${projectId}`)
-        setClientReports(info?.data?.result);
-        // console.log(/)
-        console.log(clientReports)
-        
-    } catch (error) {
-        console.log(error);
-    } finally {
-        setLoading(false);
-    }
-}
 
-useEffect(() => {
-    getClientReports()
-}, [])
+    useEffect(() => {
+        const getClientReports = async () => {
+            try {
+                const info = await axios.get(`http://localhost:8080/commentFiles/client/${projectId}`)
+                setClientReports(info?.data?.result);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getClientReports();
+    }, [projectId])
 
     return (
         <>
@@ -57,33 +46,32 @@ useEffect(() => {
                         <h5 className='text-center theme-color'>
                             Client Reports
                         </h5>
-                        <div style={{height:"70vh"}} className="table-responsive">
-                        <table className="table table-bordered table-striped">
-                            <thead className='table-dark'>
-                                <tr>
-                                    <th>Serial</th>
-                                    <th>Uploaded By</th>
-                                    <th>Uploaded On</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {clientReports?.map?.((items, i)=>{
-                                    console.log(items?.files);
-                                    return(
-                                        <tr>
-                                        <th>{i+1}</th>
-                                        <td>{items.uploadedBy}</td>
-                                        <td>{items.createdAt}</td>
-                                        {/* <td><a href={items?.files}>Document</a></td> */}
+                        <div style={{ height: "70vh" }} className="table-responsive">
+                            <table className="table table-bordered table-striped">
+                                <thead className='table-dark'>
+                                    <tr>
+
+                                        <th>Uploaded By</th>
+                                        <th>Uploaded On</th>
+                                        <th>Action</th>
                                     </tr>
+                                </thead>
+                                <tbody>
+                                    {clientReports?.map?.((item, a) =>
+                                        item?.files?.map((url, b) =>
+                                            <tr key={`${a}${b}`}>
+                                                <td>{item.uploadedBy}</td>
+                                                <td>{item.createdAt}</td>
+                                                <a href={url} className="me-3"><BiDownload /></a>
+                                            </tr>
+
+                                        )
                                     )
-                                   
-                                })}
-                                
-                               
-                            </tbody>
-                        </table>
+
+                                    }
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
@@ -91,32 +79,32 @@ useEffect(() => {
                         <h5 className='text-center theme-color'>
                             Effectual Reports
                         </h5>
-                        <div style={{height:"70vh"}} className="table-responsive">
-                        <table className="table table-bordered table-striped">
-                            <thead className='table-dark'>
-                                <tr>
-                                    <th>Serial</th>
-                                    <th>Uploaded By</th>
-                                    <th>Uploaded On</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {effectualReports?.map?.((items, i)=>{
-                                    console.log(items?.files);
-                                    return(
-                                        <tr>
-                                        <th>{i+1}</th>
-                                        <td>{items.uploadedBy}</td>
-                                        <td>{items.createdAt}</td>
-                                        {/* <td><a href={items?.files}>Document</a></td> */}
+                        <div style={{ height: "70vh" }} className="table-responsive">
+                            <table className="table table-bordered table-striped">
+                                <thead className='table-dark'>
+                                    <tr>
+
+                                        <th>Uploaded By</th>
+                                        <th>Uploaded On</th>
+                                        <th>Action</th>
                                     </tr>
+                                </thead>
+                                <tbody>
+                                    {effectualReports?.map?.((item, a) =>
+                                        item?.files?.map((url, b) =>
+                                            <tr key={`${a}${b}`}>
+                                                <td>{item.uploadedBy}</td>
+                                                <td>{item.createdAt}</td>
+                                                <a href={url} className="me-3"><BiDownload /></a>
+                                            </tr>
+
+                                        )
                                     )
-                                   
-                                })}
-                                
-                            </tbody>
-                        </table>
+
+                                    }
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
