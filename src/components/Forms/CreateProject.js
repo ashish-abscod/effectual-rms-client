@@ -44,7 +44,7 @@ export default function CreateProject() {
   const getProject = async (projectId) => {
     try {
       const res = await axios.get(
-        `http://localhost:8080/projects/${projectId}`
+        `${process.env.REACT_APP_API_URL}/projects/${projectId}`
       );
       setFormData({
         ...formData,

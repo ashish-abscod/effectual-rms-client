@@ -10,7 +10,7 @@ export default function ProjectInfo({ formData, setFormData, setIsDisabled, proj
         try {
             setFormData({ ...formData, SearchObject: e.target.value });
             const res = await axios.post(
-              `http://localhost:8080/projects/findSearchObject`, {searchObject : inputRef?.current?.value}
+              `${process.env.REACT_APP_API_URL}/projects/findSearchObject`, {searchObject : inputRef?.current?.value}
             );
             if(res?.data?.status === "failed" && projectId === null){
                 setMsg(res?.data?.msg);

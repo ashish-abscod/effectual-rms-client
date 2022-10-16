@@ -18,7 +18,7 @@ export default function AddUserToProject({ formData, setFormData }) {
   const getUserData = async (event) => {
     let key = event.target.value;
     if (key) {
-      let result = await fetch(`http://localhost:8080/users/search/${key}`);
+      let result = await fetch(`${process.env.REACT_APP_API_URL}/users/search/${key}`);
       result = await result.json();
       if (result) {
         setFilteredUsers(result);
@@ -28,7 +28,7 @@ export default function AddUserToProject({ formData, setFormData }) {
     }
   };
   const getAssignmentData = async () => {
-    await fetch(`http://localhost:8080/assigned/getUserById/${projectId}`)
+    await fetch(`${process.env.REACT_APP_API_URL}/assigned/getUserById/${projectId}`)
       .then((res) => res.json())
       .then((data) => setAlreadyAssignedUsers(data));
   };
@@ -42,7 +42,7 @@ export default function AddUserToProject({ formData, setFormData }) {
 
   const handleAssignedUserDelete = async (id, userId) => {
     let res = await fetch(
-      `http://localhost:8080/assigned/deleteUser/${id}/${userId}`,
+      `${process.env.REACT_APP_API_URL}/assigned/deleteUser/${id}/${userId}`,
       {
         method: "put",
       }
