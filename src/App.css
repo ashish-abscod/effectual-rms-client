@@ -120,7 +120,7 @@ button.form:disabled {
 }
 
 /* dynamic table header */
-header.TUEFO {
+#home header, #newProject header{
   display: block;
   padding: unset!important;
   min-height: unset!important;
