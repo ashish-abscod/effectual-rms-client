@@ -76,7 +76,7 @@ export default function UploadFiles({ formData, setFormData, attachment,fileName
             <div className="mt-3 overflow-auto" style={{maxHeight:"50vh"}}>
               {
                 fileNames?.map((fileName, i) =>
-                  <li key={i} className="text-success list-unstyled d-block text-truncate" style={{maxWidth:"20rem"}}><BsCheckCircleFill color="green"/> <span className="">{fileName}</span></li>
+                  <li key={i} className="text-success list-unstyled d-flex text-truncate" style={{maxWidth:"20rem"}}><BsCheckCircleFill color="green"/> <span className="">{fileName}</span></li>
                 )
               }
             </div>

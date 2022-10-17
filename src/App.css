@@ -1,9 +1,17 @@
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: "Nunito", sans-serif;
 }
-p,span{
+
+p,
+span {
   font-family: 'Roboto', sans-serif;
 }
+
 .theme-bg {
   background: #4338ca;
   /* fallback for old browsers */
@@ -17,12 +25,17 @@ p,span{
   color: #4338ca;
 }
 
-.light-grey{
-  background-color:#80808026;
+.light-grey {
+  background-color: #80808026;
 }
 
 .navbar .dropdown button::before {
   content: none;
+}
+
+button#dropdownProfile:focus {
+  outline: none!important;
+  box-shadow : none!important;
 }
 
 .navbar a {
@@ -39,7 +52,9 @@ p,span{
   position: relative;
 }
 
-.input-field input,.input-field select, .input-field textarea {
+.input-field input,
+.input-field select,
+.input-field textarea {
   display: inline-block;
   border: thin solid #fafafa;
   border-bottom: solid medium #999;
@@ -59,21 +74,22 @@ p,span{
 .input-field textarea:valid,
 .input-field select:focus,
 .input-field select:valid,
-.input-field select:hover{
+.input-field select:hover {
   border: thin solid #4338ca !important;
   border-bottom: solid medium #4338cae0 !important;
   background-color: #fff !important;
-  box-shadow: 0  0 0.25rem #4438ca81 !important;
+  box-shadow: 0 0 0.25rem #4438ca81 !important;
 }
 
 .input-field input:valid,
 .input-field select:valid,
 .input-field textarea:valid,
-.input-field input:disabled{
+.input-field input:disabled {
   border: thin solid #49ca38 !important;
   border-bottom: solid medium #239f12c7 !important;
   background-color: #fff !important;
-  box-shadow: 0 0 0.25rem #39f320 !important;;
+  box-shadow: 0 0 0.25rem #39f320 !important;
+  ;
 }
 
 .input-field label {
@@ -85,26 +101,27 @@ p,span{
   transition: 0.2s;
 }
 
-.input-field input[type="date"]~label{
-top: 8px;
-left: 35px;
+.input-field input[type="date"]~label {
+  top: 8px;
+  left: 35px;
 }
+
 .input-field select:valid~label,
 .input-field input:valid~label,
 .input-field textarea:valid~label,
-.input-field input:disabled~label{
+.input-field input:disabled~label {
   top: 8px;
   left: 35px;
   font-size: small;
   font-weight: bold;
-  color: #239f12c7!important;
+  color: #239f12c7 !important;
   background-color: #fff;
   padding: 0 5px 0 5px;
 }
 
 .input-field input:hover~label,
 .input-field input:focus~label,
-.input-field input:disabled~label{
+.input-field input:disabled~label {
   color: #4338cae0;
   top: 8px;
   left: 35px;
@@ -120,37 +137,42 @@ button.form:disabled {
 }
 
 /* dynamic table header */
-header.TUEFO {
+#home header,
+#newProject header {
   display: block;
-  padding: unset!important;
-  min-height: unset!important;
+  padding: unset !important;
+  min-height: unset !important;
 }
 
 /* main project table styles */
-#home #cell-2-undefined, #home div[data-column-id="2"]{
+#home #cell-2-undefined,
+#home div[data-column-id="2"] {
   min-width: 30vw;
 }
 
-.dqmQwT input, .cfdVEr input{
+#home div input[type="checkbox"] {
   width: 18px;
   height: 18px;
 }
-.bMgaAx div:first-child{
-  white-space: unset!important;
+
+.bMgaAx div:first-child {
+  white-space: unset !important;
 }
-#myTabContent .gyOPpE{
-  max-height: 63vh!important;
+
+#home header+div {
+  max-height: 63vh !important;
 }
+
 .neomorphism {
   border-radius: 23px;
   background: #ffffff;
   box-shadow: 5px 5px 17px #6e6e6e,
-              -5px -5px 17px #ffffff !important;
+    -5px -5px 17px #ffffff !important;
 }
 
 /* -----------Jodit-react editor----------- */
-div.jodit-wysiwyg{
-  min-height: 55vh!important;
+div.jodit-wysiwyg {
+  min-height: 55vh !important;
 }
 
 
@@ -163,4 +185,5 @@ th {
 }
 
 tr:nth-child(even) {
-  background-color: #dddddd;}
+  background-color: #dddddd;
+}
