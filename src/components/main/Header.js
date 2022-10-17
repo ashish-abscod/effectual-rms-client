@@ -39,7 +39,7 @@ export default function Header() {
           >
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li
-                className="nav-item"
+                className="nav-item my-2"
                 onClick={() => {
                   navigate("/main");
                 }}
@@ -51,32 +51,40 @@ export default function Header() {
                   <i className="bi bi-house-door me-1"></i>Home
                 </button>
               </li>
-              <li className="nav-item d-lg-none">
+              <li className="nav-item d-lg-none my-2">
+                <button
+                  className="dropdown-item text-white ps-0 bg-none"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#changeProfile"
+                >
+                  <BiUserCircle className="fs-5" /> Profile
+                </button>
+              </li>
+              <li className="nav-item d-lg-none my-2">
                 <a className="nav-link" href="/#" tabIndex="-1">
                   <i className="bi bi-box-arrow-left me-1"></i>Sign Out
                 </a>
               </li>
             </ul>
             <div className="dropdown dropstart d-none d-lg-block">
-              <span
-                className="fw-bold me-2"
-                id="dropdownMenu1"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                style={{ cursor: "pointer" }}
-              >
-                {user?.userData?.name}
-              </span>
               <button
-                className="btn rounded-circle overflow-hidden p-0 ms-1 dropdown-toggle"
-                style={{ width: "2em", height: "2em" }}
+                className="btn p-0 ms-1 dropdown-toggle text-light"
                 type="button"
-                id="dropdownMenu1"
+                id="dropdownProfile"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
+                <span
+                  className="fw-bold me-2"
+                  aria-expanded="false"
+                  style={{ cursor: "pointer" }}
+                >
+                  {user?.userData?.name}
+                </span>
                 <img
                   src={userProfile}
+                  className="rounded-circle overflow-hidden"
                   style={{ width: "2em", height: "2em" }}
                   title="Profile"
                   alt="Profile"
@@ -84,7 +92,7 @@ export default function Header() {
               </button>
               <ul
                 className="dropdown-menu"
-                aria-labelledby="dropdownMenu1"
+                aria-labelledby="dropdownProfile"
                 style={{ top: "30px", right: "15%" }}
               >
                 <li className="mb-2">
