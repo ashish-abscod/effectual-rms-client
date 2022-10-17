@@ -6,7 +6,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
 
 
+
 export default function UpdateUser() {
+ 
   const { user, setUser } = useContext(UserContext);
   const [addUser, setAddUser] = useState({
     name: user?.userData?.name,
@@ -23,7 +25,7 @@ export default function UpdateUser() {
 
   const handleUsersEdit = async () => {
     try {
-      console.log("calling...")
+     
       let res = await axios.put(
         `${process.env.REACT_APP_API_URL}/users/update/${user?.userData?._id}`,addUser
       );
