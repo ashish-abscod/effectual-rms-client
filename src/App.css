@@ -131,14 +131,15 @@ button.form:disabled {
   min-width: 30vw;
 }
 
-.dqmQwT input, .cfdVEr input{
+#home div input[type="checkbox"]{
   width: 18px;
   height: 18px;
 }
 .bMgaAx div:first-child{
   white-space: unset!important;
 }
-#myTabContent .gyOPpE{
+
+#home header + div{
   max-height: 63vh!important;
 }
 .neomorphism {
