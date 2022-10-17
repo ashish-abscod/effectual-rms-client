@@ -21,7 +21,7 @@ export default function CommentInbox() {
         if (projectId) {
             try {
                 setLoading(true);
-                const response = await axios.get(`http://localhost:8080/discussion/${projectId}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/discussion/${projectId}`);
                 setData(response.data);
             } catch (error) {
                 console.log(error);

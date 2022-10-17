@@ -25,7 +25,7 @@ export default function UpdateUser() {
     try {
       console.log("calling...")
       let res = await axios.put(
-        `http://localhost:8080/users/update/${user?.userData?._id}`,addUser
+        `${process.env.REACT_APP_API_URL}/users/update/${user?.userData?._id}`,addUser
       );
       if(res?.data?.status === "failed"){
         toast.error(res?.data?.msg);

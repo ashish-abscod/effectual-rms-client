@@ -36,7 +36,7 @@ export default function ManageUser() {
     if (confirmation) {
       try {
         let res = await axios.put(
-          `http://localhost:8080/users/delete/${id}`,
+          `${process.env.REACT_APP_API_URL}/users/delete/${id}`,
           status
         );
         if (res) {

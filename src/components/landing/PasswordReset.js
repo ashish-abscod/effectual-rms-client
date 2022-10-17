@@ -25,7 +25,7 @@ export default function PasswordReset() {
     const resetPassword = async ()=> {
         if(error === null) {
             console.log("called.");
-            const res = await axios.post(`http://localhost:8080/password/reset/${userId}/${token}`, {password : password});
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/password/reset/${userId}/${token}`, {password : password});
             setData(res?.data);
             if(res?.data?.status === "success"){
                 setIsDisabled(true);

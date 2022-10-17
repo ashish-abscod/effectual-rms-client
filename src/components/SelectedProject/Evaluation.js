@@ -63,7 +63,7 @@ export default function Evaluation() {
 
     try {
       const res = await axios.get(
-        `http://localhost:8080/evaluation/getById/${projectId}`
+        `${process.env.REACT_APP_API_URL}/evaluation/getById/${projectId}`
       );
       const { modification, appSerachResult, claimscore, comment, datacoverage, historyscore, searchscore, editedby,category} = { ...res?.data?.result };
       if (res?.data?.result) {
@@ -94,7 +94,7 @@ export default function Evaluation() {
     setIsLoading(true);
     try {
       const res = await axios.post(
-        `http://localhost:8080/evaluation/${projectId}`,
+        `${process.env.REACT_APP_API_URL}/evaluation/${projectId}`,
         {
           ...evaluationData, editedby: user?.userData?.name
         }
