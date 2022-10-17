@@ -70,7 +70,10 @@ export default function AddUserToProject({ formData, setFormData }) {
   };
 
   const selectUser = async (row) => {
-    formData?.assignedUsers.push(row);
+    //to assign only distinct users.
+    if (!formData?.assignedUsers?.find(item => item.email === row.email)) {
+      formData?.assignedUsers.push(row);
+    }
     setFilteredUsers([]);
     document.getElementById("searchUser").value = "";
   }
