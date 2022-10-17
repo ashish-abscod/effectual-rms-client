@@ -39,6 +39,7 @@ export default function CreateProject() {
     files: [],
     filesName: [],
     uploadedBy: user?.userData?.name,
+    userRole: user?.userData?.role
   });
 
   const getProject = async (projectId) => {
@@ -141,6 +142,7 @@ export default function CreateProject() {
         await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
           projectId: res?.data?.projectId,
           files: attachment?.files,
+          role:attachment?.userRole,
           filesName: attachment?.filesName,
           uploadedBy: attachment?.uploadedBy,
         });
@@ -148,6 +150,7 @@ export default function CreateProject() {
         await axios.post(
           `${process.env.REACT_APP_API_URL}/assigned/createUser`,
           {
+           
             userId: formData?.assignedUsers,
             projectId: res?.data?.projectId,
             assignedBy: user.userData._id,
@@ -173,12 +176,20 @@ export default function CreateProject() {
           formData
         );
 
+        await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
+          projectId: res?.data?.projectId,
+          files: attachment?.files,
+          role:attachment?.userRole,
+          filesName: attachment?.filesName,
+          uploadedBy: attachment?.uploadedBy,
+        });
+        
         await axios.post(
           `${process.env.REACT_APP_API_URL}/assigned/updateUser/${projectId}`,
-          formData?.assignedUsers
-        );
+          formData?.assignedUsers);
+       
         // clear assignedUsers from formdata after updation complete
-        setFormData({ ...formData, assignedUsers: [] });
+        setFormData({ ...formData, assignedUsers: []});
         toast.success(res?.data?.msg);
       } catch (error) {
         toast("Something went wrong.");

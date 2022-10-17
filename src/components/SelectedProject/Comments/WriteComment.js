@@ -38,6 +38,7 @@ export default function WriteComment() {
     files: [],
     fileNames: [],
     uploadedBy: user?.userData?.name,
+    role: user?.userData?.role
   });
 
   const addData = async () => {
@@ -55,6 +56,7 @@ export default function WriteComment() {
           {
             projectId: projectId,
             commentId: response?.data?.commentId,
+            role:attachment?.role,
             files: attachment?.files,
             filesName: attachment?.fileNames,
             uploadedBy: attachment?.uploadedBy,
@@ -81,6 +83,7 @@ export default function WriteComment() {
             projectId: projectId,
             replieId: response?.data?.replieId,
             files: attachment?.files,
+            role:attachment?.role,
             filesName: attachment?.fileNames,
             uploadedBy: attachment?.uploadedBy,
           }
