@@ -23,7 +23,6 @@ export default function UpdateUser() {
 
   const handleUsersEdit = async () => {
     try {
-      console.log("calling...")
       let res = await axios.put(
         `${process.env.REACT_APP_API_URL}/users/update/${user?.userData?._id}`,addUser
       );
