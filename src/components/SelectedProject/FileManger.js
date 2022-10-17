@@ -9,8 +9,10 @@ export default function FileManger() {
     const [effectualReports, setEffectualReports] = useState([])
     const [clientReports, setClientReports] = useState([])
     const { setProjectId, projectId } = useContext(ProjectContext);
-    if (!projectId) setProjectId(window?.localStorage?.getItem('projectId'));
-
+    useEffect(() => {
+        if (!projectId) setProjectId(window?.localStorage?.getItem('projectId'));
+      }, [projectId,setProjectId])
+    
     useEffect(() => {
         const getEffectualReports = async () => {
             try {
@@ -62,7 +64,7 @@ export default function FileManger() {
                                             <tr key={`${a}${b}`}>
                                                 <td>{item.uploadedBy}</td>
                                                 <td>{item.createdAt}</td>
-                                                <a href={url} className="me-3"><BiDownload /></a>
+                                                <td><a href={url} className="me-3"><BiDownload /></a></td>
                                             </tr>
 
                                         )
@@ -95,7 +97,7 @@ export default function FileManger() {
                                             <tr key={`${a}${b}`}>
                                                 <td>{item.uploadedBy}</td>
                                                 <td>{item.createdAt}</td>
-                                                <a href={url} className="me-3"><BiDownload /></a>
+                                                <td><a href={url} className="me-3"><BiDownload /></a></td>
                                             </tr>
 
                                         )
