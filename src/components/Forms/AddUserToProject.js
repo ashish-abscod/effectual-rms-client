@@ -66,6 +66,7 @@ export default function AddUserToProject({ formData, setFormData }) {
     const filteredUsers = formData?.assignedUsers?.filter(
       (obj) => obj._id !== id
     );
+    
     setFormData({ ...formData, assignedUsers: filteredUsers });
   };
 

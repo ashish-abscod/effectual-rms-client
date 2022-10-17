@@ -156,8 +156,9 @@ export default function CreateProject() {
             assignedBy: user.userData._id,
           }
         );
+       
       } catch (error) {
-        console.log(error);
+      
         toast.error("something went wrong.");
       } finally{
         setIsLoading(false);
@@ -187,7 +188,7 @@ export default function CreateProject() {
         await axios.post(
           `${process.env.REACT_APP_API_URL}/assigned/updateUser/${projectId}`,
           formData?.assignedUsers);
-       
+
         // clear assignedUsers from formdata after updation complete
         setFormData({ ...formData, assignedUsers: []});
         toast.success(res?.data?.msg);
