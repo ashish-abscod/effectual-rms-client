@@ -39,7 +39,7 @@ export default function FileManger() {
         }
         getClientReports();
     }, [projectId])
-
+   
     return (
         <>
             <div className='container'>
@@ -92,6 +92,7 @@ export default function FileManger() {
                                     </tr>
                                 </thead>
                                 <tbody>
+                               
                                     {effectualReports?.map?.((item, a) =>
                                         item?.files?.map((url, b) =>
                                             <tr key={`${a}${b}`}>

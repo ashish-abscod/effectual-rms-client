@@ -39,6 +39,7 @@ export default function CreateProject() {
     files: [],
     filesName: [],
     uploadedBy: user?.userData?.name,
+    userRole: user?.userData?.role
   });
 
   const getProject = async (projectId) => {
@@ -141,6 +142,7 @@ export default function CreateProject() {
         await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
           projectId: res?.data?.projectId,
           files: attachment?.files,
+          role:attachment?.userRole,
           filesName: attachment?.filesName,
           uploadedBy: attachment?.uploadedBy,
         });
@@ -177,6 +179,7 @@ export default function CreateProject() {
         await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
           projectId: res?.data?.projectId,
           files: attachment?.files,
+          role:attachment?.userRole,
           filesName: attachment?.filesName,
           uploadedBy: attachment?.uploadedBy,
         });
