@@ -9,8 +9,6 @@ import { BiCommentDetail } from 'react-icons/bi'
 import Moment from 'react-moment';
 import DOMPurify from "dompurify";
 
-
-
 export default function CommentInbox() {
     const navigate = useNavigate();
     const { projectId, setReplyTo } = useContext(ProjectContext);

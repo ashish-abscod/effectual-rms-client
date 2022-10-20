@@ -1,7 +1,6 @@
 import AllProjects from './AllProjects'
 import CreateProject from '../Forms/CreateProject'
 import ManageUser from './ManageUser'
-import { ToastContainer } from 'react-toastify'
 
 export default function Tabs() {
     
@@ -34,7 +33,6 @@ export default function Tabs() {
                     </div>
                 </div>
             </div>
-            <ToastContainer/>
         </>
     )
 }

@@ -9,7 +9,6 @@ import GetStarted from './GetStarted'
 import Contact from './Contact'
 import Login from './Login'
 import ForgotPassword from './ForgotPassword'
-import { ToastContainer } from 'react-toastify'
 
 export default function Landing() {
   return (
@@ -24,7 +23,6 @@ export default function Landing() {
     <Contact/>
     <GetStarted/>
     <Footer/>
-    <ToastContainer/>
     </>
   )
 }
