@@ -8,16 +8,17 @@ import {BsCheckCircleFill} from "react-icons/bs";
 
 export default function UploadFiles({ formData, setFormData, attachment,fileNames,setFileNames }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [resource, setChooseFile] = useState({ file: "" });
+  const [resource, setChooseFile] = useState({ file: "", filename:"" });
   const [selectedFile, setSelectedFile] = useState('');
 
   const uploadSingleFile = (e) => {
     if (e.target.files[0]) {
-      setSelectedFile(e.target.files[0].name);
+      const filename = e.target.files[0].name
+      setSelectedFile(filename);
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
       reader.onloadend = () => {
-        setChooseFile({ ...resource, file: reader.result });
+        setChooseFile({ ...resource, file: reader.result, filename: filename});
       };
     }
   };

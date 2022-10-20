@@ -138,7 +138,7 @@ button.form:disabled {
 
 /* dynamic table header */
 #home header,
-#newProject header {
+#newProject header,#projectDetails header {
   display: block;
   padding: unset !important;
   min-height: unset !important;
