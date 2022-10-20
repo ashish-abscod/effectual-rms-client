@@ -18,7 +18,7 @@ export default function WriteComment() {
   let { projectId, replyTo, setProjectId } = useContext(ProjectContext);
   const [isDisabled, setDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [resource, setChooseFile] = useState({ file: "" });
+  const [resource, setResource] = useState({ file: "", filename:""});
   const [selectedFile, setSelectedFile] = useState('');
   const [fileNames, setFileNames] = useState([]);
   if (!projectId) setProjectId(window?.localStorage?.getItem('projectId'));
@@ -104,16 +104,15 @@ export default function WriteComment() {
 
   const uploadSingleFile = (e) => {
     if (e.target.files[0]) {
-      setSelectedFile(e.target.files[0].name);
+      const filename = e.target.files[0].name
+      setSelectedFile(filename);
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
       reader.onloadend = () => {
-        setChooseFile({ ...resource, file: reader.result });
+        setResource({ ...resource, file: reader.result, filename: filename });
       };
     }
   };
-
-
 
   const uploadFile = async (e) => {
     if (!replyTo?.commentId) {
@@ -136,7 +135,7 @@ export default function WriteComment() {
         console.log(error);
       } finally {
         setIsLoading(false);
-        setChooseFile({ ...resource, file: "" })
+        setResource({ ...resource, file: "" })
       }
     } else if (replyTo?.commentId) {
       setIsLoading(true);
@@ -158,7 +157,7 @@ export default function WriteComment() {
         console.log(error);
       } finally {
         setIsLoading(false);
-        setChooseFile({ ...resource, file: "" })
+        setResource({ ...resource, file: "" })
       }
     }
   };
