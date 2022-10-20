@@ -8,6 +8,8 @@ import { useState, useEffect } from "react";
 import Landing from "./components/landing/Landing";
 import { UserContext } from "./components/contexts/UserContext";
 import PasswordReset from "./components/landing/PasswordReset";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [projectId, setProjectId] = useState(null);
@@ -34,6 +36,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <ToastContainer/>
       <UserContext.Provider value={{ user, setUser }}>
         <Routes>
           <Route path='/' element={<Landing />} />

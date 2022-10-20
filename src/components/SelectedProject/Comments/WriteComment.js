@@ -7,18 +7,17 @@ import axios from "axios";
 import { UserContext } from "../../contexts/UserContext";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/inject-style";
 import { useEffect } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
+import { toast} from "react-toastify";
 
 export default function WriteComment() {
   const { user } = useContext(UserContext);
   let { projectId, replyTo, setProjectId } = useContext(ProjectContext);
   const [isDisabled, setDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [resource, setResource] = useState({ file: "", filename:""});
+  const [resource, setResource] = useState({ file: "", filename: "" });
   const [selectedFile, setSelectedFile] = useState('');
   const [fileNames, setFileNames] = useState([]);
   if (!projectId) setProjectId(window?.localStorage?.getItem('projectId'));
@@ -56,7 +55,7 @@ export default function WriteComment() {
           {
             projectId: projectId,
             commentId: response?.data?.commentId,
-            role:attachment?.role,
+            role: attachment?.role,
             files: attachment?.files,
             filesName: attachment?.fileNames,
             uploadedBy: attachment?.uploadedBy,
@@ -83,7 +82,7 @@ export default function WriteComment() {
             projectId: projectId,
             replieId: response?.data?.replieId,
             files: attachment?.files,
-            role:attachment?.role,
+            role: attachment?.role,
             filesName: attachment?.fileNames,
             uploadedBy: attachment?.uploadedBy,
           }

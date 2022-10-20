@@ -6,7 +6,6 @@ import Feedback from './Feedback';
 import Evaluation from './Evaluation';
 import { useContext } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
-import { ToastContainer } from 'react-toastify';
 import { useEffect } from 'react';
 
 export default function SelectedProject() {
@@ -19,7 +18,6 @@ export default function SelectedProject() {
 return (
   <>
     <Header />
-
     <div className='container' style={{ paddingTop: "4rem" }} >
       <ul className="nav nav-tabs" id="myTab" role="tablist">
         <li className="nav-item" role="presentation">
@@ -56,7 +54,6 @@ return (
         </div>
       </div>
     </div>
-    <ToastContainer />
   </>
 )
 }
