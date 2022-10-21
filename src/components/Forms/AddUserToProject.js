@@ -123,7 +123,7 @@ export default function AddUserToProject({ formData, setFormData }) {
           <DataTable
             columns={columns}
             data={filteredUsers}
-            noDataComponent="Please Search User to assign."
+            noDataComponent=""
             pagination
             fixedHeader
             fixedHeaderScrollHeight="470px"
