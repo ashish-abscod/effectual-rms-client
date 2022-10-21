@@ -10,7 +10,7 @@ export default function Tabs() {
 
                 <ul className="nav nav-tabs flex-nowrap" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">
-                        <button className="nav-link active theme-color fw-bold" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">List of Projects</button>
+                        <button className="nav-link active theme-color fw-bold" id="homeTabBtn" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">List of Projects</button>
                     </li>
                     <li className="nav-item" role="presentation">
                         <button className="nav-link theme-color fw-bold" data-bs-toggle="tab" data-bs-target="#newProject" type="button" role="tab" aria-controls="profile" aria-selected="false">New Project</button>

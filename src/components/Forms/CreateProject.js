@@ -7,8 +7,9 @@ import { ProjectContext } from "../contexts/ProjectContext";
 import axios from "axios";
 import { useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
-import {toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
+import Swal from "sweetalert2";
 
 export default function CreateProject() {
   const [page, setPage] = useState(0);
@@ -134,32 +135,46 @@ export default function CreateProject() {
           formData
         );
 
-        if (res?.data?.status === "success") toast.success(res?.data?.msg)
-        else toast.error(res?.data?.msg);
-        
-        setAttachment({ ...attachment, projectId: res?.data?.projectId });
+        if (res?.data?.status === "success") {
+          alert("triggered");
+          setAttachment({ ...attachment, projectId: res?.data?.projectId });
 
-        await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
-          projectId: res?.data?.projectId,
-          files: attachment?.files,
-          role:attachment?.userRole,
-          filesName: attachment?.filesName,
-          uploadedBy: attachment?.uploadedBy,
-        });
-
-        await axios.post(
-          `${process.env.REACT_APP_API_URL}/assigned/createUser`,
-          {
-           
-            userId: formData?.assignedUsers,
+          await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
             projectId: res?.data?.projectId,
-            assignedBy: user.userData._id,
-          }
-        );
+            files: attachment?.files,
+            role: attachment?.userRole,
+            filesName: attachment?.filesName,
+            uploadedBy: attachment?.uploadedBy,
+          });
+
+          await axios.post(
+            `${process.env.REACT_APP_API_URL}/assigned/createUser`,
+            {
+
+              userId: formData?.assignedUsers,
+              projectId: res?.data?.projectId,
+              assignedBy: user.userData._id,
+            }
+          );
+
+          Swal.fire({
+            icon: 'success',
+            title: res?.data?.msg
+          });
+          document.getElementById("homeTabBtn").click();
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Project not created!',
+            text: res?.data?.msg,
+          });
+        };
+
       } catch (error) {
         console.log(error);
         toast.error("something went wrong.");
-      } finally{
+      } finally {
         setIsLoading(false);
         setIsDisabled(false);
         //clear FormData Completely after creating project
@@ -179,22 +194,22 @@ export default function CreateProject() {
         await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
           projectId: res?.data?.projectId,
           files: attachment?.files,
-          role:attachment?.userRole,
+          role: attachment?.userRole,
           filesName: attachment?.filesName,
           uploadedBy: attachment?.uploadedBy,
         });
-        
+
         await axios.post(
           `${process.env.REACT_APP_API_URL}/assigned/updateUser/${projectId}`,
           formData?.assignedUsers);
-       
+
         // clear assignedUsers from formdata after updation complete
-        setFormData({ ...formData, assignedUsers: []});
+        setFormData({ ...formData, assignedUsers: [] });
         toast.success(res?.data?.msg);
       } catch (error) {
         toast("Something went wrong.");
         console.log(error.res);
-      }finally{
+      } finally {
         setIsLoading(false);
         setIsDisabled(false);
         setFileNames([]);
@@ -242,10 +257,10 @@ export default function CreateProject() {
             </button>
             {isLoading && (
               <>
-              <div className="spinner-border text-primary" role="status">
-                <span className="sr-only"></span>
-              </div>
-              <span className="text-primary ms-2 mt-1">Please wait...</span>
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only"></span>
+                </div>
+                <span className="text-primary ms-2 mt-1">Please wait...</span>
               </>
             )}
             <button
