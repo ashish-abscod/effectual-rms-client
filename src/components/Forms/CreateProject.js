@@ -136,6 +136,7 @@ export default function CreateProject() {
 
         if (res?.data?.status === "success") toast.success(res?.data?.msg)
         else toast.error(res?.data?.msg);
+        console.log(res?.data?.msg);
         
         setAttachment({ ...attachment, projectId: res?.data?.projectId });
 
