@@ -110,15 +110,15 @@ export default function AllProjects() {
         },
     }
 
-    const conditionalRowStyles = [
-        {
-            when: row => row?.status?.includes("2"),
-            style: {
-                backgroundColor: '#04ff1857',
-                color: 'black'
-            },
-        }
-    ]
+    // const conditionalRowStyles = [
+    //     {
+    //         when: row => row?.status?.includes("2"),
+    //         style: {
+    //             backgroundColor: '#04ff1857',
+    //             color: 'black'
+    //         },
+    //     }
+    // ]
     
     return (
         <>
@@ -128,7 +128,6 @@ export default function AllProjects() {
                     onRowClicked={(row) => setProjectIdHandler(row.projectId)} striped customStyles={customStyles} responsive
                     onSelectedRowsChange={(selectedRows) => setSelectedProjects(selectedRows?.selectedRows)}
                     progressPending={loading}
-                    conditionalRowStyles={conditionalRowStyles}
                     progressComponent={
                         <div className='d-flex align-items-center p-5'>
                             <div className="spinner-border text-primary" style={{ width: "3rem", height: "3rem" }} role="status">
