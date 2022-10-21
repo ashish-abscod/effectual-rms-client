@@ -136,7 +136,6 @@ export default function CreateProject() {
         );
 
         if (res?.data?.status === "success") {
-          alert("triggered");
           setAttachment({ ...attachment, projectId: res?.data?.projectId });
 
           await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
@@ -172,7 +171,7 @@ export default function CreateProject() {
         };
 
       } catch (error) {
-        console.log(error);
+      
         toast.error("something went wrong.");
       } finally {
         setIsLoading(false);

@@ -149,6 +149,9 @@ button.form:disabled {
 #home div[data-column-id="2"] {
   min-width: 30vw;
 }
+#home div[data-column-id="2"] > div{
+  min-width: unset;
+}
 
 #home div input[type="checkbox"] {
   width: 18px;
