@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import { useRef } from "react";
+import {AiFillStar} from "react-icons/ai";
 
 export default function ProjectInfo({ formData, setFormData, setIsDisabled, projectId }) {
     const [msg, setMsg] = useState("");
@@ -30,7 +31,7 @@ export default function ProjectInfo({ formData, setFormData, setIsDisabled, proj
             <div className='row gy-3 gy-md-3 gx-4 row-cols-lg-3 row-cols-md-2 justify-content-evenly'>
                 <div className="input-field mt-5">
                     <input type="text" className="form-control" id="searchObject" ref={inputRef} required value={formData?.SearchObject} onChange={(e)=>searchObjectHandler(e)} />
-                    <label>Search Object:</label>
+                    <label>Search Object: <AiFillStar className="text-danger"/></label>
                     <span className='text-danger'>{msg}</span>
                 </div>
                 <div className="input-field mt-5">
