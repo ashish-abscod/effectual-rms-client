@@ -34,7 +34,7 @@ export default function CommentInbox() {
 
     return (
         <>
-            <h5 className='theme3-color fw-bold d-inline-block ms-3 mt-2'>Discussion Inbox</h5>
+            <h5 className='theme3-color fw-bold d-inline-block ms-3 mt-2'>Discussion Board for {projectId}</h5>
             <Link to={"/comment"} className="btn btn-sm btn-primary my-1 py-2 px-4 float-end me-3 fw-bold" onClick={() => setReplyTo(null)}> <BiCommentDetail className="fs-5 fw-bold" /> Add Comment </Link>
             <section className='container commentInbox overflow-auto' style={{height:"73vh"}}>
 
@@ -43,7 +43,7 @@ export default function CommentInbox() {
                     <div className='row parent-wrapper bg-light py-2 border-top border-bottom mb-3' key={i}>
 
                         <div className='parent-profile-info' style={{ fontSize: "14px", left: "4em" }}>
-                            <span className='name text-primary fw-bold'>{items?.userName} </span>
+                            <span className='name text-primary fw-bold fs-5'>{items?.userName} </span>
                             <span className='designation text-secondary fw-bold'>({items?.userRole})</span>
                             <span className='fw-normal'>: <Moment format='DD-MMM-YYYY HH:mm a' className='fw-bold'>{items?.time}</Moment></span>
                             <button type="button" className='btn btn-outline-primary rounded-pill ps-1 pe-2 py-1 float-end' onClick={() => { setReplyTo({ userName: items.userName, time: items.time, commentId: items.commentId }); navigate('/comment') }}><BsReplyAllFill className='fs-4 pb-1' /> Reply</button>
