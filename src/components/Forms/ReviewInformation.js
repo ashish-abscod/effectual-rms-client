@@ -97,7 +97,7 @@ export default function ReviewInformation({ formData,fileNames }) {
                   <ul className='p-0'> 
                   {
                     fileNames?.map((fileName, i) =>
-                      <li key={i} className="text-success list-unstyled d-inline-block text-truncate" style={{ maxWidth: "20rem" }} ><BsCheckCircleFill color="green" /> <span className="">{fileName}</span></li>
+                      <li key={i} className="text-success list-unstyled d-block text-truncate" style={{ maxWidth: "20rem" }} ><BsCheckCircleFill color="green" /> <span className="">{fileName}</span></li>
                     )
                   }
                   </ul>
@@ -110,12 +110,11 @@ export default function ReviewInformation({ formData,fileNames }) {
                 <div className='fw-bold theme2-color overflow-auto text-wrap text-break' style={{ maxHeight: "100%" }}>{formData?.UsefulInformationForSearch ? formData?.UsefulInformationForSearch : "..."}</div>
               </div>
             </li>
-            {/* <li className="list-group-item overflow-auto tooltips" style={{ maxHeight: "170px", top: "0px" }}>14. <span className='ms-3 fw-bold theme2-color'>{formData?.UsefulInformationForSearch}</span> <span className="tooltiptext">Useful Information For Search</span></li> */}
           </ol>
 
         </div>
         
-        <div className='col-lg-8 float-start' style={{ cursor: "pointer"}}>
+        {/* <div className='col-lg-8 float-start' style={{ cursor: "pointer"}}>
           <ol className="list-group">
             <li className="list-group-item">
               <h5 className='fw-bold theme3-color'>New Assgined Users:</h5>
@@ -142,7 +141,7 @@ export default function ReviewInformation({ formData,fileNames }) {
               </table>
             </li>
           </ol>
-        </div>
+        </div> */}
 
       </div>
     </>
