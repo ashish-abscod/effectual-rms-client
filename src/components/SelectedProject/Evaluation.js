@@ -5,6 +5,7 @@ import { BsQuestionDiamondFill } from "react-icons/bs";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
+import {MdEdit} from "react-icons/md";
 
 export default function Evaluation() {
   const { user } = useContext(UserContext);
@@ -14,10 +15,11 @@ export default function Evaluation() {
   const [isHistoryHovering, setIsHistoryHovering] = useState(false);
   const [isDataHovering, setIsDataHovering] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [disabledField, setDisabledField] = useState(false);
 
   useEffect(() => {
     if (!projectId) setProjectId(window?.localStorage?.getItem('projectId'));
-  }, [projectId,setProjectId])
+  }, [projectId, setProjectId])
 
   const claimMouseOver = () => {
     setIsClaimHovering(true);
@@ -65,7 +67,7 @@ export default function Evaluation() {
       const res = await axios.get(
         `${process.env.REACT_APP_API_URL}/evaluation/getById/${projectId}`
       );
-      const { modification, appSerachResult, claimscore, comment, datacoverage, historyscore, searchscore, editedby,category} = { ...res?.data?.result };
+      const { modification, appSerachResult, claimscore, comment, datacoverage, historyscore, searchscore, editedby, category } = { ...res?.data?.result };
       if (res?.data?.result) {
         setevaluationData({
           ...evaluationData,
@@ -79,6 +81,8 @@ export default function Evaluation() {
           appSerachResult: appSerachResult,
           editedby: editedby,
         });
+
+        setDisabledField(true);
       }
     } catch (error) {
       console.log(error);
@@ -141,6 +145,7 @@ export default function Evaluation() {
         <div className="col">
           <div className="input-field">
             <select
+            disabled={disabledField}
               className="form-select"
               value={evaluationData?.category}
               onChange={(e) => {
@@ -164,6 +169,7 @@ export default function Evaluation() {
               type="text"
               className="form-control"
               value={evaluationData?.appSerachResult}
+              disabled={disabledField}
               required
               onChange={(e) => {
                 setevaluationData({
@@ -197,6 +203,7 @@ export default function Evaluation() {
               className="form-control"
               required
               value={evaluationData?.searchscore}
+              disabled={disabledField}
               onChange={(e) => {
                 setevaluationData({
                   ...evaluationData,
@@ -246,6 +253,7 @@ export default function Evaluation() {
               type="text"
               className="form-control"
               required
+              disabled={disabledField}
               value={evaluationData?.claimscore}
               onChange={(e) => {
                 setevaluationData({
@@ -309,6 +317,7 @@ export default function Evaluation() {
               type="text"
               className="form-control"
               required
+              disabled={disabledField}
               value={evaluationData?.historyscore}
               onChange={(e) => {
                 setevaluationData({
@@ -368,6 +377,7 @@ export default function Evaluation() {
               type="text"
               className="form-control"
               required
+              disabled={disabledField}
               value={evaluationData?.datacoverage}
               onChange={(e) => {
                 setevaluationData({
@@ -423,6 +433,7 @@ export default function Evaluation() {
           <div className="input-field">
             <input
               type="text"
+              disabled={disabledField}
               className="form-control"
               onChange={(e) => {
                 setevaluationData({
@@ -449,6 +460,7 @@ export default function Evaluation() {
             className="w-100 border border-primary rounded p-3"
             placeholder="Write your comment here..."
             value={evaluationData?.comment}
+            disabled={disabledField}
             onChange={(e) => {
               setevaluationData({
                 ...evaluationData,
@@ -456,15 +468,17 @@ export default function Evaluation() {
               });
             }}
           ></textarea>
-          <button
-            type="button"
-            disabled={isLoading ? true : false}
-            className="btn btn-success w-100 rounded-pill mt-3"
-            onClick={() => submitData()}
-          >
-            Evaluate
-
-          </button>
+          <div className="d-flex justify-content-between align-items-center mt-3">
+            <button type="button" className="btn btn-primary fw-bold" onClick={()=>setDisabledField(!disabledField)}>Edit <MdEdit /></button>
+            <button
+              type="button"
+              disabled={isLoading ? true : false}
+              className="btn btn-success rounded-pill btn-lg py-1"
+              onClick={() => submitData()}
+            >
+              Evaluate
+            </button>
+          </div>
         </div>
       </div>
     </div>

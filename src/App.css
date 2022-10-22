@@ -176,6 +176,7 @@ button.form:disabled {
 /* -----------Jodit-react editor----------- */
 div.jodit-wysiwyg {
   min-height: 55vh !important;
+  max-height: 55vh !important;
 }
 
 
