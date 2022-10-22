@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
 import axios from "axios"
 import { BiDownload } from "react-icons/bi"
+import Moment from 'react-moment';
 
 export default function FileManger() {
 
@@ -45,8 +46,8 @@ export default function FileManger() {
             <div className='container'>
                 <div className='row row-cols-md-2 pt-4 '>
                     <div>
-                        <h5 className='text-center theme-color'>
-                            Client Reports
+                        <h5 className='text-center theme-color fw-bold'>
+                            Client Files
                         </h5>
                         <div style={{ height: "70vh" }} className="table-responsive">
                             <table className="table table-bordered table-striped">
@@ -63,8 +64,8 @@ export default function FileManger() {
                                         item?.files?.map((url, b) =>
                                             <tr key={`${a}${b}`}>
                                                 <td>{item.uploadedBy}</td>
-                                                <td>{item.createdAt}</td>
-                                                <td><a href={url} className="me-3"><BiDownload /></a></td>
+                                                <td><Moment format="DD/MM/YYYY HH:mm a">{item.createdAt}</Moment></td>
+                                                <td className='text-center'><a href={url} className="me-3 fw-bold lh-1"><BiDownload size={25}/></a></td>
                                             </tr>
 
                                         )
@@ -78,8 +79,8 @@ export default function FileManger() {
                     </div>
 
                     <div>
-                        <h5 className='text-center theme-color'>
-                            Effectual Reports
+                        <h5 className='text-center theme-color fw-bold'>
+                            Effectual Files
                         </h5>
                         <div style={{ height: "70vh" }} className="table-responsive">
                             <table className="table table-bordered table-striped">
@@ -97,8 +98,8 @@ export default function FileManger() {
                                         item?.files?.map((url, b) =>
                                             <tr key={`${a}${b}`}>
                                                 <td>{item.uploadedBy}</td>
-                                                <td>{item.createdAt}</td>
-                                                <td><a href={url} className="me-3"><BiDownload /></a></td>
+                                                <td><Moment format="DD/MM/YYYY HH:mm a">{item.createdAt}</Moment></td>
+                                                <td className='text-center'><a href={url} className="me-3 fw-bold lh-1"><BiDownload size={25}/></a></td>
                                             </tr>
 
                                         )
