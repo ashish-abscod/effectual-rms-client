@@ -15,6 +15,7 @@ function App() {
   const [projectId, setProjectId] = useState(null);
   const [user, setUser] = useState({ userData: "", auth: false, token: null });
   const [replyTo, setReplyTo] = useState(null);
+  const [isProjectAddOrUpdate, setIsProjectAddOrUpdate] = useState(false);
 
   useEffect(() => {
     if (user?.auth) {
@@ -46,8 +47,8 @@ function App() {
               <Route
                 path="/main"
                 element={
-                  <ProjectContext.Provider value={{ projectId, setProjectId }}>
-                    <Home setProjectId={setProjectId} />
+                  <ProjectContext.Provider value={{ projectId, setProjectId,isProjectAddOrUpdate,setIsProjectAddOrUpdate}}>
+                    <Home setProjectId={setProjectId}/>
                   </ProjectContext.Provider>
                 }
               />
