@@ -10,7 +10,9 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
-import { toast} from "react-toastify";
+import { toast } from "react-toastify";
+import { ImCross } from "react-icons/im";
+
 
 export default function WriteComment() {
   const { user } = useContext(UserContext);
@@ -33,9 +35,8 @@ export default function WriteComment() {
     userRole: user?.userData?.role,
   });
 
-  const [attachment] = useState({
+  const [attachment, setAttachment] = useState({
     files: [],
-    fileNames: [],
     uploadedBy: user?.userData?.name,
     role: user?.userData?.role
   });
@@ -169,6 +170,20 @@ export default function WriteComment() {
   }, [resource]
   )
 
+  const handleRemoveFile = (id) => {
+    const filteredFileNames = fileNames?.filter((fileName, i) => {
+      if (i !== id) return fileName;
+      else return "";
+    })
+    const filteredFiles = attachment?.files?.filter((url, i) => {
+      if (i !== id) return url;
+      else return "";
+
+    })
+    setFileNames(filteredFileNames);
+    setAttachment({ ...attachment, files: filteredFiles });
+  }
+
   return (
     <>
       <Header />
@@ -229,8 +244,10 @@ export default function WriteComment() {
             <div className="mt-3 overflow-auto" style={{ maxHeight: "50vh" }}>
               {
                 fileNames?.map((fileName, i) =>
-                  <li key={i} className="text-success list-unstyled d-block text-truncate"
-                    style={{ maxWidth: "20rem" }}><BsCheckCircleFill color="green" /> <span className="">{fileName}</span></li>
+                  <div className="d-flex text-align-center">
+                    <li key={i} className="text-success list-unstyled d-inline-block text-truncate" style={{ maxWidth: "18rem" }}><BsCheckCircleFill color="green" /> <span className="ms-1">{fileName}</span></li>
+                    <button type="button" className="bg-transparent border-0 fw-bold btn-sm lh-1" onClick={() => handleRemoveFile(i)}><ImCross /></button>
+                  </div>
                 )
               }
             </div>

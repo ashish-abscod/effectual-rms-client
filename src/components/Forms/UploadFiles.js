@@ -3,12 +3,12 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
 import { useEffect } from "react";
-import {BsCheckCircleFill} from "react-icons/bs";
+import { BsCheckCircleFill } from "react-icons/bs";
+import { ImCross } from "react-icons/im";
 
-
-export default function UploadFiles({ formData, setFormData, attachment,fileNames,setFileNames }) {
+export default function UploadFiles({ formData, setFormData, attachment, fileNames, setFileNames,setAttachment }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [resource, setChooseFile] = useState({ file: "", filename:"" });
+  const [resource, setChooseFile] = useState({ file: "", filename: "" });
   const [selectedFile, setSelectedFile] = useState('');
 
   const uploadSingleFile = (e) => {
@@ -18,7 +18,7 @@ export default function UploadFiles({ formData, setFormData, attachment,fileName
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
       reader.onloadend = () => {
-        setChooseFile({ ...resource, file: reader.result, filename: filename});
+        setChooseFile({ ...resource, file: reader.result, filename: filename });
       };
     }
   };
@@ -52,6 +52,20 @@ export default function UploadFiles({ formData, setFormData, attachment,fileName
   }, [resource]
   )
 
+  const handleRemoveFile = (id)=>{
+    const filteredFileNames = fileNames?.filter((fileName,i)=>{
+      if(i !== id) return fileName;
+      else return "";
+    })
+    const filteredFiles = attachment?.files?.filter((url,i)=>{
+      if(i !== id) return url;
+      else return "";
+      
+    })
+    setFileNames(filteredFileNames);
+    setAttachment({...attachment, files: filteredFiles});
+  }
+
   return (
     <>
       <div className="continar">
@@ -74,10 +88,13 @@ export default function UploadFiles({ formData, setFormData, attachment,fileName
               onChange={(e) => uploadSingleFile(e)}
             />
 
-            <div className="mt-3 overflow-auto" style={{maxHeight:"50vh"}}>
+            <div className="mt-3" style={{ maxHeight: "50vh" }}>
               {
                 fileNames?.map((fileName, i) =>
-                  <li key={i} className="text-success list-unstyled d-flex text-truncate align-items-center" style={{maxWidth:"20rem"}}><BsCheckCircleFill color="green"/> <span className="ms-1">{fileName}</span></li>
+                  <div className="d-flex text-align-center">
+                    <li key={i} className="text-success list-unstyled d-inline-block text-truncate" style={{ maxWidth: "18rem" }}><BsCheckCircleFill color="green" /> <span className="ms-1">{fileName}</span></li>
+                    <button type="button" className="bg-transparent border-0 fw-bold btn-sm lh-1" onClick={()=>handleRemoveFile(i)}><ImCross/></button>
+                  </div>
                 )
               }
             </div>
