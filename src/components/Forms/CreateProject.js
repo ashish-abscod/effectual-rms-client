@@ -38,7 +38,6 @@ export default function CreateProject() {
 
   const [attachment, setAttachment] = useState({
     files: [],
-    filesName: [],
     uploadedBy: user?.userData?.name,
     userRole: user?.userData?.role
   });
@@ -103,6 +102,7 @@ export default function CreateProject() {
             formData={formData}
             setFormData={setFormData}
             attachment={attachment}
+            setAttachment={setAttachment}
             fileNames={fileNames} setFileNames={setFileNames}
           />
         );
@@ -142,7 +142,6 @@ export default function CreateProject() {
             projectId: res?.data?.projectId,
             files: attachment?.files,
             role: attachment?.userRole,
-            filesName: attachment?.filesName,
             uploadedBy: attachment?.uploadedBy,
           });
 
@@ -194,7 +193,6 @@ export default function CreateProject() {
           projectId: res?.data?.projectId,
           files: attachment?.files,
           role: attachment?.userRole,
-          filesName: attachment?.filesName,
           uploadedBy: attachment?.uploadedBy,
         });
 
