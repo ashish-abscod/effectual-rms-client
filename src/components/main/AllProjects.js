@@ -12,10 +12,9 @@ export default function AllProjects() {
     const [projects, setProjects] = useState([]);
     const [filteredProjects, setFilteredProjects] = useState([]);
     const [selectedProjects, setSelectedProjects] = useState([]);
-    const { setProjectId } = useContext(ProjectContext);
+    const { setProjectId,isProjectAddOrUpdate} = useContext(ProjectContext);
     const [loading, setLoading] = useState(false);
     const location = useLocation();
-
 
     //setProjectId null when user press back button to main panel, 
     // which helps to create new project instead to update selected project.
@@ -50,7 +49,7 @@ export default function AllProjects() {
     //loading all project list once only
     useEffect(() => {
         getProjects();
-    }, []);
+    }, [isProjectAddOrUpdate]);
 
 
     //multiple fields search based on search key

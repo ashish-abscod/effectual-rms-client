@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 
 export default function CreateProject() {
   const [page, setPage] = useState(0);
-  const { projectId } = useContext(ProjectContext);
+  const { projectId,setIsProjectAddOrUpdate } = useContext(ProjectContext);
   const { user } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -155,6 +155,7 @@ export default function CreateProject() {
             }
           );
 
+          setIsProjectAddOrUpdate(true);
           Swal.fire({
             icon: 'success',
             title: res?.data?.msg

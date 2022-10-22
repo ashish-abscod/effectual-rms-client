@@ -12,7 +12,7 @@ import { BsCheckCircleFill } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { ImCross } from "react-icons/im";
-
+import {FaPaperPlane} from "react-icons/fa";
 
 export default function WriteComment() {
   const { user } = useContext(UserContext);
@@ -217,7 +217,7 @@ export default function WriteComment() {
               className="btn bg-success rounded-pill text-white px-2 mt-3 float-end"
               onClick={addData}
             >
-              <i className="bi bi-plus-circle me-1"></i>Add Comment
+              <FaPaperPlane/> {!replyTo?.commentId ? "Add Comment" : "Add Replie"}
             </button>
           </div>
 
