@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
-
 export default function AddNewUser() {
+
   const [addUser, setAddUser] = useState({
     name: "",
     email: "",
