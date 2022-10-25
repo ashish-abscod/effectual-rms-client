@@ -4,6 +4,7 @@ import { ProjectContext } from '../contexts/ProjectContext';
 import axios from "axios"
 import { BiDownload } from "react-icons/bi"
 import Moment from 'react-moment';
+import {FiUpload} from "react-icons/fi";
 
 export default function FileManger() {
 
@@ -79,9 +80,10 @@ export default function FileManger() {
                     </div>
 
                     <div>
-                        <h5 className='text-center theme-color fw-bold'>
+                        <h5 className='text-center theme-color fw-bold d-inline-block   '>
                             Effectual Files
                         </h5>
+                        <button type="button" className='btn btn-primary lh-1 ms-1'><FiUpload/></button>
                         <div style={{ height: "70vh" }} className="table-responsive">
                             <table className="table table-bordered table-striped">
                                 <thead className='table-dark'>
