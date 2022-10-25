@@ -37,7 +37,6 @@ export default function Tabs() {
                             </div>
                             : ""
                     }
-
                     <div className="tab-pane fade bg-white" id="manageUser" role="tabpanel" aria-labelledby="contact-tab">
                         <ManageUser />
                     </div>
