@@ -91,8 +91,8 @@ export default function UploadFiles({ formData, setFormData, attachment, fileNam
             <div className="mt-3" style={{ maxHeight: "50vh" }}>
               {
                 fileNames?.map((fileName, i) =>
-                  <div className="d-flex text-align-center">
-                    <li key={i} className="text-success list-unstyled d-inline-block text-truncate" style={{ maxWidth: "18rem" }}><BsCheckCircleFill color="green" /> <span className="ms-1">{fileName}</span></li>
+                  <div className="d-flex text-align-center" key={`${fileName+i}`}>
+                    <li className="text-success list-unstyled d-inline-block text-truncate" style={{ maxWidth: "18rem" }}><BsCheckCircleFill color="green" /> <span className="ms-1">{fileName}</span></li>
                     <button type="button" className="bg-transparent border-0 fw-bold btn-sm lh-1" onClick={()=>handleRemoveFile(i)}><ImCross/></button>
                   </div>
                 )

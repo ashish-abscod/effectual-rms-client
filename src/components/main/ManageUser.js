@@ -85,7 +85,6 @@ export default function ManageUser() {
                 <thead className="table-dark" data-sticky-header={true}>
                   <tr>
                     <th>#</th>
-                    {/* <th>Photo</th> */}
                     <th>User Name</th>
                     <th>Email Id</th>
                     <th>Role</th>
@@ -97,18 +96,6 @@ export default function ManageUser() {
                     item.status === true ? (
                       <tr key={i}>
                         <th>{i + 1}</th>
-                        {/* <td>
-                          <div
-                            className="rounded shadow me-3"
-                            style={{ width: "50px", height: "50px" }}
-                          >
-                            <img
-                              src={item.picture}
-                              alt=""
-                              className="w-100 h-100 overflow-hidden rounded "
-                            ></img>
-                          </div>
-                        </td> */}
                         <td>{item.name}</td>
                         <td>{item.email}</td>
                         <td>{item.role}</td>
