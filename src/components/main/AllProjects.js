@@ -86,12 +86,12 @@ export default function AllProjects() {
         },
         {
             // row?.requestedDate
-            selector: (row) => <Moment format="DD/MM/YYYY">{row?.requestedDate}</Moment>,
+            selector: (row) => <Moment format="DD-MM-YYYY">{row?.requestedDate}</Moment>,
             name: "Request Date",
             sortable: true
         },
         {
-            selector: (row) => <Moment format="DD/MM/YYYY">{row?.deliveryDate}</Moment>,
+            selector: (row) => <Moment format="DD-MM-YYYY">{row?.deliveryDate}</Moment>,
             name: "Delievery Date",
             sortable: true
         },
