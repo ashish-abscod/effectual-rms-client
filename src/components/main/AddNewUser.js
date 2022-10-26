@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
-
+import { UserContext } from "../contexts/UserContext";
 export default function AddNewUser() {
+  const { user } = useContext(UserContext);
   const [addUser, setAddUser] = useState({
     name: "",
     email: "",
@@ -35,7 +36,7 @@ export default function AddNewUser() {
 
   useEffect(() => {
     if (addUser?.password !== addUser?.confirmPassword) {
-      setError(error => ({...error, confirmPassword: "Both Password must be match!" }));
+      setError(error => ({ ...error, confirmPassword: "Both Password must be match!" }));
     } else {
       setError(error => ({ ...error, confirmPassword: "" }));
     }
@@ -131,7 +132,9 @@ export default function AddNewUser() {
                     </div>
                     <span className='text-danger mt-2 d-block'>{error?.confirmPassword}</span>
 
+
                     <div className="input-field">
+
                       <select className="form-select"
                         type="text"
                         name=" role"
@@ -144,15 +147,25 @@ export default function AddNewUser() {
                           });
                         }}
                       >
-                        <option value="Manager">Manager</option>
-                        <option value="Patent Expert">Patent Expert</option>
-                        <option value="Searcher">Searcher</option>
-                        <option value="Client Admin">Client Admin</option>
-                        <option value="Effectual Admin">Effectual Admin</option>
-                        <option value="Technical Expert">Technical Expert</option>
+                        {
+                          user?.userData?.role === "Client Admin" ?
+                            <>
+                              <option value="Patent Expert">Patent Expert</option>
+                              <option value="Technical Expert">Technical Expert</option>
+                            </> : ""
+                        }
+                        {
+                          user?.userData?.role === "Effectual Admin" ?
+                            <>
+                              <option value="Patent Expert">Manager</option>
+                              <option value="Technical Expert">Searcher</option>
+                            </> : ""
+                        }
+
                       </select>
                       <label>Role:</label>
                       <span className="d-none">Error : Field Required</span>
+
                     </div>
                   </div>
                 </div>
