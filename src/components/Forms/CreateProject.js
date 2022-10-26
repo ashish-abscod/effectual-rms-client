@@ -18,6 +18,8 @@ export default function CreateProject() {
   const [isLoading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isReadOnly, setIsReadOnly] = useState(false);
+  const [error1, setError1] = useState("");
+  const [error2, setError2] = useState("");
 
   useEffect(() => {
     if (user?.userData?.role === "Technical Expert" || user?.userData?.role === "Patent Expert") {
@@ -42,6 +44,20 @@ export default function CreateProject() {
     UsefulInformationForSearch: "",
     assignedUsers: [],
   });
+
+  useEffect(() => {
+    if (formData?.SearchObject === "") setError1("search object field required.");
+    else setError1("");
+    if (formData?.RequirementDeliveryDate === "") setError2("requirement delivery date required.");
+    else setError2("");
+
+    if(error1 || error2){
+      setIsDisabled(true);
+    }else{
+      setIsDisabled(false);
+    }
+  }, [formData,error1,error2]);
+
   const [fileNames, setFileNames] = useState([]);
 
 
@@ -102,7 +118,7 @@ export default function CreateProject() {
     switch (page) {
       case 0:
         returnvalue = (
-          <ProjectInfo formData={formData} setFormData={setFormData} isReadOnly={isReadOnly} />
+          <ProjectInfo formData={formData} setFormData={setFormData} isReadOnly={isReadOnly} error1={error1} error2={error2} />
         );
         break;
       case 1:
