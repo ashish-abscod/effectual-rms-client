@@ -155,18 +155,21 @@ export default function AddUserToProject({ formData, setFormData, isReadOnly }) 
             </div> : ""
         }
         <div className="col overflow-auto" style={{ maxHeight: "70vh" }}>
-          <h5 className="text-primary fw-bold m-0 p-0 mt-4">Assigned Users</h5>
+          <h5 className="text-primary fw-bold m-0 p-0 mt-4 text-center">Assigned Users</h5>
           <table className="table mt-2 table-striped">
-            <thead className="thead-dark">
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Role</th>
-                {isReadOnly === false ?
-                  <th scope="col">Action</th>
-                  : ""
-                }
-              </tr>
-            </thead>
+            {(formData?.assignedUsers?.length > 0 || alreadyAssignedUsers?.userId?.length > 0) ?
+              <thead thead className="thead-dark">
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Role</th>
+                  {isReadOnly === false ?
+                    <th scope="col">Action</th>
+                    : ""
+                  }
+                </tr>
+              </thead>
+              : ""
+            }
             <tbody>
               {alreadyAssignedUsers?.userId?.map((item) => (
                 <tr className="mb-2" key={item._id}>
