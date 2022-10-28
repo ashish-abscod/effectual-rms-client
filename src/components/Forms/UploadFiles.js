@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { ImCross } from "react-icons/im";
 
-export default function UploadFiles({ formData, setFormData, attachment, fileNames, setFileNames,setAttachment }) {
+export default function UploadFiles({ formData, setFormData, attachment, fileNames, setFileNames, setAttachment, isReadOnly }) {
   const [isLoading, setIsLoading] = useState(false);
   const [resource, setChooseFile] = useState({ file: "", filename: "" });
   const [selectedFile, setSelectedFile] = useState('');
@@ -52,59 +52,65 @@ export default function UploadFiles({ formData, setFormData, attachment, fileNam
   }, [resource]
   )
 
-  const handleRemoveFile = (id)=>{
-    const filteredFileNames = fileNames?.filter((fileName,i)=>{
-      if(i !== id) return fileName;
+  const handleRemoveFile = (id) => {
+    const filteredFileNames = fileNames?.filter((fileName, i) => {
+      if (i !== id) return fileName;
       else return "";
     })
-    const filteredFiles = attachment?.files?.filter((url,i)=>{
-      if(i !== id) return url;
+    const filteredFiles = attachment?.files?.filter((url, i) => {
+      if (i !== id) return url;
       else return "";
-      
+
     })
     setFileNames(filteredFileNames);
-    setAttachment({...attachment, files: filteredFiles});
+    setAttachment({ ...attachment, files: filteredFiles });
   }
 
   return (
     <>
       <div className="continar">
         <div className="row">
-          <div className="col-md-6 col-lg-4 bg-light pt-2">
-            <label className="text-primary fw-bold d-flex align-items-center">
-              Upload File:
-              {isLoading && (
-                <>
-                  <div className="spinner-border text-secondary ms-3 me-2" role="status">
-                    <span className="sr-only"></span>
-                  </div>
-                  <span className="text-secondary">Uploading...</span>
-                </>
-              )}
-            </label>
-            <input
-              type="file"
-              className="form-control mt-2"
-              onChange={(e) => uploadSingleFile(e)}
-            />
+          {
+            isReadOnly === false ? 
+            <div className="col-md-6 col-lg-4 bg-light pt-2">
+              <label className="text-primary fw-bold d-flex align-items-center">
+                Upload File:
+                {isLoading && (
+                  <>
+                    <div className="spinner-border text-secondary ms-3 me-2" role="status">
+                      <span className="sr-only"></span>
+                    </div>
+                    <span className="text-secondary">Uploading...</span>
+                  </>
+                )}
+              </label>
+              <input
+                type="file"
+                className="form-control mt-2"
+                onChange={(e) => uploadSingleFile(e)}
+                disabled={isReadOnly}
+              />
 
-            <div className="mt-3" style={{ maxHeight: "50vh" }}>
-              {
-                fileNames?.map((fileName, i) =>
-                  <div className="d-flex text-align-center">
-                    <li key={i} className="text-success list-unstyled d-inline-block text-truncate" style={{ maxWidth: "18rem" }}><BsCheckCircleFill color="green" /> <span className="ms-1">{fileName}</span></li>
-                    <button type="button" className="bg-transparent border-0 fw-bold btn-sm lh-1 text-danger" onClick={()=>handleRemoveFile(i)}><ImCross/></button>
-                  </div>
-                )
-              }
+              <div className="mt-3" style={{ maxHeight: "50vh" }}>
+                {
+                  fileNames?.map((fileName, i) =>
+                    <div className="d-flex text-align-center" key={`${fileName + i}`}>
+                      <li className="text-success list-unstyled d-inline-block text-truncate" style={{ maxWidth: "18rem" }}><BsCheckCircleFill color="green" /> <span className="ms-1">{fileName}</span></li>
+                      <button type="button" className="bg-transparent border-0 fw-bold btn-sm lh-1 text-danger" onClick={() => handleRemoveFile(i)}><ImCross /></button>
+                    </div>
+                  )
+                }
+              </div>
+
             </div>
-
-          </div>
-          <div className="col-md-6 col-lg-8">
+            : ""
+          }
+          <div className="col">
             <label className="w-100 pt-2 text-primary fw-bold fs-5">
               Useful information for search
               <textarea
                 type="text"
+                disabled={isReadOnly}
                 className="form-control mt-1"
                 style={{ minHeight: "60vh" }}
                 id="info"

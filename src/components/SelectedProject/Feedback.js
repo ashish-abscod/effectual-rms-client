@@ -22,7 +22,9 @@ export default function Feedback() {
   });
 
   const submitData = async () => {
+    if(addFeedback?.feedback !== ""){
     try {
+
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}/feedback/`,
         addFeedback
@@ -37,6 +39,9 @@ export default function Feedback() {
       toast.error("Something went wrong.");
       console.log(error);
     }
+  }else{
+    toast.warn("Please write some feedback!");
+  }
   };
   return (
     <>
@@ -53,10 +58,10 @@ export default function Feedback() {
               }
             ></textarea>
           </div>
-          <div className="col-12 text-center mt-3">
+          <div className="col-12 mt-3">
             <button
               type="submit"
-              className="btn btn-lg btn-outline-success rounded-pill"
+              className="btn btn-lg float-end btn-outline-success rounded-pill"
               onClick={()=>submitData()}
             >
               Send Feedback

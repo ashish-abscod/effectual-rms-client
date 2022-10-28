@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import TableHeader from './TableHeader';
 import { useContext } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
+import { UserContext } from '../contexts/UserContext';
 import Moment from 'react-moment';
 
 export default function AllProjects() {
@@ -13,6 +14,7 @@ export default function AllProjects() {
     const [filteredProjects, setFilteredProjects] = useState([]);
     const [selectedProjects, setSelectedProjects] = useState([]);
     const { setProjectId,isProjectAddOrUpdate} = useContext(ProjectContext);
+    const { user} = useContext(UserContext);
     const [loading, setLoading] = useState(false);
     const location = useLocation();
 
@@ -32,11 +34,20 @@ export default function AllProjects() {
     }
 
 
-    //fetching data from endpoint
+   
+    //loading all project list once only
+    useEffect(() => {
+         //fetching data from endpoint
     const getProjects = async () => {
         try {
             setLoading(true);
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/projects`);
+            let response;
+            if(user?.userData?.role === "Technical Expert" || user?.userData?.role === "Patent Expert") {
+                response = await axios.get(`${process.env.REACT_APP_API_URL}/projects/getProjectsAssignedToUser/${user?.userData?._id}`);
+            }
+            else{
+                response = await axios.get(`${process.env.REACT_APP_API_URL}/projects`);
+            }
             setProjects(response.data);
             setFilteredProjects(response.data);
         } catch (error) {
@@ -46,10 +57,8 @@ export default function AllProjects() {
         }
     }
 
-    //loading all project list once only
-    useEffect(() => {
         getProjects();
-    }, [isProjectAddOrUpdate]);
+    }, [isProjectAddOrUpdate, user?.userData]);
 
 
     //multiple fields search based on search key
@@ -77,12 +86,12 @@ export default function AllProjects() {
         },
         {
             // row?.requestedDate
-            selector: (row) => <Moment format="DD/MM/YYYY">{row?.requestedDate}</Moment>,
+            selector: (row) => <Moment format="DD-MM-YYYY">{row?.requestedDate}</Moment>,
             name: "Request Date",
             sortable: true
         },
         {
-            selector: (row) => <Moment format="DD/MM/YYYY">{row?.deliveryDate}</Moment>,
+            selector: (row) => <Moment format="DD-MM-YYYY">{row?.deliveryDate}</Moment>,
             name: "Delievery Date",
             sortable: true
         },
@@ -124,7 +133,7 @@ export default function AllProjects() {
             <div className='d-flex flex-column align-items-center'>
                 <DataTable columns={columns} data={filteredProjects} pagination fixedHeader fixedHeaderScrollHeight='470px' selectableRows selectableRowsHighlight highlightOnHover subHeader
                     subHeaderComponent={<TableHeader props={{ setSearch, projects, selectedProjects }} />}
-                    onRowClicked={(row) => setProjectIdHandler(row.projectId)} striped customStyles={customStyles} responsive
+                    onRowClicked={(row) => setProjectIdHandler(row?.projectId)} striped customStyles={customStyles} responsive
                     onSelectedRowsChange={(selectedRows) => setSelectedProjects(selectedRows?.selectedRows)}
                     progressPending={loading}
                     progressComponent={

@@ -189,13 +189,13 @@ export default function Evaluation() {
         </div>
       </div>
 
-      <div className="row justify-content-evenly mt-4">
+      <div className="row justify-content-evenly">
         <div className="col-lg-4 col-md-6">
           <span className="fw-bold text-secondary" style={{ fontSize: "12px" }}>
             Score Range Refrences : X (55-65) | Y(45-55) | Z (0-25){" "}
           </span>
           <div
-            className="input-field mt-3"
+            className="input-field"
             style={{ display: "flex", position: "relative" }}
           >
             <input
@@ -454,7 +454,7 @@ export default function Evaluation() {
             <span className="d-none">Error : Field Required</span>
           </div>
         </div>
-        <div className="col-md-6">
+        <div className="col-md-6 mt-5">
           <textarea
             rows="11"
             className="w-100 border border-primary rounded p-3"
@@ -468,8 +468,8 @@ export default function Evaluation() {
               });
             }}
           ></textarea>
-          <div className="d-flex justify-content-between align-items-center mt-3">
-            <button type="button" className="btn btn-primary fw-bold" onClick={()=>setDisabledField(!disabledField)}>Edit <MdEdit /></button>
+          <div className="d-flex justify-content-end align-items-center mt-3">
+            <button type="button" className="btn btn-primary rounded-pill btn-lg py-1 me-3" onClick={()=>setDisabledField(!disabledField)}>Edit <MdEdit /></button>
             <button
               type="button"
               disabled={isLoading ? true : false}

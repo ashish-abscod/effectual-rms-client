@@ -221,8 +221,8 @@ export default function WriteComment() {
             </button>
           </div>
 
-          <div className="col-4 pt-3 bg-light border-2" style={{ marginTop: "5vh", height: "68vh" }}>
-            <div className="d-flex justify-content-center pb-2">
+          <div className="col-4 bg-light border-2 d-flex flex-column" style={{ marginTop: "6vh", height: "70vh" }}>
+            <div className="d-flex flex-column justify-content-center pb-2">
               <label className="text-primary fw-bold d-flex align-items-center">
                 Upload File:
                 {isLoading && (
@@ -241,10 +241,10 @@ export default function WriteComment() {
               />
 
             </div>
-            <div className="mt-3 overflow-auto" style={{ maxHeight: "50vh" }}>
+            <div className="mt-3 overflow-auto mh-100">
               {
                 fileNames?.map((fileName, i) =>
-                  <div className="d-flex text-align-center">
+                  <div className="d-flex text-align-center" key={`${fileName+i}`}>
                     <li key={i} className="text-success list-unstyled d-inline-block text-truncate" style={{ maxWidth: "18rem" }}><BsCheckCircleFill color="green" /> <span className="ms-1">{fileName}</span></li>
                     <button type="button" className="bg-transparent border-0 fw-bold btn-sm lh-1 text-danger" onClick={() => handleRemoveFile(i)}><ImCross /></button>
                   </div>

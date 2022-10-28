@@ -7,25 +7,25 @@ import { AiOutlineFolderAdd } from "react-icons/ai"
 import Moment from 'react-moment';
 import Modal from "react-modal";
 const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    backgroundColor: "white",
-    width: 400,
-  },
+    content: {
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+        backgroundColor: "white",
+        width: 400,
+    },
 };
 
 
 
 export default function FileManger() {
 
- const [isLoading, setIsLoading] = useState(false);
-  const [resource, setChooseFile] = useState({ file: "", filename: "" });
-  const [selectedFile, setSelectedFile] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [resource, setChooseFile] = useState({ file: "", filename: "" });
+    const [selectedFile, setSelectedFile] = useState('');
 
     const [effectualReports, setEffectualReports] = useState([])
     const [clientReports, setClientReports] = useState([])
@@ -35,15 +35,15 @@ export default function FileManger() {
 
     const uploadSingleFile = (e) => {
         if (e.target.files[0]) {
-          const filename = e.target.files[0].name
-          setSelectedFile(filename);
-          const reader = new FileReader();
-          reader.readAsDataURL(e.target.files[0]);
-          reader.onloadend = () => {
-            setChooseFile({ ...resource, file: reader.result, filename: filename });
-          };
+            const filename = e.target.files[0].name
+            setSelectedFile(filename);
+            const reader = new FileReader();
+            reader.readAsDataURL(e.target.files[0]);
+            reader.onloadend = () => {
+                setChooseFile({ ...resource, file: reader.result, filename: filename });
+            };
         }
-      };
+    };
 
 
     useEffect(() => {
@@ -169,55 +169,55 @@ export default function FileManger() {
                 </div>
 
                 <Modal
-        isOpen={modalOpen}
-        
-        onRequestClose={() => setModalOpen(false)}
-        style={customStyles}
-      >
-        <div classNme = "col-md-6 col-lg-4 bg-light pt-2"> 
-            <label className="text-primary fw-bold d-flex align-items-center">
-              Upload File:
-              {isLoading && (
-                <>
-                  <div className="spinner-border text-secondary ms-3 me-2" role="status">
-                    <span className="sr-only"></span>
-                  </div>
-                  <span className="text-secondary">Uploading...</span>
-                </>
-              )}
-            </label>
-            
-            <input
-              type="file"
-              className="form-control mt-2"
-              onChange={(e) => uploadSingleFile(e)}
-            />
-            <label>Attach Male</label>
-            <input
-            type = "email"
-            className="form-control mt-2"
-            />
-            <label>Report Status:</label>
-           <select className="form-select"
-                        type="text"
-                        name=" report"
-                        required
-                        id="report"
-                        
-                      >
-                        
-                              <option value="Initial Report">Initial Report</option>
-                              <option value="Interim Report">Interim Report</option>
-                             <option value="Final Report">Final Report</option>
-                        
-                      </select>
-                      
+                    isOpen={modalOpen}
+
+                    onRequestClose={() => setModalOpen(false)}
+                    style={customStyles}
+                >
+                    <div classNme="col-md-6 col-lg-4 bg-light pt-2">
+                        <label className="text-primary fw-bold d-flex align-items-center">
+                            Upload File:
+                            {isLoading && (
+                                <>
+                                    <div className="spinner-border text-secondary ms-3 me-2" role="status">
+                                        <span className="sr-only"></span>
+                                    </div>
+                                    <span className="text-secondary">Uploading...</span>
+                                </>
+                            )}
+                        </label>
+
+                        <input
+                            type="file"
+                            className="form-control mt-2"
+                            onChange={(e) => uploadSingleFile(e)}
+                        />
+                        <label>Attach Male</label>
+                        <input
+                            type="email"
+                            className="form-control mt-2"
+                        />
+                        <label>Report Status:</label>
+                        <select className="form-select"
+                            type="text"
+                            name=" report"
+                            required
+                            id="report"
+
+                        >
+
+                            <option value="Initial Report">Initial Report</option>
+                            <option value="Interim Report">Interim Report</option>
+                            <option value="Final Report">Final Report</option>
+
+                        </select>
 
 
-</div>
 
-        <button className='bg-success m-3' onClick={() => setModalOpen(false)}>Close Modal</button>
-      </Modal>
+                    </div>
+
+                    <button className='bg-success m-3' onClick={() => setModalOpen(false)}>Close Modal</button>
+                </Modal>
 
             </div>
         </>

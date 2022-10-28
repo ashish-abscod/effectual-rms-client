@@ -50,6 +50,8 @@ button#dropdownProfile:focus {
 
 .input-field {
   position: relative;
+  margin-top: 0;
+  min-height: 12vh;
 }
 
 .input-field input,
@@ -91,14 +93,6 @@ button#dropdownProfile:focus {
   ;
 }
 
-.input-field label {
-  color: #999;
-  position: absolute;
-  pointer-events: none;
-  left: 30px;
-  top: 30px;
-  transition: 0.2s;
-}
 
 .input-field select:valid~label,
 .input-field input:valid~label,
@@ -112,7 +106,20 @@ button#dropdownProfile:focus {
   background-color: #fff;
   padding: 0 5px 0 5px;
 }
+.input-field label {
+  color: #999;
+  position: absolute;
+  pointer-events: none;
+  left: 30px;
+  top: 30px;
+  transition: 0.2s;
+}
 
+.input-field input[type="date"]~label,.input-field select:disabled~label,.input-field input:disabled~label {
+  top: 8px;
+  left: 35px;
+  color: #999;
+}
 .input-field input:hover~label,
 .input-field input:focus~label,
 .input-field input:disabled~label {
@@ -125,11 +132,6 @@ button#dropdownProfile:focus {
   padding: 0 5px 0 5px;
 }
 
-.input-field input[type="date"]~label,.input-field select:disabled~label,.input-field input:disabled~label {
-  top: 8px;
-  left: 35px;
-  color: #999;
-}
 
 /* ----prev next buttons in createProject---- */
 button.form:disabled {

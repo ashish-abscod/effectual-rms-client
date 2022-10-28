@@ -4,7 +4,7 @@ import { ProjectContext } from "../contexts/ProjectContext";
 import { MdDelete } from "react-icons/md";
 import { AiOutlineClose } from "react-icons/ai";
 
-export default function AddUserToProject({ formData, setFormData }) {
+export default function AddUserToProject({ formData, setFormData, isReadOnly }) {
   const [userData] = useState([]);
   const [search] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -119,69 +119,81 @@ export default function AddUserToProject({ formData, setFormData }) {
   return (
     <>
       <div className="row">
-        <div className="col-lg-7 mt-3">
-          <DataTable
-            columns={columns}
-            data={filteredUsers}
-            noDataComponent=""
-            pagination
-            fixedHeader
-            fixedHeaderScrollHeight="470px"
-            selectableRowsHighlight
-            highlightOnHover
-            subHeader
-            subHeaderComponent={
-              <div className="d-flex justify-content-around bg-light py-2">
-                <h5 className="d-inline text-primary fw-bold">
-                  Assign users to project
-                </h5>
-                <input
-                  type="search"
-                  id="searchUser"
-                  className="form-control d-inline w-50"
-                  placeholder="Search User by name..."
-                  onChange={getUserData}
-                ></input>
-              </div>
+        {
+          isReadOnly === false ?
+            <div className="col-lg-7 mt-3">
+              <DataTable
+                columns={columns}
+                data={filteredUsers}
+                noDataComponent=""
+                pagination
+                fixedHeader
+                fixedHeaderScrollHeight="470px"
+                selectableRowsHighlight
+                highlightOnHover
+                subHeader
+                subHeaderComponent={
+                  <div className="d-flex justify-content-around bg-light py-2">
+                    <h5 className="d-inline text-primary fw-bold">
+                      Assign users to project
+                    </h5>
+                    <input
+                      type="search"
+                      id="searchUser"
+                      className="form-control d-inline w-50"
+                      placeholder="Search User by name..."
+                      onChange={getUserData}
+                    ></input>
+                  </div>
+                }
+                striped
+                customStyles={customStyles}
+                responsive
+                onRowClicked={(row) => selectUser(row)}
+                progressPending={loading}
+              />
+            </div> : ""
+        }
+        <div className="col overflow-auto" style={{ maxHeight: "70vh" }}>
+          <h5 className="text-primary fw-bold m-0 p-0 mt-4 text-center">Assigned Users</h5>
+          <table className="table mt-2 table-striped">
+            {(formData?.assignedUsers?.length > 0 || alreadyAssignedUsers?.userId?.length > 0) ?
+              <thead thead className="thead-dark">
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Role</th>
+                  {isReadOnly === false ?
+                    <th scope="col">Action</th>
+                    : ""
+                  }
+                </tr>
+              </thead>
+              : ""
             }
-            striped
-            customStyles={customStyles}
-            responsive
-            onRowClicked={(row) => selectUser(row)}
-            progressPending={loading}
-          />
-        </div>
-
-        <div className="col-lg-5 overflow-auto" style={{ maxHeight: "70vh" }}>
-          <table className="table mt-4 table-striped">
-            <thead className="thead-dark">
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Role</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
             <tbody>
               {alreadyAssignedUsers?.userId?.map((item) => (
                 <tr className="mb-2" key={item._id}>
                   <td>{item.name}</td>
                   <td>{item.role}</td>
-                  <td>
-                    <p>
-                      <MdDelete
-                        style={{
-                          fontSize: "20px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() =>
-                          handleAssignedUserDelete(
-                            alreadyAssignedUsers._id,
-                            item._id
-                          )
-                        }
-                      />
-                    </p>
-                  </td>
+                  {isReadOnly === false ?
+                    <td>
+                      <p>
+                        <MdDelete
+                          style={{
+                            fontSize: "20px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() =>
+                            handleAssignedUserDelete(
+                              alreadyAssignedUsers._id,
+                              item._id
+                            )
+                          }
+                        />
+                      </p>
+                    </td>
+                    : ""
+                  }
                 </tr>
               ))}
 

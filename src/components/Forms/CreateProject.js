@@ -13,10 +13,21 @@ import Swal from "sweetalert2";
 
 export default function CreateProject() {
   const [page, setPage] = useState(0);
-  const { projectId,setIsProjectAddOrUpdate } = useContext(ProjectContext);
+  const { projectId, setIsProjectAddOrUpdate } = useContext(ProjectContext);
   const { user } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [isReadOnly, setIsReadOnly] = useState(false);
+  const [error1, setError1] = useState("");
+  const [error2, setError2] = useState("");
+
+  useEffect(() => {
+    if (user?.userData?.role === "Technical Expert" || user?.userData?.role === "Patent Expert") {
+      setIsReadOnly(true);
+    }
+  }, [user?.userData])
+
+
   const [formData, setFormData] = useState({
     SearchObject: "",
     TechnicalField: "",
@@ -33,6 +44,20 @@ export default function CreateProject() {
     UsefulInformationForSearch: "",
     assignedUsers: [],
   });
+
+  useEffect(() => {
+    if (formData?.SearchObject === "") setError1("search object field required.");
+    else setError1("");
+    if (formData?.RequirementDeliveryDate === "") setError2("requirement delivery date required.");
+    else setError2("");
+
+    if(error1 || error2){
+      setIsDisabled(true);
+    }else{
+      setIsDisabled(false);
+    }
+  }, [formData,error1,error2]);
+
   const [fileNames, setFileNames] = useState([]);
 
 
@@ -93,7 +118,7 @@ export default function CreateProject() {
     switch (page) {
       case 0:
         returnvalue = (
-          <ProjectInfo formData={formData} setFormData={setFormData} setIsDisabled={setIsDisabled} projectId={projectId} />
+          <ProjectInfo formData={formData} setFormData={setFormData} isReadOnly={isReadOnly} error1={error1} error2={error2} />
         );
         break;
       case 1:
@@ -104,12 +129,13 @@ export default function CreateProject() {
             attachment={attachment}
             setAttachment={setAttachment}
             fileNames={fileNames} setFileNames={setFileNames}
+            isReadOnly={isReadOnly}
           />
         );
         break;
       case 2:
         returnvalue = (
-          <AddUserToProject formData={formData} setFormData={setFormData} />
+          <AddUserToProject formData={formData} setFormData={setFormData} isReadOnly={isReadOnly} />
         );
         break;
       case 3:
@@ -126,17 +152,71 @@ export default function CreateProject() {
 
   //----------------Handler for Project Creation and Updation---------------
   const projectHandler = async () => {
-    if (projectId === null) {
-      setIsLoading(true);
-      setIsDisabled(true);
-      try {
-        const res = await axios.post(
-          `${process.env.REACT_APP_API_URL}/projects/create`,
-          formData
-        );
+    if (!isReadOnly) {
+      if (projectId === null) {
+        setIsLoading(true);
+        setIsDisabled(true);
+        try {
+          const res = await axios.post(
+            `${process.env.REACT_APP_API_URL}/projects/create`,
+            formData
+          );
 
-        if (res?.data?.status === "success") {
-          setAttachment({ ...attachment, projectId: res?.data?.projectId });
+          if (res?.data?.status === "success") {
+            setAttachment({ ...attachment, projectId: res?.data?.projectId });
+
+            await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
+              projectId: res?.data?.projectId,
+              files: attachment?.files,
+              role: attachment?.userRole,
+              uploadedBy: attachment?.uploadedBy,
+            });
+
+            await axios.post(
+              `${process.env.REACT_APP_API_URL}/assigned/createUser`,
+              {
+
+                userId: formData?.assignedUsers,
+                projectId: res?.data?.projectId,
+                assignedBy: user.userData._id,
+              }
+            );
+
+            setIsProjectAddOrUpdate(true);
+            Swal.fire({
+              icon: 'success',
+              title: res?.data?.msg
+            });
+            document.getElementById("homeTabBtn").click();
+          }
+          else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Project not created!',
+              text: res?.data?.msg,
+            });
+          };
+
+        } catch (error) {
+
+          toast.error("something went wrong.");
+        } finally {
+          setIsLoading(false);
+          setIsDisabled(false);
+          //clear FormData Completely after creating project
+          // setFormData(null);
+          setFileNames([]);
+        }
+
+      }
+      else if (projectId !== null) {
+        try {
+          setIsLoading(true);
+          setIsDisabled(true);
+          const res = await axios.put(
+            `${process.env.REACT_APP_API_URL}/projects/update/${projectId}`,
+            formData
+          );
 
           await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
             projectId: res?.data?.projectId,
@@ -146,72 +226,23 @@ export default function CreateProject() {
           });
 
           await axios.post(
-            `${process.env.REACT_APP_API_URL}/assigned/createUser`,
-            {
+            `${process.env.REACT_APP_API_URL}/assigned/updateUser/${projectId}`,
+            formData?.assignedUsers);
 
-              userId: formData?.assignedUsers,
-              projectId: res?.data?.projectId,
-              assignedBy: user.userData._id,
-            }
-          );
-
-          setIsProjectAddOrUpdate(true);
-          Swal.fire({
-            icon: 'success',
-            title: res?.data?.msg
-          });
-          document.getElementById("homeTabBtn").click();
+          // clear assignedUsers from formdata after updation complete
+          setFormData({ ...formData, assignedUsers: [] });
+          toast.success(res?.data?.msg);
+        } catch (error) {
+          toast("Something went wrong.");
+          console.log(error.res);
+        } finally {
+          setIsLoading(false);
+          setIsDisabled(false);
+          setFileNames([]);
         }
-        else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Project not created!',
-            text: res?.data?.msg,
-          });
-        };
-
-      } catch (error) {
-      
-        toast.error("something went wrong.");
-      } finally {
-        setIsLoading(false);
-        setIsDisabled(false);
-        //clear FormData Completely after creating project
-        // setFormData(null);
-        setFileNames([]);
       }
-
-    } else if (projectId !== null) {
-      try {
-        setIsLoading(true);
-        setIsDisabled(true);
-        const res = await axios.put(
-          `${process.env.REACT_APP_API_URL}/projects/update/${projectId}`,
-          formData
-        );
-
-        await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
-          projectId: res?.data?.projectId,
-          files: attachment?.files,
-          role: attachment?.userRole,
-          uploadedBy: attachment?.uploadedBy,
-        });
-
-        await axios.post(
-          `${process.env.REACT_APP_API_URL}/assigned/updateUser/${projectId}`,
-          formData?.assignedUsers);
-
-        // clear assignedUsers from formdata after updation complete
-        setFormData({ ...formData, assignedUsers: [] });
-        toast.success(res?.data?.msg);
-      } catch (error) {
-        toast("Something went wrong.");
-        console.log(error.res);
-      } finally {
-        setIsLoading(false);
-        setIsDisabled(false);
-        setFileNames([]);
-      }
+    } else {
+      toast.warning("Sorry, You are not authorized to update project details.")
     }
   };
 
