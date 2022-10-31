@@ -85,22 +85,27 @@ export default function AllProjects() {
             sortable: true
         },
         {
-            // row?.requestedDate
-            selector: (row) => <Moment format="DD-MM-YYYY">{row?.requestedDate}</Moment>,
             name: "Request Date",
-            sortable: true
+            selector: (row) => row?.requestedDate,
+            sortable : true,
+            cell : (row) => <Moment format="DD/MM/YYYY">{row?.requestedDate}</Moment>,
         },
         {
-            selector: (row) => <Moment format="DD-MM-YYYY">{row?.deliveryDate}</Moment>,
             name: "Delievery Date",
-            sortable: true
+            selector: (row) => row?.deliveryDate,
+            sortable : true,
+            cell : (row) => <Moment format="DD/MM/YYYY">{row?.deliveryDate}</Moment>
         },
         {
             name: "Status",
-            selector: (row) => row.status === "0" ? <span>Interim Report</span> : row.status === "1" ? <span className="badge rounded-pill bg-warning text-dark" style={{ fontSize: "14px" }}>Progress</span> : row.status === "2" ? <span className="badge rounded-pill bg-success" style={{ fontSize: "14px" }}>Completed</span> : <span>Terminated</span>,
-            sortable: true
-
+            selector: (row) => row.status,
+            sortable: true,
+            cell : (row) => row.status === "Interim Report" ? <span className='badge rounded-pill bg-primary text-light' style={{ fontSize: "14px" }}>Interim</span> : row.status === "Progress" ? <span className="badge rounded-pill bg-warning text-dark" style={{ fontSize: "14px" }}>Progress</span> : row.status === "Completed" ? <span className="badge rounded-pill bg-success" style={{ fontSize: "14px" }}>Completed</span> : row?.status  === "Terminated" ? <span className='badge rounded-pill bg-secondary text-light' style={{ fontSize: "14px" }}>Terminated</span> : "",
         }
+        // ,{
+        //     name : "Action",
+        //     cell : ()=> <button type='button' className='btn btn-outline-danger btn-sm'>Del</button>
+        // }
     ]
 
     const customStyles = {
