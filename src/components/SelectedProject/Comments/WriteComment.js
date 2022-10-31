@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
-import { ImCross } from "react-icons/im";
+import { AiOutlineDelete } from "react-icons/ai";
 import {FaPaperPlane} from "react-icons/fa";
 
 export default function WriteComment() {
@@ -217,7 +217,7 @@ export default function WriteComment() {
               className="btn bg-success rounded-pill text-white px-2 mt-3 float-end"
               onClick={addData}
             >
-              <FaPaperPlane/> {!replyTo?.commentId ? "Add Comment" : "Add Replie"}
+              <FaPaperPlane/> {!replyTo?.commentId ? "Add Comment" : "Add Reply"}
             </button>
           </div>
 
@@ -246,7 +246,7 @@ export default function WriteComment() {
                 fileNames?.map((fileName, i) =>
                   <div className="d-flex text-align-center" key={`${fileName+i}`}>
                     <li key={i} className="text-success list-unstyled d-inline-block text-truncate" style={{ maxWidth: "18rem" }}><BsCheckCircleFill color="green" /> <span className="ms-1">{fileName}</span></li>
-                    <button type="button" className="bg-transparent border-0 fw-bold btn-sm lh-1 text-danger" onClick={() => handleRemoveFile(i)}><ImCross /></button>
+                    <button type="button" className="btn btn-danger ms-2 btn-sm lh-1" onClick={() => handleRemoveFile(i)}><AiOutlineDelete/></button>
                   </div>
                 )
               }

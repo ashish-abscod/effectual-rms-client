@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/inject-style";
 import { useEffect } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
-import { ImCross } from "react-icons/im";
+import { AiOutlineDelete } from "react-icons/ai";
 
 export default function UploadFiles({ formData, setFormData, attachment, fileNames, setFileNames, setAttachment, isReadOnly }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -96,7 +96,7 @@ export default function UploadFiles({ formData, setFormData, attachment, fileNam
                   fileNames?.map((fileName, i) =>
                     <div className="d-flex text-align-center" key={`${fileName + i}`}>
                       <li className="text-success list-unstyled d-inline-block text-truncate" style={{ maxWidth: "18rem" }}><BsCheckCircleFill color="green" /> <span className="ms-1">{fileName}</span></li>
-                      <button type="button" className="bg-transparent border-0 fw-bold btn-sm lh-1 text-danger" onClick={() => handleRemoveFile(i)}><ImCross /></button>
+                      <button type="button" className="btn btn-danger ms-2 btn-sm lh-1" onClick={() => handleRemoveFile(i)}><AiOutlineDelete/></button>
                     </div>
                   )
                 }
