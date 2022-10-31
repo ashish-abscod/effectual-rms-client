@@ -19,7 +19,7 @@ export default function ReportUpload() {
     const [resource, setResource] = useState({ file: "", filename: "", emailContent: "", projectId: projectId, role: user?.userData?.role, uploadedBy: user?.userData?.name });
 
     useEffect(() => {
-        setResource((preRes)=> ({ ...preRes, projectId: projectId }));
+        setResource((preRes) => ({ ...preRes, projectId: projectId }));
     }, [projectId]);
 
 
@@ -80,17 +80,6 @@ export default function ReportUpload() {
                             <div className="container">
                                 <div className="row">
                                     <div className="col-md-12">
-                                        <label className="text-primary fw-bold d-flex align-items-center">
-                                            Upload Report:
-                                            {isLoading && (
-                                                <>
-                                                    <div className="spinner-border text-secondary ms-3 me-2" role="status">
-                                                        <span className="sr-only"></span>
-                                                    </div>
-                                                    <span className="text-secondary">Uploading...</span>
-                                                </>
-                                            )}
-                                        </label>
                                         <input
                                             type="file"
                                             className="form-control mt-2 mb-3"
@@ -139,6 +128,14 @@ export default function ReportUpload() {
                             >
                                 Close
                             </button>
+                            {isLoading && (
+                                <div className='d-flex align-items-center'>
+                                    <div className="spinner-border text-secondary ms-3 me-2" role="status">
+                                        <span className="sr-only"></span>
+                                    </div>
+                                    <span className="text-secondary">Uploading...</span>
+                                </div>
+                            )}
                             <button
                                 type="button"
                                 disabled={isDisabled}
