@@ -25,9 +25,11 @@ export default function SelectedProject() {
           <li className="nav-item" role="presentation">
             <button className="nav-link fw-bold active" data-bs-toggle="tab" data-bs-target="#comment" type="button" role="tab" aria-controls="comment" aria-selected="true">{projectId}</button>
           </li>
-          <li className="nav-item" role="presentation">
-            <button className="nav-link fw-bold" data-bs-toggle="tab" data-bs-target="#projectDetails" type="button" role="tab" aria-controls="projectDetails" aria-selected="false">Project Details</button>
-          </li>
+          {user?.userData?.role === "Client Admin" ?
+            <li className="nav-item" role="presentation">
+              <button className="nav-link fw-bold" data-bs-toggle="tab" data-bs-target="#projectDetails" type="button" role="tab" aria-controls="projectDetails" aria-selected="false">Project Details</button>
+            </li>
+            : ""}
           <li className="nav-item" role="presentation">
             <button className="nav-link fw-bold" data-bs-toggle="tab" data-bs-target="#fileManager" type="button" role="tab" aria-controls="fileManager" aria-selected="false">File Manager</button>
           </li>
@@ -48,9 +50,11 @@ export default function SelectedProject() {
           <div className="tab-pane show active" id="comment" role="tabpanel">
             <CommentInbox />
           </div>
-          <div className="tab-pane" id="projectDetails" role="tabpanel">
-            <CreateProject />
-          </div>
+          {user?.userData?.role === "Client Admin" ?
+            <div className="tab-pane" id="projectDetails" role="tabpanel">
+              <CreateProject />
+            </div>
+            : ""}
           <div className="tab-pane" id="fileManager" role="tabpanel">
             <FileManger />
           </div>
