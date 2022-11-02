@@ -36,7 +36,7 @@ export default function CommentInbox() {
         <>
             <h5 className='theme3-color fw-bold d-inline-block ms-3 mt-2'>Discussion Board for {projectId}</h5>
             <Link to={"/comment"} className="btn btn-sm btn-primary my-1 py-2 px-4 float-end me-3 fw-bold" onClick={() => setReplyTo(null)}> <BiCommentDetail className="fs-5 fw-bold" /> Add Comment </Link>
-            <section className='container commentInbox overflow-auto' style={{height:"73vh"}}>
+            <section className='container commentInbox overflow-auto' style={{ height: "73vh" }}>
 
 
                 {data?.map((items, i) =>
@@ -58,8 +58,8 @@ export default function CommentInbox() {
                                         <div className='files mt-3 col-lg-10'>
                                             {items?.attachments?.[0]?.files.length > 0 ? <span className='fw-bold'>Attached Files: </span> : ""}
                                             {
-                                                items?.attachments?.[0]?.files?.map((item, i) =>
-                                                    <a href={item} className="me-3" key={i}>Document {i + 1}</a>
+                                                items?.attachments?.[0]?.files?.map((asset, i) =>
+                                                    <a href={asset?.url} className="me-3" key={i}>{asset?.filename}</a>
                                                 )
                                             }
                                         </div>
@@ -86,8 +86,8 @@ export default function CommentInbox() {
                                                         <span className='fw-bold'>Attached Files: </span> : ""
                                                     }
                                                     {
-                                                        item?.attachments?.[0]?.files?.map((url, i) =>
-                                                            <a href={url} className="me-3" key={i}>Document {i + 1}</a>
+                                                        item?.attachments?.[0]?.files?.map((asset, i) =>
+                                                            <a href={asset?.url} className="me-3" key={i}>{asset?.filename}</a>
                                                         )
                                                     }
                                                 </div>
