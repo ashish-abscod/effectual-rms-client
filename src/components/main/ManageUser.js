@@ -1,36 +1,62 @@
 import React, { useEffect, useState, useRef } from "react";
 import AddNewUser from "./AddNewUser";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 
 
 export default function ManageUser() {
+  const {user} = useContext(UserContext);
   const [userData, setUserData] = useState([]);
   const [status] = useState(true);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [search, setSearch] = useState("");
-
   const target = useRef(null);
+
+  const getUserData = async () => {
+    const EffectualUsers = ["Effectual Admin", "Manager", "Searcher"];
+    const ClientUsers = ["Client Admin", "Patent Expert", "Technical Expert"];
+    const loginUser = user?.userData?.role;
+
+    //if return boolean true it means logged in user is Effectual user else it might be client user.
+    if (EffectualUsers.indexOf(loginUser) !== -1) {
+      try {   
+        await fetch(`${process.env.REACT_APP_API_URL}/users/getEffectulalUsers`)
+          .then((res) => res.json())
+          .then((data) => { setUserData(data); setFilteredUsers(data) });
+      } catch (error) {
+        toast.error("Something went wrong in fetching users.");
+      }
+    }
+    // now if user is not effectual side than it might be a client user.
+    else if(ClientUsers.indexOf(loginUser) !== -1){
+      try {
+        await fetch(`${process.env.REACT_APP_API_URL}/users/getClientUsers`)
+        .then((res) => res.json())
+        .then((data) => { setUserData(data); setFilteredUsers(data) });
+      } catch (error) {
+        toast.error("Something went wrong in fetching users.");
+      }
+    }else{
+      toast.warning("You are niether an Effectual User nor a Client User.");
+    }
+
+  };
 
   useEffect(() => {
     getUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getUserData = async () => {
-    await fetch(`${process.env.REACT_APP_API_URL}/users`)
-      .then((res) => res.json())
-      .then((data) => {setUserData(data);setFilteredUsers(data)});
-  };
-
-
   useEffect(() => {
-    const filters = userData.filter(user => JSON.stringify(user)
-        .toLowerCase()
-        .indexOf(search.toLowerCase()) !== -1);
+    const filters = userData?.filter(user => JSON.stringify(user)
+      .toLowerCase()
+      .indexOf(search.toLowerCase()) !== -1);
     setFilteredUsers(filters);
-}, [search,userData])
+  }, [search, userData]);
 
- 
   const handleUsersDelete = async (id, name) => {
     const confirmation = window.confirm(`Are you sure to delete:  ${name} ?`);
     if (confirmation) {
@@ -63,7 +89,7 @@ export default function ManageUser() {
               className="form-control me-2 border border-primary"
               type="search"
               placeholder="Search"
-              onChange={(e)=>setSearch(e.target.value)}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
           <div className="col-md-3">
@@ -92,7 +118,7 @@ export default function ManageUser() {
                   </tr>
                 </thead>
                 <tbody className="fw-bold">
-                  {filteredUsers.map((item, i) =>
+                  {filteredUsers?.map((item, i) =>
                     item.status === true ? (
                       <tr key={i}>
                         <th>{i + 1}</th>
