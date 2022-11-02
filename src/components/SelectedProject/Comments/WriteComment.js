@@ -58,7 +58,6 @@ export default function WriteComment() {
             commentId: response?.data?.commentId,
             role: attachment?.role,
             files: attachment?.files,
-            filesName: attachment?.fileNames,
             uploadedBy: attachment?.uploadedBy,
           }
         );
@@ -84,7 +83,6 @@ export default function WriteComment() {
             replieId: response?.data?.replieId,
             files: attachment?.files,
             role: attachment?.role,
-            filesName: attachment?.fileNames,
             uploadedBy: attachment?.uploadedBy,
           }
         );
@@ -122,7 +120,7 @@ export default function WriteComment() {
           `${process.env.REACT_APP_API_URL}/commentFiles`,
           resource
         );
-        attachment.files.push(result?.data?.url);
+        attachment.files.push({url : result?.data?.url, filename: selectedFile});
         if (result?.data?.status === "success") {
           toast.success(result?.data?.msg);
           setFileNames([...fileNames, selectedFile]);
@@ -144,7 +142,7 @@ export default function WriteComment() {
           `${process.env.REACT_APP_API_URL}/replyFiles`,
           resource
         );
-        attachment.files.push(result?.data?.url);
+        attachment.files.push({url : result?.data?.url, filename: selectedFile});
         if (result?.data?.status === "success") {
           toast.success(result?.data?.msg);
           setFileNames([...fileNames, selectedFile]);
@@ -236,6 +234,7 @@ export default function WriteComment() {
               </label>
               <input
                 type="file"
+                disabled={isLoading}
                 className="form-control mt-2"
                 onChange={(e) => uploadSingleFile(e)}
               />
