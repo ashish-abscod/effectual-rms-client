@@ -4,7 +4,7 @@ import { ProjectContext } from "../contexts/ProjectContext";
 import { MdDelete } from "react-icons/md";
 import { AiOutlineClose } from "react-icons/ai";
 
-export default function AddUserToProject({ formData, setFormData, isReadOnly }) {
+export default function AddUserToProject({ assignedUsers, setAssginedUsers }) {
   const [userData] = useState([]);
   const [search] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -63,16 +63,16 @@ export default function AddUserToProject({ formData, setFormData, isReadOnly }) 
   }, [userData, search]);
 
   const handleRemove = async (id) => {
-    const filteredUsers = formData?.assignedUsers?.filter(
+    const filteredUsers = assignedUsers?.filter(
       (obj) => obj._id !== id
     );
-    setFormData({ ...formData, assignedUsers: filteredUsers });
+    setAssginedUsers(filteredUsers);
   };
 
   const selectUser = async (row) => {
     //to assign only distinct users.
-    if (!formData?.assignedUsers?.find(item => item.email === row.email)) {
-      formData?.assignedUsers.push(row);
+    if (!assignedUsers?.find(item => item.email === row.email)) {
+      assignedUsers?.push(row);
     }
     setFilteredUsers([]);
     document.getElementById("searchUser").value = "";
@@ -119,53 +119,47 @@ export default function AddUserToProject({ formData, setFormData, isReadOnly }) 
   return (
     <>
       <div className="row">
-        {
-          isReadOnly === false ?
-            <div className="col-lg-7 mt-3">
-              <DataTable
-                columns={columns}
-                data={filteredUsers}
-                noDataComponent=""
-                pagination
-                fixedHeader
-                fixedHeaderScrollHeight="470px"
-                selectableRowsHighlight
-                highlightOnHover
-                subHeader
-                subHeaderComponent={
-                  <div className="d-flex justify-content-around bg-light py-2">
-                    <h5 className="d-inline text-primary fw-bold">
-                      Assign users to project
-                    </h5>
-                    <input
-                      type="search"
-                      id="searchUser"
-                      className="form-control d-inline w-50"
-                      placeholder="Search User by name..."
-                      onChange={getUserData}
-                    ></input>
-                  </div>
-                }
-                striped
-                customStyles={customStyles}
-                responsive
-                onRowClicked={(row) => selectUser(row)}
-                progressPending={loading}
-              />
-            </div> : ""
-        }
+        <div className="col-lg-7 mt-3">
+          <DataTable
+            columns={columns}
+            data={filteredUsers}
+            noDataComponent=""
+            pagination
+            fixedHeader
+            fixedHeaderScrollHeight="470px"
+            selectableRowsHighlight
+            highlightOnHover
+            subHeader
+            subHeaderComponent={
+              <div className="d-flex justify-content-around bg-light py-2">
+                <h5 className="d-inline text-primary fw-bold">
+                  Assign users to project
+                </h5>
+                <input
+                  type="search"
+                  id="searchUser"
+                  className="form-control d-inline w-50"
+                  placeholder="Search User by name..."
+                  onChange={getUserData}
+                ></input>
+              </div>
+            }
+            striped
+            customStyles={customStyles}
+            responsive
+            onRowClicked={(row) => selectUser(row)}
+            progressPending={loading}
+          />
+        </div>
         <div className="col overflow-auto" style={{ maxHeight: "70vh" }}>
           <h5 className="text-primary fw-bold m-0 p-0 mt-4 text-center">Assigned Users</h5>
           <table className="table mt-2 table-striped">
-            {(formData?.assignedUsers?.length > 0 || alreadyAssignedUsers?.userId?.length > 0) ?
+            {(assignedUsers?.length > 0 || alreadyAssignedUsers?.userId?.length > 0) ?
               <thead thead className="thead-dark">
                 <tr>
                   <th scope="col">Name</th>
                   <th scope="col">Role</th>
-                  {isReadOnly === false ?
-                    <th scope="col">Action</th>
-                    : ""
-                  }
+                  <th scope="col">Action</th>
                 </tr>
               </thead>
               : ""
@@ -175,29 +169,26 @@ export default function AddUserToProject({ formData, setFormData, isReadOnly }) 
                 <tr className="mb-2" key={item._id}>
                   <td>{item.name}</td>
                   <td>{item.role}</td>
-                  {isReadOnly === false ?
-                    <td>
-                      <p>
-                        <MdDelete
-                          style={{
-                            fontSize: "20px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() =>
-                            handleAssignedUserDelete(
-                              alreadyAssignedUsers._id,
-                              item._id
-                            )
-                          }
-                        />
-                      </p>
-                    </td>
-                    : ""
-                  }
+                  <td>
+                    <p>
+                      <MdDelete
+                        style={{
+                          fontSize: "20px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() =>
+                          handleAssignedUserDelete(
+                            alreadyAssignedUsers._id,
+                            item._id
+                          )
+                        }
+                      />
+                    </p>
+                  </td>
                 </tr>
               ))}
 
-              {formData?.assignedUsers?.map((item, i) => (
+              {assignedUsers?.map((item, i) => (
                 <tr className="mb-2" key={i}>
                   <td>{item.name}</td>
                   <td>{item.role}</td>

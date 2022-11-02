@@ -17,15 +17,8 @@ export default function CreateProject() {
   const { user } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [isReadOnly, setIsReadOnly] = useState(false);
   const [error1, setError1] = useState("");
   const [error2, setError2] = useState("");
-
-  useEffect(() => {
-    if (user?.userData?.role === "Technical Expert" || user?.userData?.role === "Patent Expert") {
-      setIsReadOnly(true);
-    }
-  }, [user?.userData])
 
 
   const [formData, setFormData] = useState({
@@ -41,9 +34,9 @@ export default function CreateProject() {
     USIPRSpecial: "",
     ImportantClaims: "",
     UnimportantClaims: "",
-    UsefulInformationForSearch: "",
-    assignedUsers: [],
+    UsefulInformationForSearch: ""
   });
+  const [assignedUsers, setAssginedUsers] = useState([]);
 
   useEffect(() => {
     if (formData?.SearchObject === "") setError1("search object field required.");
@@ -51,12 +44,12 @@ export default function CreateProject() {
     if (formData?.RequirementDeliveryDate === "") setError2("requirement delivery date required.");
     else setError2("");
 
-    if(error1 || error2){
+    if (error1 || error2) {
       setIsDisabled(true);
-    }else{
+    } else {
       setIsDisabled(false);
     }
-  }, [formData,error1,error2]);
+  }, [formData, error1, error2]);
 
   const [fileNames, setFileNames] = useState([]);
 
@@ -118,7 +111,7 @@ export default function CreateProject() {
     switch (page) {
       case 0:
         returnvalue = (
-          <ProjectInfo formData={formData} setFormData={setFormData} isReadOnly={isReadOnly} error1={error1} error2={error2} />
+          <ProjectInfo formData={formData} setFormData={setFormData} error1={error1} error2={error2} />
         );
         break;
       case 1:
@@ -129,13 +122,12 @@ export default function CreateProject() {
             attachment={attachment}
             setAttachment={setAttachment}
             fileNames={fileNames} setFileNames={setFileNames}
-            isReadOnly={isReadOnly}
           />
         );
         break;
       case 2:
         returnvalue = (
-          <AddUserToProject formData={formData} setFormData={setFormData} isReadOnly={isReadOnly} />
+          <AddUserToProject assignedUsers={assignedUsers} setAssginedUsers={setAssginedUsers} />
         );
         break;
       case 3:
@@ -152,7 +144,6 @@ export default function CreateProject() {
 
   //----------------Handler for Project Creation and Updation---------------
   const projectHandler = async () => {
-    if (!isReadOnly) {
       if (projectId === null) {
         setIsLoading(true);
         setIsDisabled(true);
@@ -163,24 +154,28 @@ export default function CreateProject() {
           );
 
           if (res?.data?.status === "success") {
-            setAttachment({ ...attachment, projectId: res?.data?.projectId });
 
-            await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
-              projectId: res?.data?.projectId,
-              files: attachment?.files,
-              role: attachment?.userRole,
-              uploadedBy: attachment?.uploadedBy,
-            });
-
-            await axios.post(
-              `${process.env.REACT_APP_API_URL}/assigned/createUser`,
-              {
-
-                userId: formData?.assignedUsers,
+            if (attachment?.files.length > 0) {
+              // setAttachment({ ...attachment, projectId: res?.data?.projectId });
+              await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
                 projectId: res?.data?.projectId,
-                assignedBy: user.userData._id,
-              }
-            );
+                files: attachment?.files,
+                role: attachment?.userRole,
+                uploadedBy: attachment?.uploadedBy,
+              });
+            }
+
+            if (assignedUsers.length > 0) {
+              await axios.post(
+                `${process.env.REACT_APP_API_URL}/assigned/createUser`,
+                {
+
+                  userId: assignedUsers,
+                  projectId: res?.data?.projectId,
+                  assignedBy: user.userData._id,
+                }
+              );
+            }
 
             setIsProjectAddOrUpdate(true);
             Swal.fire({
@@ -218,19 +213,22 @@ export default function CreateProject() {
             formData
           );
 
-          await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
-            projectId: res?.data?.projectId,
-            files: attachment?.files,
-            role: attachment?.userRole,
-            uploadedBy: attachment?.uploadedBy,
-          });
+          if (attachment?.files.length > 0) {
+            await axios.post(`${process.env.REACT_APP_API_URL}/files/saveToDb`, {
+              projectId: res?.data?.projectId,
+              files: attachment?.files,
+              role: attachment?.userRole,
+              uploadedBy: attachment?.uploadedBy,
+            });
+          }
 
-          await axios.post(
-            `${process.env.REACT_APP_API_URL}/assigned/updateUser/${projectId}`,
-            formData?.assignedUsers);
+          if (assignedUsers.length > 0) {
+            await axios.post(
+              `${process.env.REACT_APP_API_URL}/assigned/updateUser/${projectId}`, { userId: assignedUsers, assignedBy: user.userData._id, projectId: res?.data?.projectId });
+          }
 
           // clear assignedUsers from formdata after updation complete
-          setFormData({ ...formData, assignedUsers: [] });
+          setAssginedUsers([]);
           toast.success(res?.data?.msg);
         } catch (error) {
           toast("Something went wrong.");
@@ -241,9 +239,6 @@ export default function CreateProject() {
           setFileNames([]);
         }
       }
-    } else {
-      toast.warning("Sorry, You are not authorized to update project details.")
-    }
   };
 
   return (
