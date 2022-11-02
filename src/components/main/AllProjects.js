@@ -100,7 +100,11 @@ export default function AllProjects() {
             name: "Status",
             selector: (row) => row.status,
             sortable: true,
-            cell : (row) => row.status === "Interim Report" ? <span className='badge rounded-pill bg-primary text-light' style={{ fontSize: "14px" }}>Interim</span> : row.status === "Progress" ? <span className="badge rounded-pill bg-warning text-dark" style={{ fontSize: "14px" }}>Progress</span> : row.status === "Completed" ? <span className="badge rounded-pill bg-success" style={{ fontSize: "14px" }}>Completed</span> : row?.status  === "Terminated" ? <span className='badge rounded-pill bg-secondary text-light' style={{ fontSize: "14px" }}>Terminated</span> : "",
+            cell : (row) => row.status === "Interim Report" ? <span className='badge rounded-pill bg-primary text-light' style={{ fontSize: "14px" }}>Interim</span> 
+            : row.status === "Progress" ? <span className="badge rounded-pill bg-warning text-dark" style={{ fontSize: "14px" }}>Progress</span> 
+            : row.status === "Completed" ? <span className="badge rounded-pill bg-success" style={{ fontSize: "14px" }}>Completed</span> 
+            : row?.status  === "Terminated" ? <span className='badge rounded-pill bg-secondary text-light' style={{ fontSize: "14px" }}>Terminated</span> 
+            : row?.status,
         }
         // ,{
         //     name : "Action",
