@@ -7,14 +7,16 @@ import { useContext } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
 import { UserContext } from '../contexts/UserContext';
 import Moment from 'react-moment';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 export default function AllProjects() {
     const [search, setSearch] = useState("");
     const [projects, setProjects] = useState([]);
     const [filteredProjects, setFilteredProjects] = useState([]);
     const [selectedProjects, setSelectedProjects] = useState([]);
-    const { setProjectId,isProjectAddOrUpdate} = useContext(ProjectContext);
-    const { user} = useContext(UserContext);
+    const { setProjectId, isProjectAddOrUpdate, setIsProjectAddOrUpdate } = useContext(ProjectContext);
+    const { user } = useContext(UserContext);
     const [loading, setLoading] = useState(false);
     const location = useLocation();
 
@@ -34,28 +36,28 @@ export default function AllProjects() {
     }
 
 
-   
+
     //loading all project list once only
     useEffect(() => {
-         //fetching data from endpoint
-    const getProjects = async () => {
-        try {
-            setLoading(true);
-            let response;
-            if(user?.userData?.role === "Technical Expert" || user?.userData?.role === "Patent Expert") {
-                response = await axios.get(`${process.env.REACT_APP_API_URL}/projects/getProjectsAssignedToUser/${user?.userData?._id}`);
+        //fetching data from endpoint
+        const getProjects = async () => {
+            try {
+                setLoading(true);
+                let response;
+                if (user?.userData?.role === "Technical Expert" || user?.userData?.role === "Patent Expert") {
+                    response = await axios.get(`${process.env.REACT_APP_API_URL}/projects/getProjectsAssignedToUser/${user?.userData?._id}`);
+                }
+                else {
+                    response = await axios.get(`${process.env.REACT_APP_API_URL}/projects`);
+                }
+                setProjects(response.data);
+                setFilteredProjects(response.data);
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoading(false);
             }
-            else{
-                response = await axios.get(`${process.env.REACT_APP_API_URL}/projects`);
-            }
-            setProjects(response.data);
-            setFilteredProjects(response.data);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
         }
-    }
 
         getProjects();
     }, [isProjectAddOrUpdate, user?.userData]);
@@ -70,6 +72,38 @@ export default function AllProjects() {
         setFilteredProjects(filters);
     }, [projects, search]);
 
+
+    const terminateProject = async (projectId) => {
+        try {
+            const {value} = await Swal.fire({
+                title: "Are you sure?",
+                text: `You want to terminate the project ${projectId}.`,
+                icon: "warning",
+                confirmButtonText: 'Terminate',
+                confirmButtonColor: 'red',
+                showCancelButton: true,
+                cancelButtonText: 'Cancel',
+            })
+            if (value) {
+                axios.put(`${process.env.REACT_APP_API_URL}/projects/terminateProjectStatus/${projectId}`).then(res => {
+                    Swal.fire({
+                        title: "Done!",
+                        text: "Project has been terminated successfully.",
+                        icon: "success",
+                        timer: 2000,
+                        button: false
+                    })
+                });
+                //to recall projects
+                setIsProjectAddOrUpdate(true);
+            }
+            else {
+                Swal.fire({text:"Project is safe from termination.",icon:"info"});
+            }
+        } catch (error) {
+            toast.error("Somthing went wrong. Project has not terminated.");
+        }
+    }
 
 
 
@@ -87,29 +121,29 @@ export default function AllProjects() {
         {
             name: "Request Date",
             selector: (row) => row?.requestedDate,
-            sortable : true,
-            cell : (row) => <Moment format="DD/MM/YYYY">{row?.requestedDate}</Moment>,
+            sortable: true,
+            cell: (row) => <Moment format="DD/MM/YYYY">{row?.requestedDate}</Moment>,
         },
         {
             name: "Delievery Date",
             selector: (row) => row?.deliveryDate,
-            sortable : true,
-            cell : (row) => <Moment format="DD/MM/YYYY">{row?.deliveryDate}</Moment>
+            sortable: true,
+            cell: (row) => <Moment format="DD/MM/YYYY">{row?.deliveryDate}</Moment>
         },
         {
             name: "Status",
             selector: (row) => row.status,
             sortable: true,
-            cell : (row) => row.status === "Interim Report" ? <span className='badge rounded-pill bg-primary text-light' style={{ fontSize: "14px" }}>Interim</span> 
-            : row.status === "Progress" ? <span className="badge rounded-pill bg-warning text-dark" style={{ fontSize: "14px" }}>Progress</span> 
-            : row.status === "Completed" ? <span className="badge rounded-pill bg-success" style={{ fontSize: "14px" }}>Completed</span> 
-            : row?.status  === "Terminated" ? <span className='badge rounded-pill bg-secondary text-light' style={{ fontSize: "14px" }}>Terminated</span> 
-            : row?.status,
+            cell: (row) => row.status === "Interim Report" ? <span className='badge rounded-pill bg-primary text-light' style={{ fontSize: "14px" }}>Interim</span>
+                : row.status === "Progress" ? <span className="badge rounded-pill bg-warning text-dark" style={{ fontSize: "14px" }}>Progress</span>
+                    : row.status === "Completed" ? <span className="badge rounded-pill bg-success" style={{ fontSize: "14px" }}>Completed</span>
+                        : row?.status === "Terminated" ? <span className='badge rounded-pill bg-secondary text-light' style={{ fontSize: "14px" }}>Terminated</span>
+                            : row?.status,
         }
-        // ,{
-        //     name : "Action",
-        //     cell : ()=> <button type='button' className='btn btn-outline-danger btn-sm'>Del</button>
-        // }
+        , {
+            name: "Action",
+            cell: (row) => <button type='button' className='btn btn-outline-danger btn-sm' onClick={() => terminateProject(row.projectId)}>Del</button>
+        }
     ]
 
     const customStyles = {
@@ -136,7 +170,7 @@ export default function AllProjects() {
     //         },
     //     }
     // ]
-    
+
     return (
         <>
             <div className='d-flex flex-column align-items-center'>
