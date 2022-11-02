@@ -43,6 +43,7 @@ export default function CreateProject() {
     UnimportantClaims: "",
     UsefulInformationForSearch: "",
     assignedUsers: [],
+    status:"In Progress"
   });
 
   useEffect(() => {
@@ -162,6 +163,8 @@ export default function CreateProject() {
             formData
           );
 
+          console.log(formData);
+
           if (res?.data?.status === "success") {
             setAttachment({ ...attachment, projectId: res?.data?.projectId });
 
@@ -231,7 +234,7 @@ export default function CreateProject() {
 
           // clear assignedUsers from formdata after updation complete
           setFormData({ ...formData, assignedUsers: [] });
-          toast.success(res?.data?.msg);
+          // toast.success(res?.data?.msg);
         } catch (error) {
           toast("Something went wrong.");
           console.log(error.res);

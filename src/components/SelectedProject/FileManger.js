@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
-import axios from "axios"
+import axios from "axios";
+import { UserContext } from "../contexts/UserContext";
 import { BiDownload } from "react-icons/bi"
 import { AiOutlineFolderAdd } from "react-icons/ai"
 import Moment from 'react-moment';
@@ -19,20 +20,17 @@ const customStyles = {
     },
 };
 
-
-
 export default function FileManger() {
-
+    const { user } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
-    const [resource, setChooseFile] = useState({ file: "", filename: "" });
     const [selectedFile, setSelectedFile] = useState('');
-
-    const [effectualReports, setEffectualReports] = useState([])
-    const [clientReports, setClientReports] = useState([])
+    const [formData, setFormData] = useState({status: ""})
+    const [effectualReports, setEffectualReports] = useState([]);
+    const [clientReports, setClientReports] = useState([]);
     const { setProjectId, projectId } = useContext(ProjectContext);
-
     const [modalOpen, setModalOpen] = useState(false);
-
+    const [resource, setChooseFile] = useState({ file: "", filename: "", projectId : projectId, role : user?.userData?.role, uploadedBy : user?.userData?.name });
+    
     const uploadSingleFile = (e) => {
         if (e.target.files[0]) {
             const filename = e.target.files[0].name
@@ -45,6 +43,17 @@ export default function FileManger() {
         }
     };
 
+    console.log(formData);
+    console.log(resource);
+
+    const reportUploadation = async () => {
+            
+        const info = await axios.put(`${process.env.REACT_APP_API_URL}/files/updateStatus/${projectId}`,{status:formData.status});
+        console.log(info);
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/files/uploadReportAndSendEmails`,resource);
+        console.log(res);
+
+    }
 
     useEffect(() => {
         if (!projectId) setProjectId(window?.localStorage?.getItem('projectId'));
@@ -62,20 +71,6 @@ export default function FileManger() {
         getEffectualReports()
     }, [projectId])
 
-    const postEffectualReports = async () => {
-
-        try {
-            const info = await axios.get(`http://localhost:8080/commentFiles/client/${projectId}`)
-            setClientReports(info?.data?.result);
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-
-
-
     useEffect(() => {
         const getClientReports = async () => {
             try {
@@ -88,8 +83,6 @@ export default function FileManger() {
         }
         getClientReports();
     }, [projectId])
-
-
 
     return (
         <>
@@ -115,7 +108,10 @@ export default function FileManger() {
                                             <tr key={`${a}${b}`}>
                                                 <td>{item.uploadedBy}</td>
                                                 <td><Moment format="DD/MM/YYYY HH:mm a">{item.createdAt}</Moment></td>
-                                                <td className='text-center'><a href={url} className="me-3 fw-bold lh-1"><BiDownload size={25} /></a></td>
+                                                <td className='text-center'>
+                                                    <a href={url} className="me-3 fw-bold lh-1"><BiDownload size={25} />
+                                                    </a>
+                                                </td>
                                             </tr>
 
                                         )
@@ -133,7 +129,13 @@ export default function FileManger() {
                             <h5 className=' theme-color fw-bold'>
                                 Effectual Files
                             </h5>
-                            <h5 className='mx-2'><AiOutlineFolderAdd onClick={setModalOpen} style={{ color: "blue" }} /></h5>
+                            <h5 className='mx-2'>
+                                {user?.userData?.role === "Effectual Admin" ?
+                                    <>
+                                        <AiOutlineFolderAdd onClick={setModalOpen} style={{ color: "blue" }} />
+                                    </> : ""
+                                }
+                            </h5>
                         </div>
 
 
@@ -154,7 +156,14 @@ export default function FileManger() {
                                             <tr key={`${a}${b}`}>
                                                 <td>{item.uploadedBy}</td>
                                                 <td><Moment format="DD/MM/YYYY HH:mm a">{item.createdAt}</Moment></td>
-                                                <td className='text-center'><a href={url} className="me-3 fw-bold lh-1"><BiDownload size={25} /></a></td>
+                                                <td className='text-center'>
+
+                                                    <a href={url} className="me-3 fw-bold lh-1">
+
+                                                        <BiDownload size={25} />
+
+                                                    </a>
+                                                </td>
                                             </tr>
 
                                         )
@@ -174,7 +183,7 @@ export default function FileManger() {
                     onRequestClose={() => setModalOpen(false)}
                     style={customStyles}
                 >
-                    <div classNme="col-md-6 col-lg-4 bg-light pt-2">
+                    <div >
                         <label className="text-primary fw-bold d-flex align-items-center">
                             Upload File:
                             {isLoading && (
@@ -203,20 +212,22 @@ export default function FileManger() {
                             name=" report"
                             required
                             id="report"
-
+                            onChange={(e) => {
+                                setFormData({
+                                  ...formData,
+                                  status: e.target.value,
+                                });
+                              }}
                         >
-
                             <option value="Initial Report">Initial Report</option>
                             <option value="Interim Report">Interim Report</option>
                             <option value="Final Report">Final Report</option>
 
                         </select>
-
-
-
                     </div>
 
                     <button className='bg-success m-3' onClick={() => setModalOpen(false)}>Close Modal</button>
+                    <button className='bg-primary m-3' onClick ={reportUploadation}>Submit</button>
                 </Modal>
 
             </div>

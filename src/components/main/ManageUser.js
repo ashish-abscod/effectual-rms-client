@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import AddNewUser from "./AddNewUser";
 import axios from "axios";
-
+import { UserContext } from "../contexts/UserContext";
 
 
 export default function ManageUser() {
@@ -9,18 +9,31 @@ export default function ManageUser() {
   const [status] = useState(true);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [search, setSearch] = useState("");
+  const { user } = useContext(UserContext);
 
   const target = useRef(null);
 
-  useEffect(() => {
-    getUserData();
-  }, []);
-
-  const getUserData = async () => {
-    await fetch(`${process.env.REACT_APP_API_URL}/users`)
+  
+  const getEffectualUsers = async () => {
+    await fetch(`${process.env.REACT_APP_API_URL}/users/effectualUsers`)
       .then((res) => res.json())
       .then((data) => {setUserData(data);setFilteredUsers(data)});
   };
+
+
+const getHuaweiUsers = async () => {
+    await fetch(`${process.env.REACT_APP_API_URL}/users/getHuaweiUsers/`)
+      .then((res) => res.json())
+      .then((data) => {setUserData(data);setFilteredUsers(data)});
+  };
+
+  useEffect(() => {
+    getEffectualUsers();
+  }, []);
+
+  useEffect(() => {
+    getHuaweiUsers();
+  }, []);
 
 
   useEffect(() => {
@@ -31,7 +44,7 @@ export default function ManageUser() {
 }, [search,userData])
 
  
-  const handleUsersDelete = async (id, name) => {
+  const handleClientUsersDelete = async (id, name) => {
     const confirmation = window.confirm(`Are you sure to delete:  ${name} ?`);
     if (confirmation) {
       try {
@@ -40,7 +53,25 @@ export default function ManageUser() {
           status
         );
         if (res) {
-          getUserData();
+          getHuaweiUsers();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    return;
+  };
+
+  const handleEffectualUsersDelete = async (id, name) => {
+    const confirmation = window.confirm(`Are you sure to delete:  ${name} ?`);
+    if (confirmation) {
+      try {
+        let res = await axios.put(
+          `${process.env.REACT_APP_API_URL}/users/delete/${id}`,
+          status
+        );
+        if (res) {
+          getEffectualUsers();
         }
       } catch (error) {
         console.log(error);
@@ -92,30 +123,69 @@ export default function ManageUser() {
                   </tr>
                 </thead>
                 <tbody className="fw-bold">
-                  {filteredUsers.map((item, i) =>
-                    item.status === true ? (
-                      <tr key={i}>
-                        <th>{i + 1}</th>
-                        <td>{item.name}</td>
-                        <td>{item.email}</td>
-                        <td>{item.role}</td>
-                        <td className="text-center">
-                          <button
-                            ref={target}
-                            type="button"
-                            className="btn btn-outline-danger rounded-pill"
-                            onClick={() =>
-                              handleUsersDelete(item._id, item.name)
-                            }
-                          >
-                            Remove
-                          </button>
-                        </td>
-                      </tr>
-                    ) : (
-                      ""
-                    )
-                  )}
+                  { user?.userData?.role === "Client Admin" }
+                  {
+                    user?.userData?.role === "Client Admin"  ? 
+                    <>
+                    {filteredUsers.map((item, i) =>
+                      item.status === true ? (
+                        <tr key={i}>
+                          <th>{i + 1}</th>
+                          <td>{item.name}</td>
+                          <td>{item.email}</td>
+                          <td>{item.role}</td>
+                          <td className="text-center">
+                            <button
+                              ref={target}
+                              type="button"
+                              className="btn btn-outline-danger rounded-pill"
+                              onClick={() =>
+                                handleClientUsersDelete(item._id, item.name)
+                              }
+                            >
+                              Remove
+                            </button>
+                          </td>
+                        </tr>
+                      ) : (
+                        ""
+                      )
+                    )}
+                    </> : ""
+                     } 
+                
+                      {
+                        
+                    user?.userData?.role === "Effectual Admin"  ? 
+                    
+                    <>
+                    {filteredUsers.map((item, i) =>
+                      item.status === true ? (
+                        <tr key={i}>
+                          <th>{i + 1}</th>
+                          <td>{item.name}</td>
+                          <td>{item.email}</td>
+                          <td>{item.role}</td>
+                          <td className="text-center">
+                            <button
+                              ref={target}
+                              type="button"
+                              className="btn btn-outline-danger rounded-pill"
+                              onClick={() =>
+                                handleEffectualUsersDelete(item._id, item.name)
+                              }
+                            >
+                              Remove
+                            </button>
+                          </td>
+                        </tr>
+                      ) : (
+                        ""
+                      )
+                    )}
+                    </> : ""
+                     } 
+
                 </tbody>
               </table>
             </div>
