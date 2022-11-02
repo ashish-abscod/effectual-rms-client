@@ -112,7 +112,7 @@ export default function ReportUpload() {
                                             >
                                                 <option value="Initial Report">Initial Report</option>
                                                 <option value="Interim Report">Interim Report</option>
-                                                <option value="Final Report">Final Report</option>
+                                                <option value="Completed">Final Report</option>
                                             </select>
                                             <label>Report Status:</label>
                                         </div>
