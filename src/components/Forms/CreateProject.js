@@ -169,10 +169,8 @@ export default function CreateProject() {
               await axios.post(
                 `${process.env.REACT_APP_API_URL}/assigned/createUser`,
                 {
-
                   userId: assignedUsers,
-                  projectId: res?.data?.projectId,
-                  assignedBy: user.userData._id,
+                  projectId: res?.data?.projectId
                 }
               );
             }
@@ -224,7 +222,7 @@ export default function CreateProject() {
 
           if (assignedUsers.length > 0) {
             await axios.post(
-              `${process.env.REACT_APP_API_URL}/assigned/updateUser/${projectId}`, { userId: assignedUsers, assignedBy: user.userData._id, projectId: res?.data?.projectId });
+              `${process.env.REACT_APP_API_URL}/assigned/updateUser/${projectId}`, { userId: assignedUsers, projectId: res?.data?.projectId });
           }
 
           // clear assignedUsers from formdata after updation complete
