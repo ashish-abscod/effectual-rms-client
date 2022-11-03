@@ -151,54 +151,56 @@ export default function AddUserToProject({ assignedUsers, setAssginedUsers }) {
             progressPending={loading}
           />
         </div>
-        <div className="col overflow-auto" style={{ maxHeight: "70vh" }}>
-          <h5 className="text-primary fw-bold m-0 p-0 mt-4 text-center">Assigned Users</h5>
-          <table className="table mt-2 table-striped">
-            {(assignedUsers?.length > 0 || alreadyAssignedUsers?.userId?.length > 0) ?
-              <thead thead className="thead-dark">
-                <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Role</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              : ""
-            }
-            <tbody>
-              {alreadyAssignedUsers?.userId?.map((item) => (
-                <tr className="mb-2" key={item._id}>
-                  <td>{item.name}</td>
-                  <td>{item.role}</td>
-                  <td>
-                    <p>
-                      <MdDelete
-                        style={{
-                          fontSize: "20px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() =>
-                          handleAssignedUserDelete(
-                            alreadyAssignedUsers._id,
-                            item._id
-                          )
-                        }
-                      />
-                    </p>
-                  </td>
-                </tr>
-              ))}
+        <div className="col">
+          <h5 className="text-primary fw-bold d-inline-block mt-2 m-0 p-0 text-center">Assigned Users</h5>
+          <div className="overflow-auto" style={{ maxHeight: "65vh" }}>
+            <table className="table table-striped table-responsive">
+              {(assignedUsers?.length > 0 || alreadyAssignedUsers?.userId?.length > 0) ?
+                <thead thead className="thead-dark bg-dark text-light">
+                  <tr className="bg-dark">
+                    <th scope="col" className="position-sticky top-0 bg-dark">Name</th>
+                    <th scope="col" className="position-sticky top-0 bg-dark">Role</th>
+                    <th scope="col" className="position-sticky top-0 bg-dark">Action</th>
+                  </tr>
+                </thead>
+                : ""
+              }
+              <tbody>
+                {alreadyAssignedUsers?.userId?.map((item) => (
+                  <tr className="mb-2" key={item._id}>
+                    <td>{item.name}</td>
+                    <td>{item.role}</td>
+                    <td>
+                      <p>
+                        <MdDelete
+                          style={{
+                            fontSize: "20px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() =>
+                            handleAssignedUserDelete(
+                              alreadyAssignedUsers._id,
+                              item._id
+                            )
+                          }
+                        />
+                      </p>
+                    </td>
+                  </tr>
+                ))}
 
-              {assignedUsers?.map((item, i) => (
-                <tr className="mb-2" key={i}>
-                  <td>{item.name}</td>
-                  <td>{item.role}</td>
-                  <td>
-                    <AiOutlineClose onClick={() => handleRemove(item._id)} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                {assignedUsers?.map((item, i) => (
+                  <tr className="mb-2" key={i}>
+                    <td>{item.name}</td>
+                    <td>{item.role}</td>
+                    <td>
+                      <AiOutlineClose onClick={() => handleRemove(item._id)} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </>
