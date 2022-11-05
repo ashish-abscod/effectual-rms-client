@@ -12,11 +12,11 @@ export default function About() {
             <h1 className='fw-bold text-center'>Who We Are</h1>
             <div className="col-lg-6">
               <div className="content h-100">
-                <h3 className='theme3-color fw-bold'>Expedita voluptas omnis cupiditate totam eveniet nobis sint iste. Dolores est repellat corrupti reprehenderit.</h3>
+                <h3 className='theme3-color fw-bold'> Effectual Services is a well established and fast growing organization having experience and expertise in providing patent and legal services. </h3>
                 <p className='pt-5 theme3-color fw-bold'>
-                  Quisquam vel ut sint cum eos hic dolores aperiam. Sed deserunt et. Inventore et et dolor consequatur itaque ut voluptate sed et. Magnam nam ipsum tenetur suscipit voluptatum nam et est corrupti.
+                  Effectual Services is a leading Intellectual Property (IP) management advisory firm offering IP support solutions to Fortune 500 companies, law firms, research institutes and universities, and venture capital firms/PE firms.
                 </p>
-                
+
               </div>
             </div>
 

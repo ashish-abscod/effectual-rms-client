@@ -2,8 +2,34 @@ import React from 'react'
 import { GoLocation } from 'react-icons/go'
 import { MdOutlineEmail } from 'react-icons/md'
 import { BsPhone } from 'react-icons/bs'
-import { FiSend } from 'react-icons/fi'
+import { FiSend } from 'react-icons/fi';
+
+import axios from 'axios'
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 export default function Contact() {
+
+    const [body,setBody] = useState({
+        name:"",email:"", subject:"",message:""
+    });
+
+    const[isLoading,setIsLoading] = useState(false);
+
+    const contactUsHandler = async ()=>{
+        try {
+            setIsLoading(true);
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/contactUs`,body);
+            if(res?.data?.status === "success"){
+                toast.success(res?.data?.msg);
+            }else{
+                toast.error(res?.data?.msg);
+            }
+        } catch (error) {
+            toast.warning("Something went wrong.");
+        }finally{
+            setIsLoading(false);
+        }
+    }
     return (
         <>
             <section className="ld" id="contact">
@@ -39,17 +65,21 @@ export default function Contact() {
                             <form>
                                 <div className="row">
                                     <div className="col-md-6 form-group">
-                                        <input type="text" name="name" className="form-control p-3 text-secondary fw-bold" id="name" placeholder="Your Name" required="" />
+                                        <input type="text" name="name" className="form-control p-3 text-secondary fw-bold"  placeholder="Your Name"
+                                        onChange={(e)=>setBody({...body,name:e.target.value})} />
                                     </div>
                                     <div className="col-md-6 form-group mt-3 mt-md-0">
-                                        <input type="email" className="form-control p-3 text-secondary fw-bold" name="email" id="yourEmail" placeholder="Your Email" required="" />
+                                        <input type="email" className="form-control p-3 text-secondary fw-bold" name="email" placeholder="Your Email"
+                                        onChange={(e)=>setBody({...body,email:e.target.value})} />
                                     </div>
                                 </div>
                                 <div className="form-group mt-3">
-                                    <input type="text" className="form-control p-3 text-secondary fw-bold" name="subject" id="subject" placeholder="Subject" required="" />
+                                    <input type="text" className="form-control p-3 text-secondary fw-bold" name="subject" placeholder="Subject"
+                                    onChange={(e)=>setBody({...body,subject:e.target.value})} />
                                 </div>
                                 <div className="form-group mt-3">
-                                    <textarea className="form-control p-3 text-secondary fw-bold" rows={9} name="message" placeholder="Message" required=""></textarea>
+                                    <textarea className="form-control p-3 text-secondary fw-bold" rows={9} name="message" placeholder="Message" 
+                                    onChange={(e)=>setBody({...body, message :e.target.value})}></textarea>
                                 </div>
                                 <div className="my-3 d-none">
                                     <div className="loading">Loading</div>
@@ -57,7 +87,7 @@ export default function Contact() {
                                     <div className="sent-message">Your message has been sent. Thank you!</div>
                                 </div>
                                 <div className="text-center">
-                                    <button type="submit" className='btn theme2-bg text-white px-5 py-2 mt-5'>Send Message<FiSend className='fw-bold ms-2' /></button>
+                                    <button type="button" className='btn theme2-bg text-white px-5 py-2 mt-5' disabled={isLoading} onClick={contactUsHandler}>Send Message<FiSend className='fw-bold ms-2' /></button>
                                 </div>
                             </form>
                         </div>

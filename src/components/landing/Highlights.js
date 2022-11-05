@@ -19,9 +19,7 @@ export default function Highlights() {
                                 <img src={Highlight1} className="card-img-top" alt="..." />
                                 <div className="card-body">
                                     <h4 className="card-title theme3-color fw-bold"><FiDatabase /> Central Management</h4>
-                                    <p className="card-text fs-5 theme3-color">Complete searchable repository of all the executed projects along with current status.
-                                        INSTANT EMAIL
-                                        Get instant notification via email for any new </p>
+                                    <p className="card-text fs-5 theme3-color">Complete searchable repository of all the executed projects along with current status.</p>
                                 </div>
                             </div>
                         </div>
@@ -39,7 +37,7 @@ export default function Highlights() {
                                 <img src={Highlight3} className="card-img-top" alt="..." />
                                 <div className="card-body">
                                     <h4 className="card-title theme3-color fw-bold"><MdOutlineSecurity /> Highly Secure</h4>
-                                    <p className="card-text fs-5 theme3-color">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                                    <p className="card-text fs-5 theme3-color">Effectual RMS is a highly secure software system, which keeps your data integrity at high.</p>
                                 </div>
                             </div>
                         </div>
